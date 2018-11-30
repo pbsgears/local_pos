@@ -1,0 +1,35 @@
+.tHeadStyle {
+    background-color: rgba(82, 82, 82, 0.75);
+    color: #ffffff;
+}
+
+
+.form-separator{
+    border-bottom: 1px solid #a9a9a9;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #be746c;
+    margin: 15px 10px 10px;
+}
+
+.posConfigBtn{
+    width:50px;
+}
+
+.posContainer {
+    background-color: #ffffff;
+    padding: 10px;
+    /*margin-top: 10px;*/
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 0px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 31px !important;
+}
+
+.select2-container--default .select2-selection--single {
+    border-radius: 0px !important;
+}

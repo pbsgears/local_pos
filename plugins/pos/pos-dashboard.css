@@ -1,0 +1,74 @@
+.boxHeaderCustom{
+    height: 29px !important;
+    font-size: 16px !important;
+    padding: 3px 9px !important;
+    font-weight: 700 !important;
+    background-color: rgba(222, 218, 218, 0.16) !important;
+    color: #69697b !important;
+}
+
+.r-icon-stats i {
+    width: 66px;
+    height: 66px;
+    padding: 20px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 24px;
+    display: inline-block;
+    border-radius: 100%;
+    vertical-align: top;
+    background: #01c0c8;
+}
+.r-icon-stats .bodystate {
+    padding-left: 20px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.r-icon-stats .bodystate h4 {
+    margin-bottom: 0px;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.white-box {
+    background: #ffffff;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+.white-box .box-title {
+    margin: 0px 0px 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.bg-primary {
+    background-color: #ab8ce4 !important;
+}
+.bg-success {
+    background-color: #00c292 !important;
+}
+.bg-info {
+    background-color: #03a9f3 !important;
+}
+.bg-warning {
+    background-color: #fec107 !important;
+}
+.bg-danger {
+    background-color: #fb9678 !important;
+}
+.bg-theme {
+    background-color: #ff6849 !important;
+}
+.bg-theme-dark {
+    background-color: #4F5467 !important;
+}
+.bg-inverse {
+    background-color: #4c5667 !important;
+}
+.bg-purple {
+    background-color: #9675ce !important;
+}
+.bg-white {
+    background-color: #ffffff !important;
+}

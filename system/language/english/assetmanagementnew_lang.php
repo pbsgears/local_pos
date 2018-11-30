@@ -1,0 +1,130 @@
+<?php
+
+/**
+ * System messages translation for CodeIgniter(tm)
+ *
+ * @author    Shafri
+ * @copyright    Copyright (c), GEARS Software Solution Pvt. Ltd. (http://gears-int.com)
+ * @link :   http://gears-int.com
+ *
+ * @prefix : assetmanagement_
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+$lang['assetmanagement_approval_asset'] = 'Asset Approval';
+$lang['assetmanagement_fa_code'] = 'FA Code';
+$lang['assetmanagement_asset_status_is_required'] = 'Asset Status is required';
+$lang['assetmanagement_level_order_status_is_required'] = 'Level Order Status is required';
+$lang['assetmanagement_asset_id_is_required'] = 'Asset ID is required';
+$lang['assetmanagement_do_you_want_to_allocate_missing'] = 'Do you want to allocate missing depreciations of this asset to next processing month?';
+$lang['assetmanagement_asset_details'] = ' Asset Details';
+$lang['assetmanagement_asset_code'] = 'Asset Code';
+$lang['assetmanagement_bar_code'] = 'Barcode';
+$lang['assetmanagement_serial_no'] = 'Serial No';
+$lang['assetmanagement_manufacture'] = 'Manufacture';
+$lang['assetmanagement_date_acquired'] = 'Date Acquired';
+$lang['assetmanagement_depreciation_date_start'] = 'Depreciation Date Start';
+$lang['assetmanagement_asset_capitalized_date'] = 'Asset Capitalized Date';
+$lang['assetmanagement_life_time_in_month'] = 'Life time in months';
+$lang['assetmanagement_dep'] = 'DEP';
+$lang['assetmanagement_unit_price'] = 'Unit Price';
+$lang['assetmanagement_asset_location'] = 'Asset Location';
+$lang['assetmanagement_asset_categorization'] = 'Asset Categorization';
+$lang['assetmanagement_asset_type'] = 'Asset Type';
+$lang['assetmanagement_segment_code'] = 'Segment Code';
+$lang['assetmanagement_main_category'] = 'Main Category';
+$lang['assetmanagement_sub_category'] = 'Sub Category';
+$lang['assetmanagement_cost_account'] = 'Cost Account';
+$lang['assetmanagement_acc_dep_gl_code'] = 'Acc Dep GL Code';
+$lang['assetmanagement_dep_gl_code'] = 'Dep GL Code';
+$lang['assetmanagement_post_gl'] = 'Post GL';
+$lang['assetmanagement_disposal_gl'] = 'Disposal GL Code';
+$lang['assetmanagement_depreciation_approval'] = 'Depreciation Approval';
+$lang['assetmanagement_dep_code'] = 'Dep Code';
+$lang['assetmanagement_dep_type'] = 'Dep Type';
+$lang['assetmanagement_dep_month'] = 'Dep Month';
+$lang['assetmanagement_asset_description'] = 'Asset Description';
+$lang['assetmanagement_cost_amount'] = 'Cost Amount';
+$lang['assetmanagement_dep_amount'] = 'Dep Amount';
+$lang['assetmanagement_disposal_approval'] = 'Disposal Approval';
+$lang['assetmanagement_disposal_code'] = 'Disposal Code';
+$lang['assetmanagement_doc_date'] = 'Doc Date';
+$lang['assetmanagement_disposal_id_is_required'] = 'Diposal ID is required';
+$lang['assetmanagement_asset_no'] = 'Asset No';
+$lang['assetmanagement_acq_date'] = 'Acq Date';
+$lang['assetmanagement_acq_dep'] = 'Acc Dep';
+$lang['assetmanagement_nbv'] = 'NBV';
+$lang['assetmanagement_disposal_amt'] = 'Disposal Amt';
+$lang['assetmanagement_asset_depreciation_history'] = 'Asset Depreciation History';
+$lang['assetmanagement_monthly_depreciation'] = 'Monthly Depreciation';
+$lang['assetmanagement_ad_hoc_depreciation'] = 'Ad hoc Depreciation';
+$lang['assetmanagement_generate_depreciation'] = 'Generate Depreciation';
+$lang['assetmanagement_asset_monthly_depreciation'] = 'Asset Monthly Depreciation';
+$lang['assetmanagement_asset_ad_hoc_depreciation'] = 'Asset Ad hoc Depreciation';
+$lang['assetmanagement_dep_month_year'] = 'Dep Month Year';
+$lang['assetmanagement_account_review_entries'] = 'Account Review entries';
+$lang['assetmanagement_credit_gl_code'] = 'Credit GL Code';
+$lang['assetmanagement_debit_gl_code'] = 'Debit GL Code';
+$lang['assetmanagement_date_start_depreciation'] = 'Date Start Depreciation';
+$lang['assetmanagement_date_capitalized'] = 'Date Capitalized';
+$lang['assetmanagement_financial_year'] = 'Financial Year';
+$lang['assetmanagement_doc_code'] = 'Doc Code';
+$lang['assetmanagement_financial_period'] = 'Financial Period';
+$lang['assetmanagement_depreciation_start_date'] = 'Depreciation Start Date';
+$lang['assetmanagement_financial_year_is_required'] = 'Financial Year is required';
+$lang['assetmanagement_financial_period_is_required'] = 'Financial Period is required';
+$lang['assetmanagement_asset_disposal'] = 'Asset Disposal';
+$lang['assetmanagement_disposal_header'] = 'Disposal Header';
+$lang['assetmanagement_disposal_detail'] = 'Disposal Detail';
+$lang['assetmanagement_document_code'] = 'Document Code';
+$lang['assetmanagement_add_asset'] = 'Add Asset';
+$lang['assetmanagement_assets'] = 'Assets';
+$lang['assetmanagement_narration_is_required'] = 'Narration is required';
+$lang['assetmanagement_asset_register'] = 'Asset Register';
+$lang['assetmanagement_date_as_of'] = 'Date As of';
+$lang['assetmanagement_filter_item_by_cat'] = 'Filter By Item Category';
+$lang['assetmanagement_extra_columns'] = 'Extra Columns';
+$lang['assetmanagement_put_a_cheack_mark'] = 'Put a check mark next to each column that you want to appear in the report';
+$lang['assetmanagement_as_of'] = 'As of';
+$lang['assetmanagement_finance_category'] = 'Finance Category';
+$lang['assetmanagement_dep_started_date'] = 'Dep Started Date';
+$lang['assetmanagement_acc_dep_amount'] = 'Acc Dep Amount';
+$lang['assetmanagement_net_book_value'] = 'Net Book Value';
+$lang['assetmanagement_asset'] = 'Asset';
+$lang['assetmanagement_asset_register_summary'] = 'Asset Register Summary';
+$lang['assetmanagement_disposal'] = 'Disposals';
+$lang['assetmanagement_as_at_end_of'] = 'As at end of';
+$lang['assetmanagement_depreciation'] = 'Depreciation';
+$lang['assetmanagement_charge_for_the_period'] = 'Charge For The Period';
+$lang['assetmanagement_depreciation_for_disposed_assets'] = 'Depreciation for Disposed Assets';
+$lang['assetmanagement_additions_during_the_year'] = 'Additions during the year';
+$lang['assetmanagement_asset_monthly_report'] = 'Asset Monthly Depreciation Report';
+$lang['assetmanagement_asset_master'] = 'Asset Master';
+$lang['assetmanagement_add_new_asset'] = 'Add New Asset';
+$lang['assetmanagement_serial'] = 'Serial';
+$lang['assetmanagement_asset_valuation'] = 'Asset Valuation';
+$lang['assetmanagement_asset_attachment'] = 'Asset Attachment';
+$lang['assetmanagement_select_a_image'] = 'Select a Image';
+$lang['assetmanagement_manufacturer'] = 'Manufacturer';
+$lang['assetmanagement_depreciaton_date'] = 'Depreciating Date';
+$lang['assetmanagement_own_asset'] = 'Own Asset';
+$lang['assetmanagement_thirdparty'] = 'Third Party';
+$lang['assetmanagement_sub_sub_category'] = 'Sub Sub Category';
+$lang['assetmanagement_finance_grouping'] = 'Finance Grouping';
+$lang['assetmanagement_post_to_gl'] = 'Post to GL';
+$lang['assetmanagement_group_to'] = 'Group To';
+$lang['assetmanagement_doc_ref'] = 'Doc Ref';
+$lang['assetmanagement_add_attachment'] = 'Add Attachment';
+$lang['assetmanagement_date_of_issue'] = 'Date of Issue';
+$lang['assetmanagement_date_of_expiry'] = 'Date of Expiry';
+$lang['assetmanagement_document_description'] = 'Document Description';
+$lang['assetmanagement_asset_attachment_edit'] = 'Asset Attachment Edit';
+$lang['assetmanagement_manufacturer_is_required'] = 'Manufacturer is required';
+$lang['assetmanagement_date_acquired_is_required'] = 'Date Acquired is required';
+$lang['assetmanagement_depreciation_date_is_required'] = 'Depreciation Date Start is required';
+$lang['assetmanagement_life_time_in_month_is_required'] = 'Life time in Month is required';
+$lang['assetmanagement_unit_price_local_is_required'] = 'Unit Price (Local) required';
+$lang['assetmanagement_unit_price_rpt_required'] = 'Unit Price (Rpt) required';
+$lang['assetmanagement_asset_location_is_required'] = 'Asset Location is required';
+$lang['assetmanagement_add_location'] = 'Add Location';
+$lang['assetmanagement_edit_location_description'] = 'Edit Location Description';

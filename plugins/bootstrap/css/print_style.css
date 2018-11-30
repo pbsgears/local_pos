@@ -1,0 +1,103 @@
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Open Sans Light'), local('OpenSans-Light'), url('fonts/DXI1ORHCpsQm3Vp6mXoaTegdm0LZdjqr5-oayXSOefg.woff2') format('woff2');
+}
+
+td, th {
+    padding: 5px !important;
+}
+
+table .total {
+    border-top: 1px double #000 !important;
+    border-bottom: 3px double #000 !important;
+    font-weight: bold;
+    font-size: 9px !important;
+}
+
+table .sub_total {
+    /*border-top: 1px solid rgba(0, 0, 0, 0.3);*/
+    border-top: 1px double #000;
+    border-bottom: 1px double #000;
+    font-weight: bold !important;
+    font-size: 9px !important;
+}
+
+table .theadtr {
+    font-size: 11px !important;
+    background: #ebebeb;
+}
+
+table .t-foot {
+    font-size: 11px !important;
+    font-weight: bold;
+}
+
+tbody td {
+    font-size: 10px !important;
+}
+
+hr {
+    margin-bottom: 2px !important;
+    margin-top: 3px !important;
+}
+
+td .td {
+    font-size: 12px !important;
+}
+
+.paySheet_TD {
+    font-size: 14px !important;
+    font-weight: bolder !important;;
+}
+
+.paySheet_TD {
+    font-size: 13px !important;
+    font-weight: bolder !important;;
+}
+
+.paySheetDet_TD {
+    border-bottom: none !important;
+}
+
+.paySlipTot {
+    text-align: right;
+    background: #00a7d0;
+}
+
+.t-foot-none-print {
+    border: 3px solid #1b6d85 !important;
+}
+
+/*Asset register css*/
+.assetRegisterTable td:not(:first-child) {
+    width: 100px !important;
+}
+
+.assetRegisterTable th:not(:first-child) {
+    width: 100px !important;
+}
+
+.assetRegisterTable tbody td:not(:first-child):not(:last-child):hover {
+    background-color: #DEDEDE;
+}
+/* --Asset register css--*/
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #f9f9f9
+}
+
+#incomeTexDeduction td {
+    font-size: 10px;
+}
+
+.income-text-header{
+    font-size: 11px !important;
+}
+
+.envoy-payslip-tbl th{
+    font-size: 12px !important;
+    //font-weight: bolder !important;
+}

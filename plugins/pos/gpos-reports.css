@@ -1,0 +1,42 @@
+.customPad {
+    padding: 3px 0px;
+}
+
+.al {
+    text-align: left !important;
+}
+
+.ar {
+    text-align: right !important;
+}
+.ac {
+    text-align: center !important;
+}
+
+.reportContainer {
+    border: 2px solid gray !important;
+    padding: 10px !important;
+    min-height: 200px;
+}
+
+.customTbl thead > tr > th {
+    border-radius: 0px !important;
+    border-top: 1px solid #ff4c07 !important;
+    border-bottom: 4px solid #989898!important;
+    background-color: rgb(255, 255, 255) !important;
+    box-shadow: 6px 6px 10px -6px rgba(184, 184, 184, 1) !important;
+    height: 24px;
+    padding-bottom: 9px !important;
+}
+
+.customTbl tbody > tr > td {
+    font-size: 12px !important;
+}
+
+.customTbl tbody > tr > th {
+    font-size: 13px;
+    color: #ffffff;
+    background: #304352;
+    background: -webkit-linear-gradient(to right, #304352, #d7d2cc);
+    background: linear-gradient(to right, #304352, #d7d2cc);
+}

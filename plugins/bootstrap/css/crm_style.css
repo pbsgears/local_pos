@@ -1,0 +1,118 @@
+/*This style added by Nazir*/
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    color: #060606
+}
+
+span.input-req-inner {
+    width: 20px;
+    height: 40px;
+    position: absolute;
+    overflow: hidden;
+    display: block;
+    right: 4px;
+    top: -15px;
+    -webkit-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    transform: rotate(135deg);
+}
+
+span.input-req-inner:before {
+    font-size: 20px;
+    content: "*";
+    top: 15px;
+    right: 1px;
+    color: #fff;
+    position: absolute;
+    z-index: 2;
+    cursor: default;
+}
+
+span.input-req-inner:after {
+    content: '';
+    width: 35px;
+    height: 35px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    background: #f45640;
+    position: absolute;
+    top: 7px;
+    right: -29px;
+}
+
+.head-title h2 {
+    margin: 0;
+    font-size: 14px;
+    line-height: 14px;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 0 8px 0 0;
+    background: #fff;
+    white-space: nowrap;
+    font-weight: bold !important;
+}
+
+.head-title {
+    background: url('https://d30chhj7mra175.cloudfront.net/img/border.png') repeat-x 0 50%;
+    overflow: hidden;
+    margin: -4px 0 10px;
+}
+.title {
+     float: left;
+     width: 170px;
+     text-align: right;
+     color: #aaa;
+     padding: 4px 10px 0 0;
+ }
+
+.entity-detail .ralign, .property-table .ralign {
+    text-align: right;
+    color: gray;
+    padding: 0 10px 0 0;
+    width: 150px;
+    max-width: 200px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/*priority button style for new task start*/
+.high-ptry {
+    color: #ff5559;
+}
+.priority-btn {
+    font-size: 15px;
+    border: none;
+    font-style: normal;
+    border-radius: 3px;
+    background: #fff;
+}
+.priority-btn:active, .priority-btn:hover, .priority-btn.active {
+    background: #dedede;
+}
+.med-ptry {
+    color: #fbb03b;
+}
+.low-ptry {
+    color: #00a5e6;
+}
+/*priority button style for new task - End*/
+#search_cancel img {
+    background-color: #f3f3f3;
+    border: solid 1px #dcdcdc;
+    vertical-align: middle;
+    padding: 4px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.textClose{
+    text-decoration: line-through;
+    font-weight: 500;
+    text-decoration-color: black;
+}
+.numberColoring{
+    font-size: 13px;
+    font-weight: 600;
+    color: saddlebrown;
+}

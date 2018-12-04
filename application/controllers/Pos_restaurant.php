@@ -976,6 +976,7 @@ class Pos_restaurant extends ERP_Controller
                         $data['timestamp'] = format_date_mysql_datetime();
                         $data['id_store'] = $this->config->item('id_store');
                         $data['isFromTablet'] = $this->input->post('isFromTablet');
+                        $data['is_sync'] = 1;
 
 
                         $invoiceID = $this->Pos_restaurant_model->insert_srp_erp_pos_menusalesmaster($data);

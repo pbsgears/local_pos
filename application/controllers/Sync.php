@@ -136,7 +136,6 @@ class Sync extends ERP_Controller
     function post_data($qry)
     {
 
-
         $qry = htmlspecialchars(urlencode($qry));
         $data = "qry=" . $qry;
 
@@ -149,20 +148,24 @@ class Sync extends ERP_Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 
         curl_setopt($ch, CURLOPT_CRLF, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         $result = curl_exec($ch);
 
         if (curl_error($ch)) {
             var_dump( curl_error($ch));
         }
 
-        //var_dump($result);
 
-        //echo $this->config->item("sync_server_url");
-        /*echo $data; 
+        /*var_dump($result);
+
+        echo $this->config->item("sync_server_url");
+        echo $data;
         echo '<br/><br/>'; 
 
         echo '<h3> Curl Result </h2>'; 
-        echo $result; //testing remote it later*/
+        echo $result; //testing remote it later
+
+        */
 
 
 
@@ -170,7 +173,7 @@ class Sync extends ERP_Controller
         if (1 === intval($result)) {
             return TRUE;
         } else {
-            echo $result;
+            //echo $result;
             return $result;
         }
     }
@@ -178,23 +181,31 @@ class Sync extends ERP_Controller
 
     function pull_data()
     {
-        $ch = curl_init(); //http post to another server
-
-        curl_setopt($ch, CURLOPT_URL, $this->config->item("sync_server_pull_url"));
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         $companyID = current_companyID();
         $companyInfo = get_companyInformation($companyID);
         $values = array(
             'companyID' => $companyID,
             'token' => $companyInfo['localposaccesstoken']
         );
+
+        $ch = curl_init(); //http post to another server
+
+        curl_setopt($ch, CURLOPT_URL, $this->config->item("sync_server_pull_url"));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+
         $params = http_build_query($values);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         // receive server response
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         $server_output = curl_exec($ch);
 
+
+        /*echo 'Curl output<br/>';
+        echo $server_output;
+        exit;*/
         $result = json_decode($server_output, true);
 
         if (curl_error($ch)) {

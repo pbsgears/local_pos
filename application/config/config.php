@@ -23,7 +23,7 @@ date_default_timezone_set('Asia/Colombo');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '/POS/';
+$config['base_url'] = '/local_pos/';
 
 /*
 |--------------------------------------------------------------------------
@@ -443,13 +443,13 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
 */
 //csrf
-if ($_SERVER["REQUEST_URI"] === '/gs_sme/index.php/sync_server') {
+if ($_SERVER["REQUEST_URI"] === '/local_pos/index.php/sync_server') {
     $config['csrf_protection'] = false;
-} else if ($_SERVER["REQUEST_URI"] === '/gs_sme/') {
+} else if ($_SERVER["REQUEST_URI"] === '/local_pos/') {
     $config['csrf_protection'] = false;
-} else if ($_SERVER["REQUEST_URI"] === '/gs_sme/index.php/Login/logout') {
+} else if ($_SERVER["REQUEST_URI"] === '/local_pos/index.php/Login/logout') {
     $config['csrf_protection'] = false;
-} else if ($_SERVER["REQUEST_URI"] === '/gs_sme/index.php/sync_server/pull_data') {
+} else if ($_SERVER["REQUEST_URI"] === '/local_pos/index.php/sync_server/pull_data') {
     $config['csrf_protection'] = false;
 } else {
     $config['csrf_protection'] = TRUE;
@@ -528,18 +528,18 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
-$config['sync'] = true;
+$config['sync'] = TRUE;
 
 
 /** Contact Hisham and setup this */
-$config['outletID'] = 165;
+$config['outletID'] = 108;
 
 
 /*database synchronize */
 
-$config['sync_server_url'] = "http://192.168.52.27/gs_sme/index.php/sync_server";
-$config['sync_url'] = "http://localhost/POS/index.php/sync";
+$config['sync_server_url'] = "https://cloud.spur-int.com/index.php/sync_server";
+$config['sync_url'] = "http://localhost/local_pos/index.php/sync";
 
 /** Pulling */
-$config['sync_server_pull_url'] = "http://192.168.52.27/gs_sme/index.php/sync_server/pull_data"; // whoes pc is this lis this?
+$config['sync_server_pull_url'] = "https://cloud.spur-int.com/index.php/sync_server/pull_data"; // whoes pc is this lis this?
 $config['local_central_db'] = "central_db_local";

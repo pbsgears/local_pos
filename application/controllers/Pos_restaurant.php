@@ -755,6 +755,7 @@ class Pos_restaurant extends ERP_Controller
 
                     /* Insert Menu */
                     $data_item['menuSalesID'] = $invoiceID_tmp;
+                    $data_item['warehouseAutoID'] = get_outletID();
                     $data_item['menuID'] = $output['menuMasterID'];
                     $data_item['menuCategoryID'] = $output['menuCategoryID'];
 
@@ -985,6 +986,7 @@ class Pos_restaurant extends ERP_Controller
 
                             /* Insert Menu */
                             $data_item['menuSalesID'] = $invoiceID;
+                            $data_item['warehouseAutoID'] = get_outletID();
                             $data_item['menuID'] = $output['menuMasterID'];
                             $data_item['menuCategoryID'] = $output['menuCategoryID'];
                             $data_item['warehouseMenuID'] = $output['warehouseMenuID'];
@@ -1904,6 +1906,7 @@ class Pos_restaurant extends ERP_Controller
             /*setup array */
             foreach ($itemDetailList as $itemDetail) {
                 $batchData[$i]['menuSalesItemID'] = $item['menuSalesItemID'];
+                $batchData[$i]['warehouseAutoID'] = $warehouseID;
                 $batchData[$i]['menuSalesID'] = $item['menuSalesID'];
                 $batchData[$i]['itemAutoID'] = $itemDetail['itemAutoID'];
                 $batchData[$i]['qty'] = $itemDetail['qty'];

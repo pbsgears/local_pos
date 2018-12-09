@@ -42,12 +42,14 @@ $discountPolicy = show_item_level_discount();
 
         .fade {
             opacity: 0;
-            -webkit-transition: opacity 0.001s linear;
-            -moz-transition: opacity 0.001s linear;
-            -ms-transition: opacity 0.001s linear;
-            -o-transition: opacity 0.001s linear;
-            transition: opacity 0.001s linear;
+            -webkit-transition: opacity 0.0001s linear;
+            -moz-transition: opacity 0.0001s linear;
+            -ms-transition: opacity 0.0001s linear;
+            -o-transition: opacity 0.0001s linear;
+            transition: opacity 0.0001s linear;
         }
+
+
 
     </style>
 

@@ -13,7 +13,7 @@ class Sync extends ERP_Controller
         parent::__construct();
         $this->load->database();
         $this->tables = array(
-			
+
             "srp_erp_pos_menusalesmaster" => array('menuSalesID'),
             "srp_erp_pos_shiftdetails" => array('shiftID'),
             "srp_erp_pos_menusalespayments" => array('menuSalesPaymentID'),
@@ -73,7 +73,7 @@ class Sync extends ERP_Controller
                             }
                             //$val = mysql_real_escape_string($val);
 
-                            $val = str_replace(array("'","\"","`"),array('&#8217;','&#8221;','&#96;'),$val);
+                            $val = str_replace(array("'", "\"", "`"), array('&#8217;', '&#8221;', '&#96;'), $val);
                             $update_col_val[] = " `{$name}` = '{$val}' ";
 
                             if ("is_sync" === $name) {
@@ -107,7 +107,8 @@ class Sync extends ERP_Controller
                             $output .= "UPDATE `{$table_name}` SET " . implode(",", $col_val) . " WHERE `id_store` = {$this->id_store} AND " . implode(" AND ", $already_exists);
                             //$output .= " ;; ".current_companyID();
                             $output .= " ;; ";
-                            $update .= "UPDATE {$table_name} SET is_sync = 1 WHERE " . implode(" AND ", $update_col_val) . " ;; ";
+
+                            $update .= "UPDATE {$table_name} SET is_sync = 1 WHERE " . implode(" AND ", str_replace(array('&#8217;', '&#8221;', '&#96;'), array("'", "\"", "`"), $update_col_val)) . " ;; ";
 
                         }
                     }
@@ -152,7 +153,7 @@ class Sync extends ERP_Controller
         $result = curl_exec($ch);
 
         if (curl_error($ch)) {
-            var_dump( curl_error($ch));
+            var_dump(curl_error($ch));
         }
 
 
@@ -166,7 +167,6 @@ class Sync extends ERP_Controller
         echo $result; //testing remote it later
 
         */
-
 
 
         curl_close($ch);
@@ -209,15 +209,15 @@ class Sync extends ERP_Controller
         $result = json_decode($server_output, true);
 
         if (curl_error($ch)) {
-           echo json_encode(array('error'=>1,'message'=>curl_error($ch))) ;
-           exit;
+            echo json_encode(array('error' => 1, 'message' => curl_error($ch)));
+            exit;
         }
-		
+
         //echo $server_output; // comment it after finishing the testing
 
 
         if (isset($result['error']) && $result['error'] == 0) {
-			
+
             $records = 0;
             $tables = 1;
             $outputMsg = '';
@@ -277,7 +277,6 @@ class Sync extends ERP_Controller
 
         curl_close($ch);
     }
-
 
 
 }

@@ -73,7 +73,7 @@ class Sync extends ERP_Controller
                             }
                             //$val = mysql_real_escape_string($val);
 
-                            $val = str_replace(array("'","\""),array('&#8217;','&#8221;'),$val);
+                            $val = str_replace(array("'","\"","`"),array('&#8217;','&#8221;','&#96;'),$val);
                             $update_col_val[] = " `{$name}` = '{$val}' ";
 
                             if ("is_sync" === $name) {

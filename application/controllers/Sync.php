@@ -73,8 +73,15 @@ class Sync extends ERP_Controller
                             }
                             //$val = mysql_real_escape_string($val);
 
+                            $search_string = "'";
+                            $pos = strpos($val, $search_string);
+
                             $val = str_replace(array("'", "\"", "`"), array('&#8217;', '&#8221;', '&#96;'), $val);
-                            $update_col_val[] = " `{$name}` = '{$val}' ";
+
+                            if ($pos === false) {
+                                $update_col_val[] = " `{$name}` = '{$val}' ";
+                            }
+
 
                             if ("is_sync" === $name) {
                                 $val = 1;
@@ -108,7 +115,7 @@ class Sync extends ERP_Controller
                             //$output .= " ;; ".current_companyID();
                             $output .= " ;; ";
 
-                            $update .= "UPDATE {$table_name} SET is_sync = 1 WHERE " . implode(" AND ", str_replace(array('&#8217;', '&#8221;', '&#96;'), array("'", "\"", "`"), $update_col_val)) . " ;; ";
+                            $update .= "UPDATE {$table_name} SET is_sync = 1 WHERE " . implode(" AND ", $update_col_val) . " ;; ";
 
                         }
                     }

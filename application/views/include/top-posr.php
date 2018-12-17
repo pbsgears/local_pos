@@ -24,24 +24,17 @@
         <nav class="navbar navbar-static-top" role="navigation">
             <div id=""></div>
             <!-- Sidebar toggle button-->
-
-
             <div class="col-md-4 pull-left" id="master-time-div" style="">
                 <ul class="nav navbar-nav hidden-xs">
                     <li>
                         <a style="border: none" id="timeBox_style">
-
                             <div class="hidden-md hidden-sm hidden-xs">
                                 <span class="" id="timeBox" style="font-size: 15px; font-weight: bolder"></span> &nbsp;&nbsp;&nbsp;
                                 <span class="" id="dateBox"></span>
                             </div>
-
                             <div class="hidden-lg">
-                                <span
-                                    class="hidden-sm hidden-xs">Date : </span><strong><?php echo date('d/m/Y') ?></strong>
+                                <span class="hidden-sm hidden-xs">Date : </span><strong><?php echo date('d/m/Y') ?></strong>
                             </div>
-
-
                         </a>
                     </li>
                 </ul>
@@ -59,11 +52,12 @@
                     <?php if (!empty($posData['wareHouseLocation'])) { ?>
                         <li class="dropdown user user-menu hidden-sm hidden-xs" id="">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-placement="bottom">
-                                <label style="margin-bottom: 0px"><?php //print_r($posData);
+                                <label style="margin-bottom: 0px">
+                                    <?php
                                     $outletInfo = get_outletInfo();
-
                                     echo ucwords(trim_value_pos($outletInfo['wareHouseDescription'], 8, 'bottom'));
-                                    ///echo $posData['wareHouseLocation']; ?></label>
+                                    ?>
+                                </label>
                             </a>
                         </li>
                     <?php }
@@ -82,7 +76,6 @@
                             <span rel="tooltip" data-placement="bottom"
                                   title="<?php
                                   echo $this->common_data['company_data']['company_name'];
-                                  // echo trim_value_pos($this->common_data['company_data']['company_name'], 10);
                                   ?>">
                                 <?php echo current_companyCode(); ?>
                             </span>
@@ -95,8 +88,7 @@
                             $currentEmp_img = checkIsFileExists($filePath);
                             ?>
                             <img src="<?php echo $currentEmp_img; ?>" class="user-image" alt="User Image">
-                            <span
-                                class="hidden-xs"><?php echo $name = ucwords($this->session->loginusername); ?> </br></span>
+                            <span class="hidden-xs"><?php echo $name = ucwords($this->session->loginusername); ?> </br></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -120,13 +112,8 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- Control Sidebar Toggle Button -->
-                    <!--<li class="hidden-xs">
-                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                    </li>-->
                 </ul>
             </div>
-
         </nav>
     </header>
 

@@ -10,12 +10,12 @@ $this->lang->load('calendar', $primaryLanguage);
 ?>
 <div aria-hidden="true" role="dialog" id="pos_open_kitchenStatus" class="modal" data-keyboard="true"
      data-backdrop="static">
-    <div class="modal-dialog modal-lg" >
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                        class="fa fa-close text-red"></i></button>
+                            class="fa fa-close text-red"></i></button>
                 <h4 class="modal-title"><i class="fa fa-cutlery"></i> Kitchen </h4>
             </div>
             <div id="kitchenStatus_modalBody" class="modal-body"
@@ -39,7 +39,7 @@ $this->lang->load('calendar', $primaryLanguage);
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                        class="fa fa-close text-red"></i></button>
+                            class="fa fa-close text-red"></i></button>
                 <h5 class="modal-title"><i class="fa fa-cutlery"></i> Kitchen Status </h5>
             </div>
             <div id="kitchen_order_modalBody" class="modal-body">
@@ -56,7 +56,7 @@ $this->lang->load('calendar', $primaryLanguage);
 
 <div aria-hidden="true" role="dialog" id="kot_print_box_layout_modal" class="modal fade" data-keyboard="true"
      data-backdrop="static">
-    <div class="modal-dialog modal-responsive-bill" >
+    <div class="modal-dialog modal-responsive-bill">
         <div class="modal-content">
 
             <div class="modal-header posModalHeader">
@@ -104,7 +104,11 @@ $this->lang->load('calendar', $primaryLanguage);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 stopLoad();
-                myAlert('e', '<br>Message: ' + errorThrown);
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }
@@ -125,7 +129,12 @@ $this->lang->load('calendar', $primaryLanguage);
                 $("#kitchen_order_modalBody").html(data)
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                $("#kitchen_order_modalBody").html('<div class="text-red"> Error: ' + errorThrown + '</div>')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    $("#kitchen_order_modalBody").html('<div class="text-red"> Error: ' + errorThrown + '</div>')
+                }
+
             }
         });
     }

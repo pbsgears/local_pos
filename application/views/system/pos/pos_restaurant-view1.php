@@ -11,20 +11,18 @@ $this->load->view('include/header', $title);
 $this->load->view('include/top-posr');
 
 $d = get_company_currency_decimal();
-
 $companyInfo = get_companyInfo();
 $templateInfo = get_pos_templateInfo();
 $templateID = get_pos_templateID();
 $discountPolicy = show_item_level_discount();
 ?>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/pos/pos.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/pos/pos-min.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/pos/pos-style-all-device.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/slick/slick/slick.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/slick/slick/slick-theme.css') ?>">
     <link rel="stylesheet" href="<?php echo base_url('plugins/numPadmaster/jquery.numpad.css') ?>">
     <link rel="stylesheet" href="<?php echo base_url('plugins/virtual-keyboard-mlkeyboard/jquery.ml-keyboard.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/buttons/button.css') ?>">
-
     <style>
         .receiptPadding {
             width: <?php echo $discountPolicy ? '16.5%' : '24.5%';  ?>;
@@ -39,28 +37,11 @@ $discountPolicy = show_item_level_discount();
             text-align: right;
             padding-right: 3px;
         }
-
-        .fade {
-            opacity: 0;
-            -webkit-transition: opacity 0.0001s linear;
-            -moz-transition: opacity 0.0001s linear;
-            -ms-transition: opacity 0.0001s linear;
-            -o-transition: opacity 0.0001s linear;
-            transition: opacity 0.0001s linear;
-        }
-
-
-
     </style>
-
-
-    <div id="posHeader_2" class="hide" style="display: none;">
-    </div>
+    <div id="posHeader_2" class="hide" style="display: none;"></div>
     <div id="form_div" style="padding: 1%; margin-top: 40px">
-
         <div class="row" style="margin-top: 0px;">
             <div class="col-md-6">
-
                 <div class="panel panel-default" style="border: 1px solid #ddd;">
                     <div class="panel-body tabs" style="padding:3px;">
                         <div style="padding: 0px 0px 0px 15px;">
@@ -70,7 +51,6 @@ $discountPolicy = show_item_level_discount();
                                     href="#pilltabCategory">
                                 <i class="fa-21 fa fa-backward fa-2x"></i>
                             </button>
-
                             <?php
                             for ($i = 0; $i < 10; $i++) {
                                 ?>
@@ -81,11 +61,8 @@ $discountPolicy = show_item_level_discount();
                                 <?php
                             }
                             ?>
-
-
                             <button style="padding: 10px 14px;" onclick="updateQty_invoice(this)"
-                                    class="btn btn-lg btn-primary fSizeBtn">
-                                .
+                                    class="btn btn-lg btn-primary fSizeBtn">.
                             </button>
                             <button rel="tooltip" style="    padding: 11px 12px 9px 13px; font-weight: 600;"
                                     title="clear"
@@ -97,8 +74,6 @@ $discountPolicy = show_item_level_discount();
                                     class="btn btn-lg btn-default btnCategoryTab">
                                 <i class="fa-21 fa fa-chevron-left fa-2x"></i>
                             </button>
-
-
                         </div>
 
                         <div class="row" style="margin-left: 0px; margin-right: 0px;">
@@ -107,7 +82,6 @@ $discountPolicy = show_item_level_discount();
                                 <input type="text" class="form-control" placeholder="Press 'F2' or 'Ctrl+F' to Search"
                                        id="searchProd">
                             </div>
-
                             <!-- BARCODE READER  -->
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-top: 10px;">
                                 <input type="text" class="form-control" placeholder="Barcode (shortcut F3)"
@@ -137,7 +111,6 @@ $discountPolicy = show_item_level_discount();
                                             </div>
                                         </div>
                                         <hr class="posSeparator">
-
                                     <?php } ?>
 
                                     <div class="row">
@@ -160,32 +133,23 @@ $discountPolicy = show_item_level_discount();
                                 /********************** Sub Category *********************** */
                                 if (!empty($menuSubCategory)) {
                                     foreach ($menuSubCategory as $Category) {
-
-
                                         $autoID = $Category['autoID'];
                                         $menuCategoryID = $Category['menuCategoryID']; /* master ID */
                                         $subCategoryList = get_subCategory($menuCategoryID, $warehouseID);
-
-
                                         ?>
                                         <div class="tab-pane fade in" id="pilltab<?php echo $autoID ?>">
                                             <?php
                                             if (!empty($subCategoryList)) {
                                                 foreach ($subCategoryList as $catList) {
                                                     echo generate_menuCategory($catList, $autoID);
-
                                                 }
                                             }
                                             ?>
-
-
                                         </div>
                                         <?php
-
                                     }
                                 }
                                 ?>
-
 
                                 <!--Global Search -->
                                 <div class="tab-pane fade in" id="pilltabAll">
@@ -204,21 +168,15 @@ $discountPolicy = show_item_level_discount();
 
                                     if (!empty($menuSubCategory)) {
                                         foreach ($menuSubCategory as $Category) {
-
-
                                             $autoID = $Category['autoID'];
                                             $menuCategoryID = $Category['menuCategoryID']; /* master ID */
                                             $subCategoryList = get_subCategory($menuCategoryID, $warehouseID);
-
-
                                             if (!empty($subCategoryList)) {
                                                 foreach ($subCategoryList as $catList) {
                                                     echo generate_menuCategory($catList, $autoID);
 
                                                 }
                                             }
-
-
                                         }
                                     }
                                     ?>
@@ -232,7 +190,6 @@ $discountPolicy = show_item_level_discount();
                                         <div class="tab-pane fade in" id="pilltab<?php echo $autoID ?>">
                                             <?php
                                             $menuList = get_wareHouseMenuByCategory($autoID);
-
                                             if (!empty($menuList)) {
                                                 foreach ($menuList as $menu) {
                                                     echo generate_menu($menu);
@@ -258,10 +215,6 @@ $discountPolicy = show_item_level_discount();
                                 class="btn btn-default btn-lg buttonDefaultSize">
                             <i class="fa fa-video-camera" aria-hidden="true"></i> CCTV
                         </button> <?php } ?>
-                    <!--<button type="button" class="btn btn-lg buttonDefaultSize btn-primary btn-show-hide-text" onclick="showBtnText(this)"> <i class="fa fa-font" aria-hidden="true"></i> </button>
-
-    <button type="button" class="btn btn-lg buttonDefaultSize btn-default btn-show-hide-text" onclick="hideBtnText(this)"> <i class="fa fa-eye-slash" aria-hidden="true"></i> </button>-->
-
                     <button type="button" onclick="POS_SizeMax()" style="font-weight: bold;"
                             class="btn btn-default btn-lg buttonDefaultSize">&nbsp;+&nbsp;
                     </button>
@@ -272,7 +225,6 @@ $discountPolicy = show_item_level_discount();
                     <button type="button" onclick="POS_SizeDefault()" class="btn btn-default btn-lg buttonDefaultSize">
                         Default Size
                     </button>
-
                 </div>
 
                 <?php
@@ -294,7 +246,6 @@ $discountPolicy = show_item_level_discount();
                     </button>
                 <?php } ?>
 
-
                 <script>
                     function POS_SizeDefault() {
                         $(".itemButton").css('min-height', 112, 'important');
@@ -306,8 +257,6 @@ $discountPolicy = show_item_level_discount();
                         var containerSize = $(".btnStyleCustom").height();
                         $("#currentSize").val(containerSize);
                         var tmpHeight = parseInt($("#currentSize").val()) + 5;
-                        /*$(".btnStyleCustom").css('height', tmpHeight);
-                         $(".btnStyleCustom").css('width', tmpHeight, 'important');*/
                         $(".itemButton").css('min-height', tmpHeight - 10, 'important');
                         $(".itemButton").css('width', tmpHeight - 10, 'important');
                         setCookie('btnSize', tmpHeight - 10);
@@ -320,13 +269,9 @@ $discountPolicy = show_item_level_discount();
                         $("#currentSize").val(containerSize);
 
                         var tmpHeight = parseInt($("#currentSize").val()) - 5;
-                        /*$(".btnStyleCustom").css('height', tmpHeight);
-                         $(".btnStyleCustom").css('width', tmpHeight, 'important');*/
                         $(".itemButton").css('min-height', tmpHeight - 10, 'important');
                         $(".itemButton").css('width', tmpHeight - 10, 'important');
                         setCookie('btnSize', tmpHeight - 10);
-
-
                     }
 
                     function setBtnSizeCookie() {
@@ -377,7 +322,6 @@ $discountPolicy = show_item_level_discount();
                                     if (data['error'] == 0) {
                                         $('#btn_pos_sendtokitchen').removeClass('btn-danger');
                                         $('#btn_pos_sendtokitchen').addClass('btn-success');
-                                        //confirm_createNewBill();
                                         load_KOT_print_view(data['code'], data['auth']);
                                         $(".isSamplePrintedFlag").val(1);
                                     } else {
@@ -385,14 +329,23 @@ $discountPolicy = show_item_level_discount();
                                         myAlert('e', data['message'])
                                     }
 
-                                }, error: function () {
+                                }, error: function (jqXHR) {
                                     stopLoad();
-                                    myAlert('e', 'Error in loading currency denominations.')
+                                    if (jqXHR.status == false) {
+                                        myAlert('w', '<strong>Local Server is Offline</strong> Please try again');
+                                    } else {
+                                        myAlert('e', 'Message: ' + errorThrown);
+                                    }
                                 }
                             });
 
                         } else {
-                            myAlert('e', 'Please place an order and click.')
+                            if (jqXHR.status == false) {
+                                myAlert('w', '<strong>Local Server is Offline</strong> Please try again');
+                            } else {
+                                myAlert('e', 'Message: ' + errorThrown);
+                            }
+
                         }
                     }
 
@@ -526,13 +479,9 @@ $discountPolicy = show_item_level_discount();
                             </div>
                             <div class="col-md-3 ar">
                                 <?php echo $this->lang->line('posr_total_tax'); ?><!--Total Tax -->
-                                <!--(<?php /*echo get_totalTax() */ ?> %)--> :
-                                <!--<input type="hidden" name="totalTax_input" value="<?php /*echo get_totalTax() */ ?>">-->
                             </div>
                             <div class="col-md-3 ar" style="padding-bottom: 5px;">
                                 <div id="display_totalTaxAmount">0.00</div>
-                                <!--<div id="display_tax_amt">0</div>
-                                <input type="hidden" name="display_tax_amt_input" id="display_tax_amt_input" value="0">-->
                             </div>
                         </div>
 
@@ -548,12 +497,6 @@ $discountPolicy = show_item_level_discount();
                             </div>
                             <div class="col-md-3 ar" style="padding-bottom: 5px;">
                                 <div id="display_totalServiceCharge">0.00</div>
-                                <!--<input type="text" onkeyup="calculateFinalDiscount()" id="serviceCharge"
-                                   name="serviceCharge" class="ar"
-                                   style="color:#000000; width:100px;" value="<?php
-                                /*                            $sc = get_defaultServiceCharge();
-                                                            echo !empty($sc) ? $sc : 0;
-                                                            */ ?>">-->
                             </div>
                         </div>
 
@@ -656,7 +599,6 @@ $discountPolicy = show_item_level_discount();
                         $cancel = $this->lang->line('common_cancel');
                         $ok = $this->lang->line('common_ok');
                         ?>
-                        <!--session_close('<?php /*echo $confomion */ ?>','<?php /*echo $message */ ?>','<?php /*echo $cancel */ ?>','<?php /*echo $ok */ ?>')-->
                         <button type="button" class="btn btn-block btn-lg btn-default btn-myCustom"
                                 onclick="clickPowerOff()">
                             <i class="fa fa-power-off text-red" aria-hidden="true"></i>
@@ -795,9 +737,13 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     else {
                         $('#counterID').prop('disabled', true);
                     }
-                }, error: function () {
+                }, error: function (jqXHR) {
                     stopLoad();
-                    myAlert('e', 'Error in loading currency denominations.')
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline,  Please try again');
+                    } else {
+                        myAlert('e', 'Error in loading currency denominations.')
+                    }
                 }
             });
         });
@@ -835,8 +781,6 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
             $.fn.numpad.defaults.buttonFunctionTpl = '<button type="button" class="btn btn-xl-numpad" style="width: 100%;"></button>';
             $.fn.numpad.defaults.onKeypadCreate = function () {
                 $(this).find('.done').addClass('btn-primary');
-                /*$(this).find('.del').addClass('btn-numpad-default');
-                 $(this).find('.clear').addClass('btn-numpad-default');*/
             };
 
             $('html').click(function (e) {
@@ -854,8 +798,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                         break;
                     case 3:
                     case 4:
-                        /** Tax Separated */
-                        /** Service Charge Separated */
+                        /** 3 Tax & 4 Service Charge Separated*/
                         $sizeOfDynamicHeight = '355';
                         break;
 
@@ -870,27 +813,13 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
             }, 100);
 
             initNumPad();
-
-
-            /*$('.numpad').keyboard();*/
-
             setBtnSizeCookie();
             $(".btnCategoryTab").click(function (e) {
                 $("#searchProd").val('');
                 $("#searchProd").trigger('keyup');
             });
             $("[rel='tooltip']").tooltip();
-
             $("#searchProd").keyup(function (e) {
-
-                /*var keySize = $("#searchProd").val().length;
-                if (keySize > 0) {
-                    $("#pilltabCategory").css("display", "none");
-                    $("#pilltabAll").css("display", "block");
-                } else {
-                    $("#pilltabCategory").css("display", "block");
-                    $("#pilltabAll").css("display", "none");
-                }*/
 
                 // Retrieve the input field text
                 var filter = $(this).val();
@@ -909,8 +838,6 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     var tmpVar = $("#pilltabAll button:visible")[0];
                     var code = $(tmpVar).data('code');
                     var pack = $(tmpVar).data('pack');
-                    //console.log(code);
-
                     if (code > 0) {
                         if (pack > 0) {
                             LoadToInvoicePack(code);
@@ -918,10 +845,8 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                             LoadToInvoice(code);
                         }
                     }
-
                 }
             });
-
 
             $('.mainCategories').slick({
                 dots: false,
@@ -954,7 +879,6 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
             updateCurrentMenuWAC();
             <?php if ($isHadSession == 0) { ?>
             $("#isStart").val(1);
-            //$(".tillModal_close").hide();
             $("#tillModal_title").text("Day Start");
             $("#tillSave_Btn").attr("onclick", "shift_create()");
             till_modal.modal({backdrop: "static"});
@@ -989,7 +913,11 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         stopLoad();
-                        myAlert('e', '<br>Message: ' + errorThrown);
+                        if (jqXHR.status == false) {
+                            myAlert('w', 'Local Server is Offline,  Please try again');
+                        } else {
+                            myAlert('e', 'Message: ' + errorThrown);
+                        }
                     }
                 });
                 return false;
@@ -1015,7 +943,12 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     stopLoad();
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline,  Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
+
                 }
             });
             return false;
@@ -1039,7 +972,11 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline,  Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
                 }
             });
             return false;
@@ -1200,7 +1137,11 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     if (numberOfRequest == 0) {
                         enable_POS_btnSet();
                     }
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline,  Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
                 }
             });
             return false;
@@ -1234,14 +1175,10 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     /** All Inclusive */
                     totalAmount = (parseFloat(priceWithoutTax) + parseFloat(taxAmount) + parseFloat(ServiceCharge)) * parseFloat(qty);
             }
-            /*console.log('templateID: ' + templateID);
-             console.log('totalAmount: ' + totalAmount);
-             console.log('priceWithoutTax: ' + priceWithoutTax);*/
             if (discount > 0) {
                 discountAmount = (totalAmount * discount) / 100;
             }
             totalAmount = totalAmount - discountAmount;
-            //debugger;
             return totalAmount;
         }
 
@@ -1381,14 +1318,9 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                 var netTotal = total - discountedAmount;
                 $(this).find(".itemCostNet").text(netTotal.toFixed(<?php echo $d ?>));
                 var sellingPrice = $(this).find(".itemCostNet").text();
-                //netAmountTotal = parseFloat(netAmountTotal) + parseFloat(netAmount); // commented
-
                 /** Policy based Amount */
                 var policyBasedAmount = calculateTotalAmount(pricewithoutTax, tmpTax, tmpSC, qty, percentage);
-                // var policyBasedAmount = calculateTotalAmount(totalPriceWithoutTaxDiscount, discountedTax, discountedServiceCharge, qty);
                 netAmountTotal = parseFloat(netAmountTotal) + parseFloat(policyBasedAmount);
-
-                //console.log(netAmountTotal);
                 var totalWithoutDiscount = qty * perItemCost;
                 $(this).find(".menu_total").text(total.toFixed(<?php echo $d ?>));
                 totalAmount = parseFloat(totalAmount) + parseFloat(total);
@@ -1406,7 +1338,6 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
 
             /** Total Tax */
             $("#display_totalTaxAmount").html(taxDiscountount.toFixed(<?php echo $d ?>));
-
 
             /**
              *  Service Charge only for Dine-in Customers
@@ -1427,26 +1358,17 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                 }
             }
 
-
             $("#display_totalServiceCharge").html(serviceChargeDiscountount.toFixed(<?php echo $d ?>));
-
             var netTotal = totalTax + serviceCharge + totalPriceWithoutTax;
-
             $("#total_item_qty").html(totalQty);
             $("#total_item_qty_input").val(totalQty);
             $("#final_purchased_item").html(totalQty);
-
             $("#gross_total").html(netAmountTotal.toFixed(<?php echo $d ?>));
-
             var tmpPriceWithoutTax = parseFloat($("#gross_total").text());
             var tmpTax = parseFloat($("#display_totalTaxAmount").text());
             var tmpSC = parseFloat($("#display_totalServiceCharge").text());
-
-
             var tmpGrossTotal = get_gross_amount(tmpPriceWithoutTax, tmpTax, tmpSC);
             $("#gross_total_amount_input").val(tmpGrossTotal);
-
-
             calculateFinalDiscount();
             calculateReturn();
         }
@@ -1457,22 +1379,16 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
             var grossAmount = 0;
             switch (templateID) {
                 case 1:
-                    /*All Inclusive*/
-                    grossAmount = priceWithoutTax;
-
+                    grossAmount = priceWithoutTax; //All Inclusive
                     break;
                 case 2:
-                    /*Tax & Service Charge Separated*/
-                    grossAmount = priceWithoutTax + totalTax + serviceCharge;
-
+                    grossAmount = priceWithoutTax + totalTax + serviceCharge; //Tax & Service Charge Separated
                     break;
                 case 3:
-                    /*Tax Separated*/
-                    grossAmount = priceWithoutTax + totalTax;
+                    grossAmount = priceWithoutTax + totalTax; //Tax Separated
                     break;
                 case 4:
-                    /*Service Charge Separated*/
-                    grossAmount = priceWithoutTax + serviceCharge;
+                    grossAmount = priceWithoutTax + serviceCharge; //Service Charge Separated
                     break;
             }
             return grossAmount;
@@ -1517,17 +1433,20 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
 
                         $("#current_table_description").text('Table');
 
-                        //$("#customerTypeID_" + data['customerTypeID']).click()
                         selectCustomerButton(data['customerTypeID']);
                         if (parseInt(data['master']['isOrderPending'])) { /*check order is pending and change the send to kitchen button color*/
                             $('#btn_pos_sendtokitchen').removeClass('btn-danger');
                             $('#btn_pos_sendtokitchen').addClass('btn-success');
-                            //load_KOT_print_view(data['menuSalesID']);
                         }
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline,  Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
+
                 }
             });
             return false;
@@ -1550,7 +1469,12 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     initNumPad();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline,  Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
+
                 }
             });
             return false;
@@ -1605,7 +1529,12 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     if (numberOfRequest == 0) {
                         enable_POS_btnSet();
                     }
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline,  Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
+
                 }
             });
             return false;
@@ -1625,11 +1554,15 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     stopLoad();
                     if (data['error'] == 0) {
                         resetKotButton();
-                        //myAlert('s', 'Ready for new invoice');
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline,  Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
+
                 }
             });
             return false;
@@ -1699,7 +1632,12 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
-                            myAlert('e', '<br>Message: ' + errorThrown);
+                            if (jqXHR.status == false) {
+                                myAlert('w', 'Local Server is Offline,  Please try again');
+                            } else {
+                                myAlert('e', 'Message: ' + errorThrown);
+                            }
+
                         }
                     });
                 }
@@ -1846,7 +1784,12 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                 error: function (jqXHR, textStatus, errorThrown) {
                     $("#submit_btn_pos_receipt").html('Submit');
                     $("#submit_btn").prop('disabled', false);
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline,  Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
+
                 }
             });
         }
@@ -1883,7 +1826,11 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                 error: function (jqXHR, textStatus, errorThrown) {
                     $("#submit_btn_pos_receipt").html('Submit');
                     $("#submit_btn").prop('disabled', false);
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline,  Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
                 }
             })
 
@@ -1898,7 +1845,6 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
             clearCreditSales();
             resetGiftCardForm();
             resetPaymentForm();
-
 
             /** when hidden*/
             $("#dis_amt").val(0);
@@ -1969,7 +1915,12 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline,  Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
+
                 }
             });
 

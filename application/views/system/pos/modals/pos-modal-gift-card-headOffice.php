@@ -531,9 +531,13 @@ $this->lang->load('calendar', $primaryLanguage);
                     $("#gc_CustomerName").focus();
                     myAlert('i', 'Not Registered yet.')
                 }
-            }, error: function () {
+            }, error: function (jqXHR, textStatus, errorThrown) {
                 $("#giftCardLoader").hide();
-                myAlert('e', 'An Error has occurred.')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }
@@ -624,9 +628,13 @@ $this->lang->load('calendar', $primaryLanguage);
                     myAlert('e', data['message']);
                     //$("#newCustomer").show();
                 }
-            }, error: function () {
+            }, error: function (jqXHR) {
                 $("#giftCardLoader").hide();
-                myAlert('e', 'An Error has occurred.')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }
@@ -664,9 +672,13 @@ $this->lang->load('calendar', $primaryLanguage);
                     $("#newCustomer").show();
                     myAlert('e', data['message'])
                 }
-            }, error: function () {
+            }, error: function (jqXHR) {
                 $("#giftCardLoader").hide();
-                myAlert('e', 'An Error has occurred.')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }
@@ -699,9 +711,13 @@ $this->lang->load('calendar', $primaryLanguage);
                     $("#newCustomer").show();
                 }
 
-            }, error: function () {
+            }, error: function (jqXHR) {
                 $("#giftCardLoader").hide();
-                myAlert('e', 'An Error has occurred.')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }
@@ -745,9 +761,13 @@ $this->lang->load('calendar', $primaryLanguage);
                     myAlert('e', data['message']);
                 }
 
-            }, error: function () {
+            }, error: function (jqXHR, textStatus, errorThrown) {
                 $(".giftCardLoaderRedeem").hide();
-                myAlert('e', 'An Error has occurred.')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }
@@ -820,9 +840,13 @@ $this->lang->load('calendar', $primaryLanguage);
                 $(".giftCardLoader").hide();
                 $("#gc_receiptContainer").html(data);
 
-            }, error: function () {
+            }, error: function (jqXHR, textStatus, errorThrown) {
                 $(".giftCardLoader").hide();
-                myAlert('e', 'An Error has occurred.')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }

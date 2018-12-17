@@ -21,22 +21,18 @@
             url: "<?php echo site_url('Pos_restaurant/updateDiscount') . '?discount='; ?>" + discount,
             cache: false,
             beforeSend: function () {
-                // startLoad()
             },
             success: function (data) {
-                //  stopLoad();
-                /*if (data[0] == 's') {
-                 myAlert('s', data[1]);
 
-                 } else {
-                 myAlert('e', data[1]);
-                 }*/
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                myAlert('e', '<br>Message: ' + errorThrown);
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
-        //checkPosAuthentication(2,das)
     }
 
 
@@ -60,7 +56,6 @@
                     stopLoad();
                 }
                 if (data[0] == 's') {
-                    //myAlert('s', data[1]);
                     calculateFooter()
 
                 } else {
@@ -73,7 +68,11 @@
                     enable_POS_btnSet();
                     stopLoad();
                 }
-                myAlert('e', '<br>Message: ' + errorThrown);
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         })
     }
@@ -113,7 +112,6 @@
             $("#dis_amt").val(0);
             $("#discountAmountFooter").val(0)
         }
-        //console.log(discountPercentage);
         updateDiscount();
         calculateFooter();
         checkPosAuthentication(2, das);
@@ -167,9 +165,7 @@
                 var Qty = $(tmpValue).text().trim();
                 var updateQtyVal = tmpQty + Qty;
                 var updateQtyInt = parseFloat(updateQtyVal);
-
                 $("#tmpQtyValue").val(updateQtyVal);
-
                 if (str == 'dis_amt' || str == 'discountAmountFooter') {
                     $(".itemSelected").val(parseFloat(updateQtyVal));
                     calculateFooter();
@@ -186,10 +182,7 @@
                         calculateFooter();
                         updateQty(id);
                     }
-
-
                 }
-
             }
         }
 
@@ -207,7 +200,11 @@
             success: function (data) {
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                myAlert('e', '<br>Message: ' + errorThrown);
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
         calculateFooter();
@@ -249,7 +246,11 @@
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             stopLoad();
-                            myAlert('e', '<br>Message: ' + errorThrown);
+                            if (jqXHR.status == false) {
+                                myAlert('w', 'Local Server is Offline, Please try again');
+                            } else {
+                                myAlert('e', 'Message: ' + errorThrown);
+                            }
                         }
                     });
                 }

@@ -378,7 +378,11 @@ $this->lang->load('calendar', $primaryLanguage);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 stopLoad();
-                myAlert('e', 'An Error has occurred.')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }
@@ -432,7 +436,11 @@ $this->lang->load('calendar', $primaryLanguage);
                     error: function (jqXHR, textStatus, errorThrown) {
                         disable_input_delivery()
                         $("#deliveryLoader").hide();
-                        myAlert('e', 'An Error has occurred.')
+                        if (jqXHR.status == false) {
+                            myAlert('w', 'Local Server is Offline, Please try again');
+                        } else {
+                            myAlert('e', 'Message: ' + errorThrown);
+                        }
                     }
                 });
 
@@ -467,7 +475,9 @@ $this->lang->load('calendar', $primaryLanguage);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 stopLoad();
-                //myAlert('e', 'Message: ' + "Select Widget");
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                }
             }
         });
     }
@@ -491,6 +501,9 @@ $this->lang->load('calendar', $primaryLanguage);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     stopLoad();
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline, Please try again');
+                    }
                 }
             });
         } else {
@@ -537,9 +550,13 @@ $this->lang->load('calendar', $primaryLanguage);
                         disable_input_delivery();
                         $("#advancePaidDiv").show();
                     }
-                }, error: function () {
+                }, error: function (jqXHR, textStatus, errorThrown) {
                     $("#deliveryLoader").hide();
-                    myAlert('e', 'An Error has occurred.')
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline, Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
                 }
             });
         }
@@ -563,9 +580,13 @@ $this->lang->load('calendar', $primaryLanguage);
                     $("#deliveryLoader").hide();
                     $("#delivery_payment_detail_div").html(data);
 
-                }, error: function () {
+                }, error: function (jqXHR, textStatus, errorThrown) {
                     $("#deliveryLoader").hide();
-                    myAlert('e', 'An Error has occurred.')
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline, Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
                 }
             });
         } else {
@@ -656,9 +677,13 @@ $this->lang->load('calendar', $primaryLanguage);
                     myAlert('e', data['message']);
                 }
 
-            }, error: function () {
+            }, error: function (jqXHR, textStatus, errorThrown) {
                 $("#deliveryLoader").hide();
-                myAlert('e', 'An Error has occurred.')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }
@@ -720,9 +745,13 @@ $this->lang->load('calendar', $primaryLanguage);
                     myAlert('e', 'Error');
                 }
 
-            }, error: function () {
+            }, error: function (jqXHR, textStatus, errorThrown) {
                 $("#deliveryLoader").hide();
-                myAlert('e', 'An Error has occurred.')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }
@@ -776,9 +805,13 @@ $this->lang->load('calendar', $primaryLanguage);
                     $("#newCustomer").show();
                 }
 
-            }, error: function () {
+            }, error: function (jqXHR, textStatus, errorThrown) {
                 $("#deliveryLoader").hide();
-                myAlert('e', 'An Error has occurred.')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }

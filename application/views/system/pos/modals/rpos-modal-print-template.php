@@ -50,7 +50,11 @@ $this->lang->load('calendar', $primaryLanguage);
                     $("#pos_modalBody_posPrint_template").html(data);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline, Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
                 }
             });
         } else {

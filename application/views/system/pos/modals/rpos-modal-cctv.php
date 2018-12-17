@@ -75,9 +75,13 @@ $this->lang->load('calendar', $primaryLanguage);
                 }
 
 
-            }, error: function () {
+            }, error: function (jqXHR, textStatus, errorThrown) {
                 stopLoad();
-                myAlert('e', 'Error in loading currency denominations.')
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }

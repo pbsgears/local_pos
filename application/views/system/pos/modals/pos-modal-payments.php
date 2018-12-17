@@ -72,7 +72,7 @@ $this->lang->load('calendar', $primaryLanguage);
 
             <div class="modal-header posModalHeader">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                        class="fa fa-close text-red"></i></button>
+                            class="fa fa-close text-red"></i></button>
                 <h3 class="modal-title"><?php echo $this->lang->line('common_payment'); ?><!--Payment--></h3>
             </div>
             <div class="modal-body" style="overflow: visible; background-color: #FFF;">
@@ -145,9 +145,9 @@ $this->lang->load('calendar', $primaryLanguage);
                                 </div>
                                 <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
                                     <div class="mrg-top5">
-                                    <input type="text" readonly name="promotional_discount"
-                                           id="promotional_discount"
-                                           class="form-control input-sm ar payment-inputTextMedium" value="0">
+                                        <input type="text" readonly name="promotional_discount"
+                                               id="promotional_discount"
+                                               class="form-control input-sm ar payment-inputTextMedium" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -509,8 +509,8 @@ $this->lang->load('calendar', $primaryLanguage);
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 ">
                             <div
-                                style="padding: 10px 24px 10px 10px; border: 1px dashed grey;  border-radius: 14px;"
-                                class="hidden-xs">
+                                    style="padding: 10px 24px 10px 10px; border: 1px dashed grey;  border-radius: 14px;"
+                                    class="hidden-xs">
                                 <?php
                                 $result = get_companyInfo();
                                 $currencyID = $result['company_default_currencyID'];
@@ -570,7 +570,7 @@ $this->lang->load('calendar', $primaryLanguage);
                             <div class="container-fluid" style="padding: 10px;">
                                 <button class="btn btn-lg btn-default btn-strong btn-xl" type="button"
                                         onclick="openCustomerModal()"><i
-                                        class="fa fa-users"></i> Customer
+                                            class="fa fa-users"></i> Customer
                                 </button>
                             </div>
                             <div class="container-fluid" style="padding: 10px;" id="deliveryCommissionDiv">
@@ -667,7 +667,7 @@ $this->lang->load('calendar', $primaryLanguage);
                 <button id="submit_btn" type="submit" onclick="submit_pos_payments()" class="btn btn-lg btn-primary"
                         style="background-color: #3fb618; color: #FFF; border: 0px; float: right; display: none;">
                     <span
-                        id="submit_btn_pos_receipt"><?php echo $this->lang->line('common_submit'); ?><!--Submit--></span>
+                            id="submit_btn_pos_receipt"><?php echo $this->lang->line('common_submit'); ?><!--Submit--></span>
                 </button>
             </div>
         </div>
@@ -683,7 +683,7 @@ $this->lang->load('calendar', $primaryLanguage);
 
             <div class="modal-header posModalHeader">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                        class="fa fa-close text-red"></i></button>
+                            class="fa fa-close text-red"></i></button>
                 <h4 class="modal-title"><?php echo $this->lang->line('posr_enter_email'); ?><!--Enter Email--> </h4>
             </div>
             <div class="modal-body" id="" style="">
@@ -762,6 +762,7 @@ $this->lang->load('calendar', $primaryLanguage);
         $("#paymentType_1").val(parseFloat(totalAmount));
         calculateReturn();
     }
+
     function resetPaymentForm() {
         //$("#paid_by").select2("val", "1");
         $("#cardRefNo").val("");
@@ -825,7 +826,7 @@ $this->lang->load('calendar', $primaryLanguage);
     function deliveryValidation() {
         var isDelivery = $("#isDelivery").val();
         var deliveryPersonID = $("#deliveryPersonID").val();
-        if ((isDelivery == 1 && (deliveryPersonID == 0 || deliveryPersonID == '' || deliveryPersonID == null ) )) {
+        if ((isDelivery == 1 && (deliveryPersonID == 0 || deliveryPersonID == '' || deliveryPersonID == null))) {
             myAlert('e', 'Please select delivery person before add payments!');
             return false;
         } else {
@@ -886,41 +887,6 @@ $this->lang->load('calendar', $primaryLanguage);
 
         var tmpDeliveryTxt = $('#customerTypeBtnString').val(deliveryType.trim())
 
-        if (isDelivery == 1) {
-            openDeliveryModal();
-            $(".deliveryRow").show()
-            $(".deliveryPromotionRow").show()
-            $(".promotionRow").hide()
-            $('select[name="deliveryPersonID"]').attr('id', 'deliveryPersonID')
-            $('select[name="promotionID"]').attr('id', 'promotionID')
-            $("#isDelivery").val(1);
-            $("#deliveryDateDiv").show()
-            $("#delivery_customerTypeID").val(id);
-            load_delivery_info();
-            if ($("#deliveryOrderID").val() > 0) {
-                $("#advancePaidDiv").show();
-            } else {
-                $("#advancePaidDiv").hide();
-            }
-            $("#deliveryPersonID").val('-1').change();
-            $('#delivery_update_btn_div').hide();
-        } else if (deliveryType.trim() == "Promotion") {
-            $(".promotionRow").show()
-            $(".deliveryPromotionRow").show()
-            $(".deliveryRow").hide()
-            $('select[name="deliveryPersonID"]').attr('id', 'deliveryPersonID')
-            $('select[name="promotionID"]').attr('id', 'promotionID')
-            $("#isDelivery").val(0);
-            $("#deliveryDateDiv").hide();
-            $("#advancePaidDiv").hide();
-        } else {
-            $(".promotionRow,.deliveryRow,.deliveryPromotionRow").hide();
-            $("#isDelivery").val(0);
-            $("#deliveryDateDiv").hide();
-            $("#advancePaidDiv").hide();
-        }
-
-
         $.ajax({
             type: 'POST',
             dataType: 'JSON',
@@ -928,18 +894,54 @@ $this->lang->load('calendar', $primaryLanguage);
             data: {customerType: customerType},
             cache: false,
             beforeSend: function () {
-                selectCustomerButton(id);
                 startLoadPos();
             },
             success: function (data) {
+                selectCustomerButton(id);
+                if (isDelivery == 1) {
+                    openDeliveryModal();
+                    $(".deliveryRow").show()
+                    $(".deliveryPromotionRow").show()
+                    $(".promotionRow").hide()
+                    $('select[name="deliveryPersonID"]').attr('id', 'deliveryPersonID')
+                    $('select[name="promotionID"]').attr('id', 'promotionID')
+                    $("#isDelivery").val(1);
+                    $("#deliveryDateDiv").show()
+                    $("#delivery_customerTypeID").val(id);
+                    load_delivery_info();
+                    if ($("#deliveryOrderID").val() > 0) {
+                        $("#advancePaidDiv").show();
+                    } else {
+                        $("#advancePaidDiv").hide();
+                    }
+                    $("#deliveryPersonID").val('-1').change();
+                    $('#delivery_update_btn_div').hide();
+                } else if (deliveryType.trim() == "Promotion") {
+                    $(".promotionRow").show()
+                    $(".deliveryPromotionRow").show()
+                    $(".deliveryRow").hide()
+                    $('select[name="deliveryPersonID"]').attr('id', 'deliveryPersonID')
+                    $('select[name="promotionID"]').attr('id', 'promotionID')
+                    $("#isDelivery").val(0);
+                    $("#deliveryDateDiv").hide();
+                    $("#advancePaidDiv").hide();
+                } else {
+                    $(".promotionRow,.deliveryRow,.deliveryPromotionRow").hide();
+                    $("#isDelivery").val(0);
+                    $("#deliveryDateDiv").hide();
+                    $("#advancePaidDiv").hide();
+                }
                 stopLoad();
                 if (data['error'] == 0) {
-//                    myAlert('s', data['message']);
                     calculateFooter();
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                myAlert('e', '<br>Message: ' + errorThrown);
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
         return false;
@@ -970,7 +972,6 @@ $this->lang->load('calendar', $primaryLanguage);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 stopLoad();
-                //myAlert('e', 'Message: ' + "Select Widget");
             }
         });
     }
@@ -1017,10 +1018,10 @@ $this->lang->load('calendar', $primaryLanguage);
                         Cancel
                     </button>
                     <button class="btn btn-lg btn-default" onclick="clearCustomerVal()" type="reset"><i
-                            class="fa fa-eraser text-purple"></i> Clear
+                                class="fa fa-eraser text-purple"></i> Clear
                     </button>
                     <button class="btn btn-lg btn-primary" type="button" onclick="setCustomerInfo()"><i
-                            class="fa fa-plus"></i> Add
+                                class="fa fa-plus"></i> Add
                     </button>
                 </div>
             </form>
@@ -1067,7 +1068,7 @@ $this->lang->load('calendar', $primaryLanguage);
                 <div class="modal-body">
 
                     <button class="btn btn-lg btn-default btn-block" onclick="clearPromotion()" type="button"><i
-                            class="fa fa-eraser text-red"></i> Clear
+                                class="fa fa-eraser text-red"></i> Clear
                     </button>
 
                     <?php
@@ -1078,8 +1079,8 @@ $this->lang->load('calendar', $primaryLanguage);
                             $val['customerID'];
                             ?>
                             <button
-                                class="btn btn-lg <?php echo $val['customerTypeMasterID'] == 3 ? 'btn-default' : 'btn-default'; ?> btn-block"
-                                onclick="checkPosAuthentication(1,<?php echo $val['customerID'] ?>)" type="button">
+                                    class="btn btn-lg <?php echo $val['customerTypeMasterID'] == 3 ? 'btn-default' : 'btn-default'; ?> btn-block"
+                                    onclick="checkPosAuthentication(1,<?php echo $val['customerID'] ?>)" type="button">
                                 <!--addPromotion(--><?php /*echo $val['customerID'] */ ?><!--)-->
                                 <?php echo $val['customerTypeMasterID'] == 3 ? '<i class="fa fa-bullhorn text-red"></i>' : '<i class="fa fa-bullhorn text-purple"></i>'; ?> <?php echo $val['customerName'] ?> <?php echo $val['commissionPercentage']; ?>
                                 %
@@ -1107,7 +1108,7 @@ $this->lang->load('calendar', $primaryLanguage);
 
             <div class="modal-header posModalHeader">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                        class="fa fa-close text-red"></i></button>
+                            class="fa fa-close text-red"></i></button>
                 <h4 class="modal-title"><?php echo $this->lang->line('common_print'); ?><!--Print--> </h4>
             </div>
             <div class="modal-body modal-responsive-bill" id="pos_modalBody_sampleBill">
@@ -1319,7 +1320,11 @@ $this->lang->load('calendar', $primaryLanguage);
                     $("#pos_modalBody_sampleBill").html(data);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    myAlert('e', '<br>Message: ' + errorThrown);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'Local Server is Offline, Please try again');
+                    } else {
+                        myAlert('e', 'Message: ' + errorThrown);
+                    }
                 }
             });
         } else {

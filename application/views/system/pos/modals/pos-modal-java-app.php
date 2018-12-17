@@ -94,20 +94,15 @@ $this->lang->load('calendar', $primaryLanguage);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 stopLoad();
-                myAlert('e', 'Error: JS ERROR');
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline, Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
             }
         });
     }
 
-    /*function setCreditCustomerBtn(posCustomerId, customerAutoID) {
-     $(".btn-creditCustomer").removeClass('btn-primary');
-     $(".btn-creditCustomer").addClass('btn-default');
-     $("#btn_customer" + posCustomerId).removeClass('btn-default');
-     $("#btn_customer" + posCustomerId).addClass('btn-primary');
-
-     var glConfigID = $("#jApp_paymentConfigDetailID").val();
-     $("#customerAutoID" + glConfigID).val(customerAutoID);
-     }*/
 
 
     function javaApp_submit() {

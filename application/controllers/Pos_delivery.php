@@ -211,6 +211,7 @@ class Pos_delivery extends ERP_Controller
                         $dataDelivery['isDispatched'] = 1;
                         $dataDelivery['dispatchedDatetime'] = format_date_mysql_datetime();
                         $dataDelivery['dispatchedBy'] = current_userID();
+                        $dataDelivery['is_sync'] = 0;
                         $this->db->where('deliveryOrderID', $deliveryOrderID);
                         $this->db->update('srp_erp_pos_deliveryorders', $dataDelivery);
                         /*if ($result) {

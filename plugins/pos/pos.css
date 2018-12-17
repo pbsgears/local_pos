@@ -1,189 +1,151 @@
-@import "/plugins/buttons/button.css";
+@import url(/plugins/buttons/button.css);
 
 .wrapper {
-    background: #fff !important;
-    /*min-height: 80% !important;*/
+    background: #fff !important
 }
 
 #itemDisplayTB_div {
     height: 270px;
-    border: 1px solid #c0c0c0;
-    margin-top: -15px;
+    border: 1px solid silver;
+    margin-top: -15px
 }
 
 div.fixHeader_Div::-webkit-scrollbar, div.smallScroll::-webkit-scrollbar {
     width: 10px;
-    height: 7px;
+    height: 7px
 }
 
 div.fixHeader_Div::-webkit-scrollbar-track, div.smallScroll::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    border-radius: 10px
 }
 
 div.fixHeader_Div::-webkit-scrollbar-thumb, div.smallScroll::-webkit-scrollbar-thumb {
     margin-left: 30px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .5);
     width: 3px;
     position: absolute;
-    top: 0px;
-    opacity: 0.4;
+    top: 0;
+    opacity: .4;
     border-radius: 7px;
     z-index: 99;
     right: 1px;
-    height: 10px;
+    height: 10px
+}
+
+#qtyAdj, .tenderTBTxt {
+    height: 100%;
+    border: none
 }
 
 .maxFont {
-    font-size: 20px;
+    font-size: 20px
 }
 
 #itemDisplayTB thead th {
-    background: #dedede;
+    background: #dedede
 }
-
 
 #invoiceSearchTB tbody tr:hover {
     background-color: #9cc2cb;
     color: #eff7ff;
-    cursor: pointer;
-}
-
-#itemDisplayTB tr:nth-child(even) {
-    /*background: #c9e7e4;
-      color: #000000;*/
-}
-
-#itemDisplayTB tr:nth-child(odd) {
-    /*color: #000000;
-    background: #75BDD8;*/
+    cursor: pointer
 }
 
 .pos_Header {
-    /* background: rgba(201, 231, 228, 1);
-     background: -moz-linear-gradient(top, rgba(201, 231, 228, 1) 0%, rgba(24, 145, 121, 1) 92%, rgba(24, 145, 121, 1) 100%);
-     background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(201, 231, 228, 1)), color-stop(92%, rgba(24, 145, 121, 1)), color-stop(100%, rgba(24, 145, 121, 1)));
-     background: -webkit-linear-gradient(top, rgba(201, 231, 228, 1) 0%, rgba(24, 145, 121, 1) 92%, rgba(24, 145, 121, 1) 100%);
-     background: -o-linear-gradient(top, rgba(201, 231, 228, 1) 0%, rgba(24, 145, 121, 1) 92%, rgba(24, 145, 121, 1) 100%);
-     background: -ms-linear-gradient(top, rgba(201, 231, 228, 1) 0%, rgba(24, 145, 121, 1) 92%, rgba(24, 145, 121, 1) 100%);
-     background: linear-gradient(to bottom, rgba(201, 231, 228, 1) 0%, rgba(24, 145, 121, 1) 92%, rgba(24, 145, 121, 1) 100%);
-     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c9e7e4', endColorstr='#189179', GradientType=0);
-     color: #ffffff;
-     border-bottom: none !important;*/
-    font-size: 16px;
-
+    font-size: 16px
 }
 
 #paymentTB td {
     border: none;
-    padding-bottom: 0px;
+    padding-bottom: 0
 }
 
 .paymentTBTxt {
     width: 120px;
-    padding-right: 3px;
+    padding-right: 3px
 }
 
 .tenderTBTxt {
     padding-right: 8px;
     width: 100%;
-    height: 100%;
-    border: none;
-    background: inherit;
+    background: inherit
 }
 
 .selectedTR {
-    /*background-color: #2c3b41 !important;*/
     background-color: #0F70A2 !important;
-    color: #f3f3f3 !important;
-
+    color: #f3f3f3 !important
 }
 
 .checkbox.inline.no_indent + .checkbox.inline.no_indent {
     margin-left: 0;
-    margin-right: 10px;
+    margin-right: 10px
 }
 
 .checkbox.inline.no_indent:last-child {
-    margin-right: 0;
-}
-
-#pos-add-btn {
-    /* margin-top: 25px;*/
+    margin-right: 0
 }
 
 #pos-add-btn-div {
-    text-align: center !important;
+    text-align: center !important
 }
 
 #item-image {
     width: 120px;
-    height: 80px;
+    height: 80px
 }
 
 #netTotal-div {
-    margin-left: -30px;
+    margin-left: -30px
 }
 
 @media (max-width: 767px) {
     #displayDet {
-        margin-top: 100px !important;
+        margin-top: 100px !important
     }
 
     #form_div {
-        margin-top: 150px !important;
+        margin-top: 150px !important
     }
 
-    #refNo_masterDiv {
-        float: left !important;
+    #currency_masterDiv, #refNo_masterDiv {
+        float: left !important
     }
 
-    #refNo_Div {
-        padding-right: 0px !important;
+    #currency_Div, #refNo_Div {
+        padding-right: 0 !important
     }
 
     #salesPrice {
-        width: 85% !important;
-    }
-
-    #currency_masterDiv {
-        float: left !important;
-    }
-
-    #currency_Div {
-        padding-right: 0px !important;
-    }
-
-    /*#currencyDenomination_data { height: 65% !important; }*/
-    .wrapper { /*height: 1200px*/
+        width: 85% !important
     }
 
     #pos-add-btn {
-        margin: 0px !important;
+        margin: 0 !important
     }
 
     #pos-add-btn-div {
-        text-align: left !important;
+        text-align: left !important
     }
 
     #netTotal-div {
-        margin-left: 0px;
+        margin-left: 0
     }
 
     #actionBtn-div {
-        margin-top: 60px;
+        margin-top: 60px
     }
 
     #posHeader_1 {
         display: none;
-        position: absolute;
+        position: absolute
     }
 
     #posHeader_2 {
         display: block !important;
         width: 100%;
         position: fixed;
-        z-index: 10;
+        z-index: 10
     }
 }
 
@@ -193,122 +155,109 @@ div.fixHeader_Div::-webkit-scrollbar-thumb, div.smallScroll::-webkit-scrollbar-t
     }
 }
 
+.btn-glass, .glass, .head-title h2 {
+    display: inline-block
+}
+
 .actionBtn {
-    margin: 1% 1%;
+    margin: 1%;
     width: auto !important;
-    padding: 6px 15px !important;
+    padding: 6px 15px !important
 }
 
 #qtyAdj {
     color: #000;
     padding: 5px;
     width: inherit;
-    height: 100%;
-    border: none;
-    /*border: 1px solid #01ff70;*/
-    margin-bottom: 0px;
+    margin-bottom: 0;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 600
 }
 
 .form-inline {
-    /*background: #3c3939 !important;*/
     margin-bottom: 3px;
-    /*border-bottom: 2px solid #3c3838;*/
-    box-shadow: 0px 2px 5px 0px #807979;
+    box-shadow: 0 2px 5px 0 #807979
 }
 
 #posHeader_2_TB {
     width: 100%;
     margin-top: 100px;
     background: #5b5b63;
-    color: #ffffff
+    color: #fff
 }
 
 #posHeader_2_TB td {
-    font-weight: bold;
-    padding: 2px 10px;
+    font-weight: 700;
+    padding: 2px 10px
 }
 
 .returnTxt {
     height: 25px !important;
     max-width: 200px;
-    font-weight: normal;
-    font-size: 11px !important;
+    font-weight: 400;
+    font-size: 11px !important
 }
 
-#inv-return-tb td, #table-invoice-return td, #return-calculation-tb td {
+#inv-return-tb td, #return-calculation-tb td, #table-invoice-return td {
     padding: 2px 10px;
-    font-weight: bold;
+    font-weight: 700
 }
 
 #table-invoice-return {
-    width: 550px !important;
+    width: 550px !important
 }
 
 .return-qty-edit:hover {
-    cursor: pointer;
+    cursor: pointer
 }
 
-/** Set 2 */
 .productCls {
     background-color: #373942;
     color: #FFF;
-    font-weight: bold;
+    font-weight: 700;
     padding: 2px 4px;
-    margin: 7px 0px 0px 0px;
-    border-radius: 4px 4px 0px 0px;
+    margin: 7px 0 0;
+    border-radius: 4px 4px 0 0
 }
 
 .inputBorder {
-    border: 1px solid #373942;
-
+    border: 1px solid #373942
 }
 
 .itemListContainer {
     width: 100%;
     height: 220px;
-    background-color: #373942;
-    padding: 4px;
+    background-color: #373942
 }
 
 .itemListFoot {
-    margin: 0px;
+    margin: 0;
     color: #FFF;
-    /*padding-top: 5px;*/
-    padding-bottom: 0px;
-    font-size: 13px;
-}
-
-.ar {
-    text-align: right;
-}
-
-.al {
-    text-align: left;
+    padding-bottom: 0;
+    font-size: 13px
 }
 
 .fullWidth {
-    width: 100%;
+    width: 100%
 }
 
 .dangerCustom {
-    background-color: #C72A25 !important;
+    background-color: #C72A25 !important
 }
 
 .dangerCustom2 {
-    background-color: #884946 !important;
+    background-color: #884946 !important
 }
 
 .categoryItemList {
     cursor: pointer;
-    background-color: rgb(55, 57, 66);
-    color: rgb(255, 255, 255);
+    background-color: #373942;
+    color: #fff;
     width: 111px !important;
     height: 30px !important;
     text-align: center;
     vertical-align: middle;
-    line-height: 30px;
+    line-height: 30px
 }
 
 .menuItemStyle {
@@ -316,188 +265,164 @@ div.fixHeader_Div::-webkit-scrollbar-thumb, div.smallScroll::-webkit-scrollbar-t
     margin-left: 6px;
     border-radius: 1px;
     padding: 9px 7px 7px 5px;
-    background-color: rgba(158, 158, 158, 0.09);
+    background-color: rgba(158, 158, 158, .09);
     border: 1px solid #9E9E9E;
     color: #4d4b4b;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
-    width: 117px;
+    width: 117px
 }
 
 .menuItem_pos_col_1 {
-    margin: 0px !important;
-    border-bottom: 1px solid #dddddd;
-    padding-left: 0px !important;
-    /* padding-bottom: 5px;*/
+    margin: 0 !important;
+    border-bottom: 1px solid #ddd;
+    padding-left: 0 !important
 }
 
 .menuItem_pos_col_5 {
-    background-color: rgba(4, 4, 4, 0.49);
-    color: #f6f6f6;
-    /*padding-left: 2px !important;
-    margin-left: 22px !important;*/
+    background-color: rgba(4, 4, 4, .49);
+    color: #f6f6f6
 }
 
 .menuItem_input {
     width: 80%;
     text-align: right;
-    /*height: 40px;*/
-    padding: 0px 2px;
-    font-weight: bold;
+    padding: 0 2px;
+    font-weight: 700
+}
+
+.btn-glass:after, .glass:after {
+    content: '';
+    top: 2px;
+    left: 2px;
+    width: calc(100% - 4px)
+}
+
+.amountStyle, .ar {
+    text-align: right !important
 }
 
 .menuItemTxt {
-    padding: 0px 5px;
-    font-weight: bold;
+    padding: 0 5px;
+    font-weight: 700
 }
 
 .closeColor {
-    color: #ce7869;
+    color: #ce7869
 }
 
 .posModalHeader {
     padding: 2px 10px !important;
-    background-color: rgba(158, 158, 158, 0.21);
+    background-color: rgba(158, 158, 158, .21)
 }
 
 .close {
-    margin-top: 7px !important;
+    margin-top: 7px !important
 }
 
-/*Item selected in the menu */
 .itemSelected {
-    background-color: rgb(194, 194, 216);
+    background-color: #c2c2d8
 }
 
 .pos2-btn-default {
-    background: linear-gradient(to bottom, #f9f9f9 60%, #cccccc 150%) !important;
-    /*background: linear-gradient(to bottom, #6dc3f5 20%,#367fa9 100%) !important;*/
-    border: 1px solid rgba(0, 0, 0, 0.21);
+    background: linear-gradient(to bottom, #f9f9f9 60%, #ccc 150%) !important;
+    border: 1px solid rgba(0, 0, 0, .21);
     border-radius: 3px;
     font-weight: 800;
-    color: #444444;
+    color: #444
 }
 
 .pos2-btn-default:hover {
-    background: linear-gradient(to bottom, #cccccc 60%, #f9f9f9 150%) !important;
-    /*background: linear-gradient(to bottom, #6dc3f5 20%,#367fa9 100%) !important;*/
-    border: 1px solid rgba(0, 0, 0, 0.21);
+    background: linear-gradient(to bottom, #ccc 60%, #f9f9f9 150%) !important;
+    border: 1px solid rgba(0, 0, 0, .21);
     border-radius: 3px;
     font-weight: 800;
-    color: #444444;
-}
-
-.pos2-btn-default:active {
-
-}
-
-.pos2-btn-default:focus {
-
+    color: #444
 }
 
 .payment-textLg {
     font-size: 16px;
-    font-weight: 800;
+    font-weight: 800
 }
 
-.payment-inputTextLg {
-    font-size: 20px !important;
-    /*font-weight: 800;*/
+.payment-inputTextLg, .payment-inputTextRedLg {
+    font-size: 20px !important
 }
 
 .payment-inputTextRedLg {
-    font-size: 20px !important;
     font-weight: 800;
-    color: #ad0000 !important;
+    color: #ad0000 !important
 }
 
 .paymentTypeCustom {
     background: linear-gradient(to bottom, #757575 60%, #383838 150%) !important;
-    color: #ffffff !important;
+    color: #fff !important
 }
 
 .paymentTypeTextRed {
-    color: #bf3440 !important;
+    color: #bf3440 !important
 }
 
 .posFooterTxtLg {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 600
+}
+
+.btn-xl-numpad, .payment-inputTextMedium, .payment-inputTextMediumCard {
+    font-size: 18px !important
 }
 
 .posFooterBorderBottom {
-    border-top: 2px solid #ffffff
+    border-top: 2px solid #fff
 }
 
 .posFooterBgColor {
-    height: auto;
+    height: auto
 }
 
 .itemListContainer {
     background: linear-gradient(to bottom, #1d1d1d 10%, #565656 150%) !important;
-    border-radius: 0px 0px 6px 6px;
-    padding: 4px;
-}
-
-.payment-inputTextMedium {
-    font-size: 18px !important;
-    /*font-weight: 700;*/
+    border-radius: 0 0 6px 6px;
+    padding: 4px
 }
 
 .btn-xl-numpad {
-    padding: 9px 22px !important;
-    font-size: 18px !important;
+    padding: 9px 22px !important
 }
 
 .btn-numpad-default {
-    background: linear-gradient(to bottom, #ffffff 60%, #adadad 130%) !important;
-    border: 1px solid rgb(177, 177, 177) !important;
+    background: linear-gradient(to bottom, #fff 60%, #adadad 130%) !important;
+    border: 1px solid #b1b1b1 !important;
     border-radius: 4px !important;
-    color: #444444 !important;
+    color: #444 !important
 }
 
-/* demo code */
 .glass {
-    position: relative;
-    display: inline-block;
-
+    position: relative
 }
 
 .glass:after {
-    content: '';
     position: absolute;
-    top: 2px;
-    left: 2px;
-    width: calc(100% - 4px);
     height: 20%;
-    /*background-image: linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.2));*/
-    background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.13));
+    background-image: linear-gradient(rgba(255, 255, 255, .7), rgba(255, 255, 255, .13))
 }
 
 .glass:hover {
-    text-shadow: 0.3px -0.3px #333;
-
+    text-shadow: .3px -.3px #333
 }
 
-/** Gift Card */
 .gc_container {
     padding: 6px;
-    background-color: rgba(234, 230, 238, 0.13);
+    background-color: rgba(234, 230, 238, .13);
     min-height: 200px;
     border: 1px dashed #929292;
     border-radius: 6px;
-    margin: 6px 0px;
+    margin: 6px 0
 }
 
 .giftCardBtnContainer {
-    margin: 0px 4px;
-    font-weight: 600 !important;
-
-}
-
-.payment-inputTextMediumCard {
-    font-size: 18px !important;
-    /*font-weight: 700;*/
+    margin: 0 4px;
+    font-weight: 600 !important
 }
 
 .head-title h2 {
@@ -505,108 +430,91 @@ div.fixHeader_Div::-webkit-scrollbar-thumb, div.smallScroll::-webkit-scrollbar-t
     font-size: 14px;
     line-height: 14px;
     text-transform: uppercase;
-    display: inline-block;
     padding: 0 8px 0 0;
     background: #fff;
     white-space: nowrap;
-    font-weight: bold !important;
-    color: #6b6b6b;
+    font-weight: 700 !important;
+    color: #6b6b6b
 }
 
 .head-title {
-    background: url(https://d30chhj7mra175.cloudfront.net/img/border.png) repeat-x 0 50%;
+    background: url(https://d30chhj7mra175.cloudfront.net/img/border.png) 0 50% repeat-x;
     overflow: hidden;
-    margin: -4px 0 10px;
+    margin: -4px 0 10px
 }
 
 .tbl-payment-font-card {
     font-size: 12px !important;
-    font-weight: 600 !important;
+    font-weight: 600 !important
 }
 
 .amountStyle {
-    text-align: right !important;
     font-size: 17px !important;
     font-weight: 700 !important;
-    color: #424242 !important;
+    color: #424242 !important
 }
 
 .cs-btn-container {
-    margin: 2px 0px !important;
+    margin: 2px 0 !important
 }
 
 .btn-glass {
     position: relative;
-    display: inline-block;
-    /*padding: 15px 25px;*/
     background: green;
-    background-image: linear-gradient(green, lightgreen);
+    background-image: linear-gradient(green, #90ee90);
     text-decoration: none;
     color: #fff !important;
-    /*font-size: 25px;*/
     font-weight: 100;
     border-radius: 3px;
-    box-shadow: 0px 1px 4px -2px #333;
-    text-shadow: 0px -1px #333;
+    box-shadow: 0 1px 4px -2px #333;
+    text-shadow: 0 -1px #333
 }
 
 .btn-glass:after {
-    content: '';
     position: absolute;
-    top: 2px;
-    left: 2px;
-    width: calc(100% - 4px);
     height: 50%;
-    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2));
+    background: linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .2))
 }
 
 .btn-glass:hover {
     background: linear-gradient(#073, #0fa);
-    color: #ffffff !important;
+    color: #fff !important
 }
 
-.btn-glass-primary {
-    background: linear-gradient(#258, #aef) !important;
-}
-
-.btn-glass-info {
-    background: linear-gradient(#258, #aef) !important;
+.btn-glass-info, .btn-glass-primary {
+    background: linear-gradient(#258, #aef) !important
 }
 
 .btn-glass-danger {
-    background: linear-gradient(#700, #f00) !important;
+    background: linear-gradient(#700, red) !important
 }
 
 .btn-glass-warning {
-    background: linear-gradient(#740, gold) !important;
+    background: linear-gradient(#740, gold) !important
 }
 
 .btn-glass-purple {
-    background: linear-gradient(#507, #eaf) !important;
+    background: linear-gradient(#507, #eaf) !important
 }
 
 .btn-glass-warning2 {
-    background: linear-gradient(#b40, orange) !important;
+    background: linear-gradient(#b40, orange) !important
 }
 
 .btn-glass-success {
-    background: linear-gradient(#073, #0fa) !important;
+    background: linear-gradient(#073, #0fa) !important
 }
 
 .btn-glass-inverse {
-    background: linear-gradient(#000, #888) !important;
-}
-
-.ar {
-    text-align: right !important;
+    background: linear-gradient(#000, #888) !important
 }
 
 .ac {
-    text-align: center !important;
+    text-align: center !important
 }
 
 .al {
-    text-align: left !important;
+    text-align: left !important
 }
 
 span.input-req-inner {
@@ -620,7 +528,7 @@ span.input-req-inner {
     -webkit-transform: rotate(135deg);
     -ms-transform: rotate(135deg);
     transform: rotate(135deg);
-    z-index: 2;
+    z-index: 2
 }
 
 span.input-req-inner:before {
@@ -631,7 +539,7 @@ span.input-req-inner:before {
     color: #fff;
     position: absolute;
     z-index: 2;
-    cursor: default;
+    cursor: default
 }
 
 span.input-req-inner:after {
@@ -644,33 +552,32 @@ span.input-req-inner:after {
     background: #f45640;
     position: absolute;
     top: 7px;
-    right: -29px;
+    right: -29px
 }
 
 .posSeparator {
-    margin: 11px 25px 1px 0px;
-    border-bottom: 2px solid #BDBDBE;
+    margin: 11px 25px 1px 0;
+    border-bottom: 2px solid #BDBDBE
 }
 
 .buttonCustomerType {
-    border: 1px solid #014aa5 !important;
+    border: 1px solid #014aa5 !important
 }
 
 .buttonDefaultSize {
     height: 61px !important;
     border-radius: 2px !important;
     margin-left: 3px !important;
-    font-weight: 600 !important;
-
+    font-weight: 600 !important
 }
 
 .panel {
-    margin-bottom: 4px !important;
+    margin-bottom: 4px !important
 }
 
 .btn-number-of-packs {
     font-weight: 600 !important;
-    border: 2px solid #3c8dbc !important;
+    border: 2px solid #3c8dbc !important
 }
 
 .title-waiter {
@@ -679,41 +586,38 @@ span.input-req-inner:after {
     margin-bottom: 5px !important;
     text-transform: capitalize !important;
     font-size: 17px !important;
-    margin-top: 6px;
+    margin-top: 6px
 }
 
-/* KOT add-ons */
 .kot-add-on {
     border: 1px solid #c8c8c8;
     border-radius: 2px;
-    margin: 8px 0px;
+    margin: 8px 0;
     padding: 3px;
-    height: 38px;
+    height: 38px
 }
 
 .kot-add-on:hover {
-    box-shadow: 0px 0px 9px 0px #00BCD5, 0 2px 2px 0px rgba(0, 0, 0, 0.19);
+    box-shadow: 0 0 9px 0 #00BCD5, 0 2px 2px 0 rgba(0, 0, 0, .19);
     border: 1px solid #075b73;
     cursor: hand;
-    font-weight: 600;
+    font-weight: 600
 }
 
 .kot-add-on-img {
     height: 30px;
     border: 1px solid #ccc9c9;
-    border-radius: 2px;
-
+    border-radius: 2px
 }
 
 .add-on-heading {
     color: #949494;
     margin-bottom: 10px;
-    font-weight: 600;
-
+    font-weight: 600
 }
 
 .order-type-btn-group {
-    margin-top: 8px;
+    margin-top: 8px
 }
 
 .itemButton {
@@ -726,74 +630,80 @@ span.input-req-inner:after {
     border: 1px solid #b7b7b7;
     -webkit-box-shadow: 6px 6px 10px -6px rgba(184, 184, 184, 1);
     -moz-box-shadow: 6px 6px 10px -6px rgba(184, 184, 184, 1);
-    box-shadow: 6px 6px 10px -6px rgba(184, 184, 184, 1);
+    box-shadow: 6px 6px 10px -6px rgba(184, 184, 184, 1)
 }
 
 .btnStyleCustom {
     width: 117px;
-    float: left;
-}
-.c-b-20{ margin-left: 14px; }
-.set-delete{
-    width: 16% !important;
-    margin-left: -5px;
+    float: left
 }
 
-.btn-group-sm>.btn, .btn-sm {
-    padding: 1px 4px !important;
+.c-b-20 {
+    margin-left: 14px
 }
+
+.set-delete {
+    width: 16% !important;
+    margin-left: -5px
+}
+
+.btn-group-sm > .btn, .btn-sm {
+    padding: 1px 4px !important
+}
+
 @media (max-width: 1306px) {
     .fSizeBtn {
         width: 29px !important;
-        padding: 7px 10px !important;
+        padding: 7px 10px !important
     }
 
     .fa-21 {
-        font-size: 21px;
+        font-size: 21px
     }
 
     .btn-myCustom {
         font-weight: 600 !important;
-        padding: 5px 0px !important;
+        padding: 5px 0 !important
     }
 
     .menuItem_pos_col_5 {
-        font-size: 12px;
+        font-size: 12px
     }
 
     .buttonDefaultSize {
-        height: 50px !important;
+        height: 50px !important
     }
 
     .mainBtnList {
-        margin-bottom: 6px !important;
+        margin-bottom: 6px !important
     }
 
     #table_order_btn {
         height: 36px !important;
-        padding: 9px 23px !important;
+        padding: 9px 23px !important
     }
 
     .receiptPaddingHead {
         font-weight: 500;
-        font-size: 13px;
+        font-size: 13px
     }
 
     .menuItem_input {
-        font-weight: 700 !important;
+        font-weight: 700 !important
     }
 
     .menuItemTxt {
-        font-weight: 600 !important;
+        font-weight: 600 !important
     }
 
     .posFooterTxtLg {
         font-size: 17px !important;
-        font-weight: 500;
+        font-weight: 500
     }
+
     .itemListContainer {
-        border-radius: 0px 0px 3px 3px;
-        padding: 1px;
+        border-radius: 0 0 3px 3px;
+        padding: 1px
     }
 
     .itemButton {
@@ -802,44 +712,39 @@ span.input-req-inner:after {
         min-height: 95px !important;
         width: 78px !important;
         min-width: 95px !important;
-        margin-top: 6px !important;
-    }
-    .btnStyleCustom {
-        width: 100px;
-        float: left;
+        margin-top: 6px !important
     }
 
+    .btnStyleCustom {
+        width: 100px;
+        float: left
+    }
 }
 
 .btn-lg {
-    font-size: 14px !important;
+    font-size: 14px !important
 }
 
-
-
 .fSizeBtn {
-    font-size: 21px !important;
+    font-size: 21px !important
 }
 
 .mainBtnList {
-    margin-bottom: 12px;
-
+    margin-bottom: 12px
 }
 
 .btn-myCustom {
-    font-weight: 700;
-
+    font-weight: 700
 }
 
-/*Tiniy MCE*/
 h2.mce-content-body {
     font-size: 200%;
-    padding: 0 25px 0 25px;
-    margin: 10px 0 10px 0;
+    padding: 0 25px;
+    margin: 10px 0
 }
 
 body {
-    background: transparent;
+    background: 0 0
 }
 
 .content {
@@ -847,28 +752,27 @@ body {
     position: relative;
     width: auto;
     margin-left: 0;
-    padding: inherit;
+    padding: inherit
 }
 
 .menuLogo {
     position: absolute;
-    margin: 6%;
+    margin: 6%
 }
 
-.f-21{
-    font-size: 21px !important;
-}
-.f-15{
-    font-size: 15px !important;
+.f-21 {
+    font-size: 21px !important
 }
 
-/*table>thead>tr>th {
-    border-radius: 0px !important;
-    border-top: 1px solid #ff4c07!important;
-    border-bottom: 4px solid #989898!important;
-    background-color: rgb(255, 255, 255) !important;
-    box-shadow: 6px 6px 10px -6px rgba(184, 184, 184, 1) !important;
-    height: 24px;
-    padding-bottom: 9px !important;
-}*/
+.f-15 {
+    font-size: 15px !important
+}
 
+.fade {
+    opacity: 0;
+    -webkit-transition: opacity .1ms linear;
+    -moz-transition: opacity .1ms linear;
+    -ms-transition: opacity .1ms linear;
+    -o-transition: opacity .1ms linear;
+    transition: opacity .1ms linear
+}

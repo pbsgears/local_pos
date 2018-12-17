@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : localhost
 Source Server Version : 50505
 Source Host           : localhost:3306
-Source Database       : pos_localdb2
+Source Database       : pos_localdb
 
 Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-11-30 12:34:08
+Date: 2018-12-17 10:04:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,12 +32,16 @@ CREATE TABLE `srp_employeesdetails` (
   `Ename2` varchar(200) DEFAULT NULL,
   `Ename3` varchar(200) DEFAULT NULL,
   `Ename4` varchar(200) DEFAULT NULL,
+  `empSecondName` varchar(400) DEFAULT NULL,
+  `EFamilyName` varchar(400) DEFAULT NULL,
   `initial` varchar(255) DEFAULT NULL,
   `EmpShortCode` varchar(200) DEFAULT NULL,
-  `Enameother1` varchar(50) DEFAULT NULL,
-  `Enameother2` varchar(50) DEFAULT NULL,
-  `Enameother3` varchar(50) DEFAULT NULL,
-  `Enameother4` varchar(50) DEFAULT NULL,
+  `Enameother1` varchar(500) DEFAULT NULL,
+  `Enameother2` varchar(500) DEFAULT NULL,
+  `Enameother3` varchar(500) DEFAULT NULL,
+  `Enameother4` varchar(500) DEFAULT NULL,
+  `empSecondNameOther` varchar(500) DEFAULT NULL,
+  `EFamilyNameOther` varchar(500) DEFAULT NULL,
   `empSignature` varchar(255) DEFAULT NULL,
   `EmpImage` varchar(255) DEFAULT NULL,
   `Gender` varchar(1) DEFAULT NULL,
@@ -48,6 +52,7 @@ CREATE TABLE `srp_employeesdetails` (
   `ZipCode` varchar(50) DEFAULT NULL,
   `EpTelephone` varchar(50) DEFAULT NULL,
   `EpFax` varchar(50) DEFAULT NULL,
+  `EpMobile` varchar(50) DEFAULT NULL,
   `EcAddress1` varchar(255) DEFAULT NULL,
   `EcAddress2` varchar(255) DEFAULT NULL,
   `EcAddress3` varchar(255) DEFAULT NULL,
@@ -56,6 +61,7 @@ CREATE TABLE `srp_employeesdetails` (
   `EcPC` varchar(50) DEFAULT NULL,
   `EcArea` varchar(50) DEFAULT NULL,
   `EcTel` varchar(50) DEFAULT NULL,
+  `EcExtension` varchar(50) DEFAULT NULL,
   `EcFax` varchar(50) DEFAULT NULL,
   `EcMobile` varchar(50) DEFAULT NULL,
   `EEmail` varchar(50) DEFAULT NULL,
@@ -63,12 +69,14 @@ CREATE TABLE `srp_employeesdetails` (
   `EDOB` date DEFAULT NULL,
   `EDOJ` date DEFAULT NULL,
   `NIC` varchar(255) DEFAULT NULL COMMENT 'National Idinticatd No',
+  `insuranceNo` varchar(255) DEFAULT NULL,
   `EPassportNO` varchar(50) DEFAULT NULL,
   `EPassportExpiryDate` date DEFAULT NULL,
   `EVisaExpiryDate` date DEFAULT NULL,
   `Nid` int(11) DEFAULT NULL,
   `Rid` int(11) DEFAULT NULL,
   `AirportDestination` varchar(50) DEFAULT NULL,
+  `travelFrequencyID` int(11) DEFAULT NULL COMMENT 'FK - srp_erp_travelfrequency',
   `SchMasterId` int(11) DEFAULT '0',
   `branchID` int(11) DEFAULT NULL,
   `UserName` varchar(255) DEFAULT NULL,
@@ -129,6 +137,7 @@ CREATE TABLE `srp_employeesdetails` (
   `pos_userGroupMasterID` tinyint(4) DEFAULT NULL,
   `pos_barCode` varchar(255) DEFAULT NULL,
   `isLocalPosSyncEnable` int(1) DEFAULT '0',
+  `LocalPOSUserType` enum('POS','KOT','POS_KOT') NOT NULL DEFAULT 'POS',
   PRIMARY KEY (`EIdNo`),
   UNIQUE KEY `EIdNo` (`EIdNo`) USING BTREE,
   UNIQUE KEY `UserName_UNIQUE` (`UserName`),
@@ -141,11 +150,12 @@ CREATE TABLE `srp_employeesdetails` (
   KEY `isSystemAdmin` (`isSystemAdmin`) USING BTREE,
   KEY `isPayrollEmployee` (`isPayrollEmployee`) USING BTREE,
   KEY `ssoNo` (`ssoNo`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1578 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_employeesdetails
 -- ----------------------------
+INSERT INTO `srp_employeesdetails` VALUES ('1139', null, 'RCC/EMP000002', 'RCC/EMP000002', '21', '', null, '44', 'Abolade Gbadegesin', 'A . Gbadegesin', 'Abolade', null, null, null, null, 'Abolad', null, null, null, null, null, null, null, 'rccemp000002_1488866058.jpg', '1', '1082', 'Forsyth Line Rd', 'rural Hall', '150', '27045  ', '+1-815-852-6776', '(336) 969-5610', null, '1082', 'Forsyth Line Rd', 'Rural Hall', '150', '1082', '1082', null, '+1-618-548-9166', null, '(336) 969-5610', '+1-773-815-5371', 'Gbadegesin@gmail.com', null, '1969-09-30', '2013-10-16', '509213727', null, '750271045', null, null, '45', '40', '', null, '0', '0', 'pos@mail.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '0', '0', '0', '1', '2', 'USD', '0', null, null, '1', '2013-10-16', null, '0', null, '1', null, null, null, '0', '2', null, '0', '0', 'Mushtak Ahamed M', '2016-11-16 18:07:59', '192.168.1.33', 'Alex', '2018-12-16 04:42:52', '124.43.20.242', '1', '0', '2', null, '7', '11', '10', '4029', '1', '0', null, '0', '0', '0', null, null, null, null, null, '1', null, null, '1', '6', '', '1', 'POS');
 
 -- ----------------------------
 -- Table structure for srp_erp_bankledger
@@ -297,7 +307,7 @@ CREATE TABLE `srp_erp_chartofaccounts` (
   KEY `bankCurrencyDecimalPlaces` (`bankCurrencyDecimalPlaces`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE,
   KEY `companyCode` (`companyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : TO create financial ledgers and maintain control accounts ,master accounts  and other accounts\r\nCreated By : Mohamed Hisham \r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Nusky Rauf\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : TO create financial ledgers and maintain control accounts ,master accounts  and other accounts\r\nCreated By : Mohamed Hisham \r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Nusky Rauf\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_chartofaccounts
@@ -376,6 +386,7 @@ CREATE TABLE `srp_erp_company` (
   UNIQUE KEY `company_id` (`company_id`) USING BTREE,
   KEY `company_name` (`company_name`) USING BTREE,
   KEY `default_segment` (`default_segment`) USING BTREE,
+  KEY `productID` (`productID`) USING BTREE,
   KEY `company_default_currencyID` (`company_default_currencyID`) USING BTREE,
   KEY `company_default_decimal` (`company_default_decimal`) USING BTREE,
   KEY `company_default_currency` (`company_default_currency`) USING BTREE,
@@ -384,13 +395,13 @@ CREATE TABLE `srp_erp_company` (
   KEY `company_reporting_decimal` (`company_reporting_decimal`) USING BTREE,
   KEY `countryID` (`countryID`) USING BTREE,
   KEY `companyFinanceYearID` (`companyFinanceYearID`) USING BTREE,
-  KEY `companyFinancePeriodID` (`companyFinancePeriodID`) USING BTREE,
-  KEY `productID` (`productID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : company Master Table\r\nCreated By : Nusky Rauf\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas,Mohamed Hisham\r\nReviewed By : ';
+  KEY `companyFinancePeriodID` (`companyFinancePeriodID`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1000099 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : company Master Table\r\nCreated By : Nusky Rauf\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas,Mohamed Hisham\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_company
 -- ----------------------------
+INSERT INTO `srp_erp_company` VALUES ('11', '0', '0', '1', 'RCC', 'Rock Castle Construction', '2017-10-31', 'www.rcc.com', 'com_11_1542045996.png', '14', 'LKR', '2', '2', 'USD', '2', 'abc@mail.com1', '11254596', 'King Kebab', '400A, Peradeniya Road, Kandy', '081-2222699', 'Take Away & Delivery', 'Enjoy Your Meals', '2889 Pennsylvania Avenue', 'Cedar Knolls,', 'NJ', 'New Jersey', '07927', '230', 'Oman', 'Rock Castle Construction', '1', null, 'TX-4005', '2016', '0', null, null, '7|FIN', 'https://cloud.spur-int.com/ph_support/', '0', '107', '2018-01-01 - 2018-12-31', '2018-01-01', '2018-12-31', '1333', '2018-12-01', '2018-12-31', '1', '0', '1', null, '260', '1', 'dbfzhrjzrygynyzzyazbgdgdozxirygdlbcqugontvzbjquxyhdedhfqphxi', '0', 'Gears', '1103', '2016-09-26 12:30:30', 'Mushthaq Mohamed M', '188.135.48.165', '1103', '2018-11-18 11:42:18', 'Alex', '2018-12-02 10:58:40');
 
 -- ----------------------------
 -- Table structure for srp_erp_companycontrolaccounts
@@ -412,7 +423,7 @@ CREATE TABLE `srp_erp_companycontrolaccounts` (
   KEY `GLAutoID` (`GLAutoID`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE,
   KEY `companyCode` (`companyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : To store default controll accounts of all the companies\r\nCreated By : Nusky Rauf\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Mohamed Hisham\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : To store default controll accounts of all the companies\r\nCreated By : Nusky Rauf\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Mohamed Hisham\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_companycontrolaccounts
@@ -438,7 +449,7 @@ CREATE TABLE `srp_erp_companycurrencyassign` (
   KEY `DecimalPlaces` (`DecimalPlaces`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE,
   KEY `companyCode` (`companyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_companycurrencyassign
@@ -468,7 +479,7 @@ CREATE TABLE `srp_erp_companycurrencyconversion` (
   KEY `subCurrencyID` (`subCurrencyID`) USING BTREE,
   KEY `masterCurrencyCode` (`masterCurrencyCode`) USING BTREE,
   KEY `subCurrencyCode` (`subCurrencyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_companycurrencyconversion
@@ -510,7 +521,7 @@ CREATE TABLE `srp_erp_companyfinanceperiod` (
   KEY `isClosed` (`isClosed`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE,
   KEY `companyCode` (`companyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : Financial Periods for created financial years will be maintained in this table\r\nCreated By : Nusky Rauf\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Mohamed Hisham\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : Financial Periods for created financial years will be maintained in this table\r\nCreated By : Nusky Rauf\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Mohamed Hisham\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_companyfinanceperiod
@@ -550,7 +561,7 @@ CREATE TABLE `srp_erp_companyfinanceyear` (
   KEY `isClosed` (`isClosed`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE,
   KEY `companyCode` (`companyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : to maintain financial years for all companies\r\nCreated By : Nusky Rauf\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Mohamed Hisham\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : to maintain financial years for all companies\r\nCreated By : Nusky Rauf\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Mohamed Hisham\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_companyfinanceyear
@@ -601,36 +612,11 @@ CREATE TABLE `srp_erp_companypolicymaster` (
   `isCompanyLevel` int(1) DEFAULT '0',
   `timestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`companypolicymasterID`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_companypolicymaster
 -- ----------------------------
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('1', 'Water mark in all print documents', null, '0', 'WM', 'All', '1', 'select', '1', '0', '2018-06-07 10:37:23');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('2', 'DateFormat', null, '0', 'DF', 'All', 'dd-mm-yyyy', 'select', '1', '0', '2017-04-06 14:27:02');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('3', 'Allow to Change PO Cost in GRV', null, '0', 'CPG', 'GRV', '1', 'select', '1', '0', '2017-04-06 14:27:17');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('4', 'Time Format', null, '0', 'TF', 'All', 'hh:mm', 'select', '1', '0', '2017-04-06 14:27:21');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('5', 'Payslip Template', null, '0', 'PT', 'SP', '0', 'select', '1', '1', '2017-04-06 14:27:24');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('6', 'Non Payslip Template', null, '0', 'NPT', 'SPN', '0', 'select', '1', '1', '2017-04-06 14:27:32');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('7', 'Water mark in all print documents', null, '0', 'WM', 'GRV', '1', 'select', '1', '0', '2017-04-06 14:34:14');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('8', 'Document Code Setup', null, '0', 'DC', 'All', '1', 'select', '1', '0', null);
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('9', 'Is Project Enabled', null, '0', 'PE', 'All', '0', 'select', '1', '0', '2017-07-21 11:49:56');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('10', 'Password Complexity', null, '0', 'PC', 'All', '0', 'select', '1', '0', '2017-07-26 15:04:49');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('11', 'Approval for Employee Personal Detail Update', '', '0', 'EPD', 'All', '0', 'select', '1', '0', '2017-07-31 10:22:14');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('12', 'Project Cost/Revenue Order', null, '0', 'PCR', 'P', '0', 'select', '1', '0', null);
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('13', 'Salary Proportion Formula', '', '0', 'SPF', 'All', '365', 'select', '1', '0', '2017-08-10 10:40:45');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('14', 'Salary Calculation Days', null, '0', 'SCD', 'All', 'LAST_DAY(effectiveDate)', 'select', '1', '0', '2017-08-28 10:50:17');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('15', 'Is Non Salary Process YES/NO', null, '0', 'NSP', 'All', '0', 'select', '1', '0', null);
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('16', 'Apply Sick Leave Based on Sort Order', null, '0', 'SL', 'All', '0', 'select', '1', '0', null);
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('17', 'Allow to Apply Leave If a Leave is not Approved', null, '0', 'LP', 'All', '0', 'select', '1', '0', null);
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('18', 'Payroll access controll ', null, '0', 'PAC', 'All', '0', 'select', '1', '0', '2017-11-13 17:25:00');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('19', 'Employee System Code Auto Generated ', null, '0', 'ECG', 'All', '1', 'select', '1', '0', '2018-01-05 11:24:39');
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('20', 'Auto Generated Payment Voucher for Salary Transfer', null, '0', 'BTPV', 'All', '0', 'select', '1', '0', null);
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('21', 'Send Email Notifications', null, '0', 'SEN', 'All', '1', 'select', '1', '0', null);
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('22', 'Employee Master Edit Approval', null, '0', 'EMA', 'All', '0', 'select', '1', '0', null);
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('23', 'Invoice - Applicable Tax Type', null, '0', 'ATT', 'All', '0', 'select', '1', '0', null);
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('24', 'Location wise document code generation', null, '0', 'LDG', 'All', '0', 'select', '1', '0', null);
-INSERT INTO `srp_erp_companypolicymaster` VALUES ('25', 'Third Party Applications', null, '0', 'TPA', 'ALL', '0', 'select', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for srp_erp_companypolicymaster_value
@@ -644,84 +630,11 @@ CREATE TABLE `srp_erp_companypolicymaster_value` (
   `companyID` int(11) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`policyValueID`)
-) ENGINE=InnoDB AUTO_INCREMENT=335 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_companypolicymaster_value
 -- ----------------------------
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('1', '1', 'Yes', '1', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('2', '1', 'No', '0', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('3', '2', 'dd-mm-yyyy', 'dd-mm-yyyy', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('4', '2', 'yyyy-mm-dd', 'yyyy-mm-dd', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('5', '3', 'Yes', '1', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('6', '3', 'No', '0', null, '2017-04-04 16:01:00');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('7', '4', 'hh:mm', 'hh:mm', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('8', '4', 'hh:mm:ss', 'hh:mm:ss', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('9', '5', 'Default', '0', '13', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('11', '6', 'Default', '0', '13', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('12', '6', 'Template2', '1', '13', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('19', '7', 'Yes', '1', null, '2017-04-06 14:35:08');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('20', '7', 'No', '0', null, '2017-04-06 14:35:18');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('22', '5', 'TEMP-3', '11', '13', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('25', '5', 'Envoy Template 1', '12', '1', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('28', '5', 'General', '0', '109', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('29', '6', 'General', '0', '109', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('32', '5', 'General', '0', '110', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('33', '6', 'General', '0', '110', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('68', '5', 'General', '0', '112', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('69', '6', 'General', '0', '112', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('70', '8', 'Standard', '1', null, '2017-06-06 10:22:03');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('71', '8', 'Based on Finance Year', '2', null, '2017-06-06 10:22:21');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('73', '6', '2151', '26', '11', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('74', '5', 'General', '0', '115', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('75', '6', 'General', '0', '115', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('78', '9', 'Yes', '1', null, '2017-07-21 12:01:26');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('79', '9', 'No', '0', null, '2017-07-21 12:01:39');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('81', '10', 'Yes', '1', null, '2017-07-25 12:52:46');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('82', '10', 'No', '0', null, '2017-07-25 12:52:53');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('84', '11', 'Yes', '1', null, '2017-07-31 10:24:07');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('85', '11', 'No', '0', null, '2017-07-31 10:24:07');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('86', '12', '0', '0', null, '2017-07-31 11:41:35');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('87', '12', '1', '1', null, '2017-07-31 11:41:43');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('88', '5', 'Totals', '23', '13', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('89', '13', '(Salary * 12) / 365 * worked days', '365', null, '2017-08-10 10:40:57');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('90', '13', '(Salary * 12) / 360 * worked days', '360', null, '2017-08-10 10:41:03');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('92', '14', 'No. of days in current month ', 'LAST_DAY(effectiveDate)', null, '2017-08-25 10:06:55');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('93', '14', '30 Days', '30', null, '2017-08-23 17:56:39');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('94', '5', 'RCC Paysheet Template', '13', '11', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('95', '6', 'Non Payroll', '16', '13', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('97', '15', 'No', '0', null, '2017-10-27 14:35:40');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('98', '15', 'Yes', '1', null, '2017-10-27 14:35:50');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('99', '16', 'No', '0', null, '2017-10-31 14:40:34');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('100', '16', 'Yes', '1', null, '2017-10-31 14:40:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('101', '17', 'No', '0', null, '2017-10-31 14:40:34');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('102', '17', 'Yes', '1', null, '2017-10-31 14:40:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('103', '18', 'No', '0', null, '2017-11-13 14:40:34');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('104', '18', 'Yes', '1', null, '2017-11-13 15:00:03');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('105', '13', '(Salary / No. of days in current month) * worked days', '1', null, '2017-12-28 15:38:03');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('106', '19', 'Yes', '1', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('107', '19', 'No', '0', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('108', '5', 'General', '0', '125', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('109', '6', 'General', '0', '125', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('110', '20', 'No', '0', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('111', '20', 'Yes', '1', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('112', '21', 'Yes', '1', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('113', '21', 'No', '0', null, '2017-04-04 15:31:56');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('114', '5', 'Envoy Template', '12', '13', '2018-06-04 12:32:38');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('115', '22', 'No', '0', null, '2018-03-20 15:03:41');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('116', '22', 'Yes', '1', null, '2018-03-20 15:03:57');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('117', '23', 'Line By Tax', '0', null, '2018-03-27 12:11:58');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('118', '23', 'General Tax', '1', null, '2018-03-27 12:12:13');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('321', '5', 'Envoy Default', 'Envoy', '13', '2018-08-07 12:52:54');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('322', '5', 'General', '0', '165', '2018-08-28 15:20:37');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('323', '6', 'General', '0', '165', '2018-08-28 15:20:37');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('328', '5', 'Paysheet Template', '30', '165', '2018-08-29 17:17:34');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('329', '5', 'Aitken Template', 'Aitken', '13', '2018-09-14 15:52:44');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('330', '24', 'No', '0', null, '2018-09-27 10:34:21');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('331', '24', 'Yes', '1', null, '2018-09-27 10:34:33');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('332', '5', 'New template', '31', '13', '2018-10-03 11:05:01');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('333', '25', 'No', '0', null, '2018-09-27 10:34:21');
-INSERT INTO `srp_erp_companypolicymaster_value` VALUES ('334', '25', 'Yes', '1', null, '2018-09-27 10:34:33');
 
 -- ----------------------------
 -- Table structure for srp_erp_currencydenomination
@@ -740,7 +653,7 @@ CREATE TABLE `srp_erp_currencydenomination` (
   KEY `currencyID` (`currencyID`) USING BTREE,
   KEY `currencyCode` (`currencyCode`) USING BTREE,
   KEY `isNote` (`isNote`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : This table is used to load currency denominators in pos open till windows. system level table to store denomiators of each currency\r\nCreated By : Mohamed Hisham\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Nasik Ahamed\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : This table is used to load currency denominators in pos open till windows. system level table to store denomiators of each currency\r\nCreated By : Mohamed Hisham\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Nasik Ahamed\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_currencydenomination
@@ -769,30 +682,11 @@ CREATE TABLE `srp_erp_currencymaster` (
   PRIMARY KEY (`currencyID`),
   UNIQUE KEY `currencyID` (`currencyID`) USING BTREE,
   UNIQUE KEY `CurrencyCode` (`CurrencyCode`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_currencymaster
 -- ----------------------------
-INSERT INTO `srp_erp_currencymaster` VALUES ('1', 'Omani Rial', 'OMR', '3', '1', '1', '2012-04-03 00:00:00', 'admin', null, null, null, null, null, null, null);
-INSERT INTO `srp_erp_currencymaster` VALUES ('2', 'US Dollar', 'USD', '2', '0.385', '0', '2012-04-03 00:00:00', 'admin', null, null, null, null, null, null, null);
-INSERT INTO `srp_erp_currencymaster` VALUES ('3', 'UAE Dirham', 'AED', '2', '0.25', '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `srp_erp_currencymaster` VALUES ('6', 'British Pound', 'GBP', '2', '0.61', '0', null, null, '', 'NATPC', '9090', 'NATPC', '9090', '2013-04-29 17:05:10', '2013-04-29 13:05:10');
-INSERT INTO `srp_erp_currencymaster` VALUES ('7', 'Euro', 'EUR', '2', '0.51', '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `srp_erp_currencymaster` VALUES ('8', 'Saudi Rial', 'SAR', '2', '0.1', '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `srp_erp_currencymaster` VALUES ('9', 'Bahraini Dinar', 'BHD', '2', '0.9779', '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `srp_erp_currencymaster` VALUES ('10', 'Canadian Dollar', 'CAD', '2', '0.37', '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `srp_erp_currencymaster` VALUES ('11', 'Qatari Rial', 'QAR', '2', '1', '0', null, null, '', 'RISHAD-PC', '8888', 'RISHAD-PC', '8888', '2013-09-18 16:44:46', '2013-09-18 12:44:46');
-INSERT INTO `srp_erp_currencymaster` VALUES ('12', 'Kuwaiti Dinar', 'KWD', '2', '1', '0', null, null, '', 'ZAHLANPC', '8888', 'ZAHLANPC', '8888', '2013-12-25 11:15:48', '2013-12-25 07:15:48');
-INSERT INTO `srp_erp_currencymaster` VALUES ('13', 'Singapore Dollar', 'SGD', '2', '1', '0', null, null, '', 'ZAHLANPC', '8888', 'ZAHLANPC', '8888', '2013-12-26 10:40:55', '2013-12-26 06:40:55');
-INSERT INTO `srp_erp_currencymaster` VALUES ('14', 'Sri Lankan Rupee', 'LKR', '2', '1', '0', null, null, '', 'ZAHLANPC', '8888', 'ZAHLANPC', '8888', '2014-09-15 10:58:43', '2014-09-15 06:58:43');
-INSERT INTO `srp_erp_currencymaster` VALUES ('15', 'Indian Rupee', 'INR', '2', '1', '0', null, null, '', 'ZAHLANPC', '8888', 'ZAHLANPC', '8888', '2014-09-15 11:01:35', '2014-09-15 07:01:35');
-INSERT INTO `srp_erp_currencymaster` VALUES ('16', 'Yemeni Rial', 'YER', '2', '1', '0', null, null, '', 'ZAHLANPC', '8888', 'ZAHLANPC', '8888', '2014-09-30 09:02:00', '2014-09-30 05:02:00');
-INSERT INTO `srp_erp_currencymaster` VALUES ('17', 'Algerian Dinar', 'DZD', '2', '1', '1', null, null, '', 'ARSHAD-PC', '8888', 'ARSHAD-PC', '8888', '2015-04-07 14:45:44', '2015-04-07 10:45:44');
-INSERT INTO `srp_erp_currencymaster` VALUES ('18', 'Australian Dollar', 'AUD', '2', '1', '1', null, null, null, null, null, null, null, null, null);
-INSERT INTO `srp_erp_currencymaster` VALUES ('19', ' Maldivian rufiyaa', 'MVR', '2', '1', '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `srp_erp_currencymaster` VALUES ('20', 'Japanese Yen', 'YEN', '2', '1', '0', null, null, null, null, null, null, null, null, null);
-INSERT INTO `srp_erp_currencymaster` VALUES ('21', 'Kenyan Shilling', 'KES', '2', '1', null, null, null, null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for srp_erp_customerinvoicedetails
@@ -1343,7 +1237,7 @@ CREATE TABLE `srp_erp_customermaster` (
   KEY `isActive` (`isActive`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE,
   KEY `companyCode` (`companyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_customermaster
@@ -1356,6 +1250,9 @@ DROP TABLE IF EXISTS `srp_erp_customertypemaster`;
 CREATE TABLE `srp_erp_customertypemaster` (
   `customerTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `customerDescription` varchar(255) DEFAULT NULL,
+  `displayDescription` varchar(255) DEFAULT NULL,
+  `isThirdPartyDelivery` int(1) DEFAULT '0' COMMENT 'this flag=1 will disable the delivery popup and thirdparty delivery information in payment widnow',
+  `isDineIn` int(1) DEFAULT '0' COMMENT 'this falg=1 if it dine-in or eat-in order, we used this in service charge include template to remove the service charge from dine-in or eat-in order - so this most important for calculations',
   `isDefault` int(1) DEFAULT '0' COMMENT 'drop down option, 1 = > default selected value',
   `company_id` int(11) DEFAULT NULL COMMENT 'FK of company_id  company table ',
   `createdBy` varchar(255) DEFAULT NULL,
@@ -1366,7 +1263,7 @@ CREATE TABLE `srp_erp_customertypemaster` (
   UNIQUE KEY `customerTypeID` (`customerTypeID`) USING BTREE,
   KEY `isDefault` (`isDefault`) USING BTREE,
   KEY `company_id` (`company_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_customertypemaster
@@ -1988,45 +1885,45 @@ CREATE TABLE `srp_erp_itemledger_sync` (
 DROP TABLE IF EXISTS `srp_erp_itemmaster`;
 CREATE TABLE `srp_erp_itemmaster` (
   `itemAutoID` int(5) NOT NULL AUTO_INCREMENT,
-  `itemSystemCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `seconeryItemCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `itemImage` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `itemName` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `itemDescription` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `itemSystemCode` varchar(45) DEFAULT NULL,
+  `seconeryItemCode` varchar(45) DEFAULT NULL,
+  `itemImage` varchar(255) DEFAULT NULL,
+  `itemName` varchar(255) DEFAULT NULL,
+  `itemDescription` varchar(255) DEFAULT NULL,
   `mainCategoryID` int(10) DEFAULT NULL,
-  `mainCategory` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `mainCategory` varchar(50) DEFAULT NULL,
   `subcategoryID` int(5) DEFAULT NULL,
   `subSubCategoryID` int(5) DEFAULT NULL,
-  `itemUrl` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `barcode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `financeCategory` varchar(5) CHARACTER SET utf8 DEFAULT NULL COMMENT '1-inventory 2-noninventory/service 3-fixed asset',
-  `partNo` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `itemUrl` varchar(255) DEFAULT NULL,
+  `barcode` varchar(45) DEFAULT NULL,
+  `financeCategory` varchar(5) DEFAULT NULL COMMENT '1-inventory 2-noninventory/service 3-fixed asset',
+  `partNo` varchar(45) DEFAULT NULL,
   `defaultUnitOfMeasureID` int(11) DEFAULT NULL,
-  `defaultUnitOfMeasure` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `defaultUnitOfMeasure` varchar(45) DEFAULT NULL,
   `currentStock` double DEFAULT '0',
   `reorderPoint` double DEFAULT NULL,
   `maximunQty` double DEFAULT NULL,
   `minimumQty` double DEFAULT NULL,
   `revanueGLAutoID` int(11) DEFAULT NULL,
-  `revanueSystemGLCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `revanueGLCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `revanueDescription` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `revanueType` varchar(3) CHARACTER SET utf8 DEFAULT NULL,
+  `revanueSystemGLCode` varchar(45) DEFAULT NULL,
+  `revanueGLCode` varchar(45) DEFAULT NULL,
+  `revanueDescription` varchar(255) DEFAULT NULL,
+  `revanueType` varchar(3) DEFAULT NULL,
   `costGLAutoID` int(11) DEFAULT NULL,
-  `costSystemGLCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `costGLCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `costDescription` varchar(150) CHARACTER SET utf8 DEFAULT NULL,
-  `costType` varchar(3) CHARACTER SET utf8 DEFAULT NULL,
+  `costSystemGLCode` varchar(45) DEFAULT NULL,
+  `costGLCode` varchar(45) DEFAULT NULL,
+  `costDescription` varchar(150) DEFAULT NULL,
+  `costType` varchar(3) DEFAULT NULL,
   `assteGLAutoID` int(11) DEFAULT NULL,
-  `assteSystemGLCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `assteGLCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `assteDescription` varchar(150) CHARACTER SET utf8 DEFAULT NULL,
-  `assteType` varchar(3) CHARACTER SET utf8 DEFAULT NULL,
+  `assteSystemGLCode` varchar(45) DEFAULT NULL,
+  `assteGLCode` varchar(45) DEFAULT NULL,
+  `assteDescription` varchar(150) DEFAULT NULL,
+  `assteType` varchar(3) DEFAULT NULL,
   `stockAdjustmentGLAutoID` int(11) DEFAULT NULL,
-  `stockAdjustmentSystemGLCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `stockAdjustmentGLCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `stockAdjustmentDescription` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `stockAdjustmentType` varchar(3) CHARACTER SET utf8 DEFAULT NULL,
+  `stockAdjustmentSystemGLCode` varchar(45) DEFAULT NULL,
+  `stockAdjustmentGLCode` varchar(45) DEFAULT NULL,
+  `stockAdjustmentDescription` varchar(255) DEFAULT NULL,
+  `stockAdjustmentType` varchar(3) DEFAULT NULL,
   `faCostGLAutoID` int(11) DEFAULT NULL COMMENT 'if fixed asset',
   `faACCDEPGLAutoID` int(11) DEFAULT NULL COMMENT 'if fixed asset',
   `faDEPGLAutoID` int(11) DEFAULT NULL COMMENT 'if fixed asset',
@@ -2034,16 +1931,16 @@ CREATE TABLE `srp_erp_itemmaster` (
   `salesTaxFormulaID` int(11) DEFAULT NULL,
   `purchaseTaxFormulaID` int(11) DEFAULT NULL,
   `isActive` tinyint(1) DEFAULT NULL,
-  `comments` text CHARACTER SET utf8,
+  `comments` text,
   `isSubitemExist` int(1) DEFAULT '0' COMMENT '1 have sub item, 0 not exist ',
   `companyLocalCurrencyID` int(11) NOT NULL,
-  `companyLocalCurrency` varchar(45) CHARACTER SET utf8 DEFAULT NULL COMMENT 'Local currency of company in company master',
+  `companyLocalCurrency` varchar(45) DEFAULT NULL COMMENT 'Local currency of company in company master',
   `companyLocalExchangeRate` double DEFAULT '0' COMMENT 'Exchange rate against transaction currency',
   `companyLocalSellingPrice` double DEFAULT '0' COMMENT 'Transaction amount in local currency',
   `companyLocalWacAmount` double DEFAULT '0' COMMENT 'Transaction amount in local currency',
   `companyLocalCurrencyDecimalPlaces` int(1) DEFAULT '2' COMMENT 'Decimal places of company currency',
   `companyReportingCurrencyID` int(11) NOT NULL,
-  `companyReportingCurrency` varchar(45) CHARACTER SET utf8 DEFAULT NULL COMMENT 'Reporting currency of company in company master',
+  `companyReportingCurrency` varchar(45) DEFAULT NULL COMMENT 'Reporting currency of company in company master',
   `companyReportingExchangeRate` double DEFAULT '0' COMMENT 'Exchange rate against transaction currency ',
   `companyReportingSellingPrice` double DEFAULT '0' COMMENT '1-Payment Invoice, 4- Direct Payment',
   `companyReportingWacAmount` double DEFAULT '0' COMMENT '1-Payment Invoice, 4- Direct Payment',
@@ -2051,16 +1948,16 @@ CREATE TABLE `srp_erp_itemmaster` (
   `finCompanyPercentage` double DEFAULT '100',
   `pvtCompanyPercentage` double DEFAULT '0',
   `companyID` int(11) DEFAULT NULL,
-  `companyCode` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `companyCode` varchar(45) DEFAULT NULL,
   `createdUserGroup` int(11) DEFAULT NULL,
-  `createdPCID` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `createdUserID` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `createdPCID` varchar(45) DEFAULT NULL,
+  `createdUserID` varchar(45) DEFAULT NULL,
   `createdDateTime` datetime DEFAULT NULL,
-  `createdUserName` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
-  `modifiedPCID` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `modifiedUserID` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `createdUserName` varchar(200) DEFAULT NULL,
+  `modifiedPCID` varchar(45) DEFAULT NULL,
+  `modifiedUserID` varchar(45) DEFAULT NULL,
   `modifiedDateTime` datetime DEFAULT NULL,
-  `modifiedUserName` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
+  `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`itemAutoID`),
   UNIQUE KEY `itemAutoID` (`itemAutoID`) USING BTREE,
@@ -2085,7 +1982,7 @@ CREATE TABLE `srp_erp_itemmaster` (
   KEY `isActive` (`isActive`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE,
   KEY ` companyCode` (`companyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table Use :To maintain inventory, non inventory ,service items and fixed assets\r\nCreated By : Nusky Rauff\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Mohamed Hisham\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use :To maintain inventory, non inventory ,service items and fixed assets\r\nCreated By : Nusky Rauff\r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Mohamed Hisham\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_itemmaster
@@ -2105,11 +2002,12 @@ CREATE TABLE `srp_erp_lang_companylanguages` (
   KEY `companyID` (`companyID`) USING BTREE,
   KEY `primaryLanguageID` (`primaryLanguageID`) USING BTREE,
   KEY `secondaryLanguageID` (`secondaryLanguageID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of srp_erp_lang_companylanguages
 -- ----------------------------
+INSERT INTO `srp_erp_lang_companylanguages` VALUES ('1', '13', '2', '1');
 
 -- ----------------------------
 -- Table structure for srp_erp_lang_languages
@@ -2122,14 +2020,13 @@ CREATE TABLE `srp_erp_lang_languages` (
   `isActive` int(11) DEFAULT '1',
   PRIMARY KEY (`languageID`),
   UNIQUE KEY `languageID` (`languageID`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_lang_languages
 -- ----------------------------
 INSERT INTO `srp_erp_lang_languages` VALUES ('1', 'arabic', 'Arabic', '1');
 INSERT INTO `srp_erp_lang_languages` VALUES ('2', 'english', 'English', '1');
-INSERT INTO `srp_erp_lang_languages` VALUES ('4', 'tamil', 'Tamil', '0');
 
 -- ----------------------------
 -- Table structure for srp_erp_passwordcomplexcity
@@ -2153,7 +2050,7 @@ CREATE TABLE `srp_erp_passwordcomplexcity` (
   `modifiedUserName` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`projectComplexcityID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_passwordcomplexcity
@@ -2168,7 +2065,7 @@ CREATE TABLE `srp_erp_pay_imagepath` (
   `imagePath` varchar(255) DEFAULT NULL,
   `isLocalPath` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pay_imagepath
@@ -2209,7 +2106,7 @@ CREATE TABLE `srp_erp_pos_auth_processassign` (
   `modifiedUserName` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`processAssignID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_auth_processassign
@@ -2234,7 +2131,7 @@ CREATE TABLE `srp_erp_pos_auth_processmaster` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`processMasterID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_auth_processmaster
@@ -2261,7 +2158,7 @@ CREATE TABLE `srp_erp_pos_auth_usergroupdetail` (
   `modifiedUserName` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`userGroupDetailID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_auth_usergroupdetail
@@ -2287,7 +2184,7 @@ CREATE TABLE `srp_erp_pos_auth_usergroupmaster` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`userGroupMasterID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_auth_usergroupmaster
@@ -2315,7 +2212,7 @@ CREATE TABLE `srp_erp_pos_camera_setup` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `outletID` (`outletID`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_camera_setup
@@ -2345,7 +2242,7 @@ CREATE TABLE `srp_erp_pos_cardissue` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`cardIssueID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_cardissue
@@ -2417,7 +2314,7 @@ CREATE TABLE `srp_erp_pos_counters` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`counterID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : To Create Cash registers for POS\r\nCreated By : Mohamed Hisham \r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Nasik Ahamed\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : To Create Cash registers for POS\r\nCreated By : Mohamed Hisham \r\nDiscussed with : Mohamed Rishad,Mohamed Reyaas, Nasik Ahamed\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_pos_counters
@@ -2450,7 +2347,7 @@ CREATE TABLE `srp_erp_pos_crewmembers` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`crewMemberID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : Crew members for restaurants are recorded in this table\r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016\r\n';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : Crew members for restaurants are recorded in this table\r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016\r\n';
 
 -- ----------------------------
 -- Records of srp_erp_pos_crewmembers
@@ -2477,7 +2374,7 @@ CREATE TABLE `srp_erp_pos_crewroles` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`crewRoleID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : this is the master table maintained in system level. companies can assign roles for employees using this table  \r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016\r\n';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : this is the master table maintained in system level. companies can assign roles for employees using this table  \r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016\r\n';
 
 -- ----------------------------
 -- Records of srp_erp_pos_crewroles
@@ -2489,7 +2386,7 @@ CREATE TABLE `srp_erp_pos_crewroles` (
 DROP TABLE IF EXISTS `srp_erp_pos_customermaster`;
 CREATE TABLE `srp_erp_pos_customermaster` (
   `posCustomerAutoID` int(11) NOT NULL AUTO_INCREMENT,
-  `wareHouseAutoID` int(11) DEFAULT '0',
+  `wareHouseAutoID` int(11) NOT NULL DEFAULT '0',
   `serialNo` int(11) DEFAULT NULL,
   `CustomerAutoID` int(11) DEFAULT NULL,
   `CustomerSystemCode` varchar(20) DEFAULT NULL,
@@ -2526,9 +2423,9 @@ CREATE TABLE `srp_erp_pos_customermaster` (
   `isFromERP` int(1) DEFAULT '1' COMMENT '1 from erp , 0 from MFQ',
   `isFromDelivery` int(11) DEFAULT '0' COMMENT '0 - not from delivery order , 1- delivery order',
   `is_sync` int(1) DEFAULT '1',
-  `id_store` int(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`posCustomerAutoID`,`id_store`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id_store` int(255) DEFAULT '0',
+  PRIMARY KEY (`posCustomerAutoID`,`wareHouseAutoID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_customermaster
@@ -2550,7 +2447,7 @@ CREATE TABLE `srp_erp_pos_customers` (
   `liabilityGLAutoID` int(11) DEFAULT NULL,
   `timestamp` datetime DEFAULT NULL,
   PRIMARY KEY (`customerID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : used in POS restaurent System Level Table to maintain customer information and customer type\r\nCreated By : Shafri\r\nDiscussed with : Rishad\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : used in POS restaurent System Level Table to maintain customer information and customer type\r\nCreated By : Shafri\r\nDiscussed with : Rishad\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_pos_customers
@@ -2564,7 +2461,7 @@ CREATE TABLE `srp_erp_pos_customertypemaster` (
   `customerTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`customerTypeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : used in POS restaurent System Level Table to maintain  customer type\r\nCreated By : Shafri\r\nDiscussed with : Rishad\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : used in POS restaurent System Level Table to maintain  customer type\nCreated By : Shafri\nDiscussed with : Rishad\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_pos_customertypemaster
@@ -2578,7 +2475,7 @@ CREATE TABLE `srp_erp_pos_deliveryorders` (
   `deliveryOrderID` int(11) NOT NULL AUTO_INCREMENT,
   `wareHouseAutoID` int(11) NOT NULL DEFAULT '0',
   `deliveryDate` date DEFAULT NULL,
-  `deliveryTime` time DEFAULT NULL,
+  `deliveryTime` time NOT NULL,
   `menuSalesMasterID` int(11) DEFAULT NULL,
   `posCustomerAutoID` int(11) DEFAULT NULL,
   `phoneNo` varchar(30) DEFAULT NULL,
@@ -2604,7 +2501,7 @@ CREATE TABLE `srp_erp_pos_deliveryorders` (
   `timestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `is_sync` int(1) DEFAULT '0',
   `id_store` int(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`deliveryOrderID`,`id_store`),
+  PRIMARY KEY (`deliveryOrderID`,`wareHouseAutoID`),
   KEY `menusalesID` (`deliveryOrderID`,`deliveryDate`,`deliveryTime`,`menuSalesMasterID`,`phoneNo`,`email`) USING BTREE,
   KEY `menuSalesMasterID` (`menuSalesMasterID`) USING BTREE,
   KEY `crewMemberID` (`crewMemberID`) USING BTREE,
@@ -2638,7 +2535,7 @@ CREATE TABLE `srp_erp_pos_diningroommaster` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`diningRoomMasterID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : to maintain dining areas (rooms) for restaurant POS\r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016\r\n\r\n';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : to maintain dining areas (rooms) for restaurant POS\r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016\r\n\r\n';
 
 -- ----------------------------
 -- Records of srp_erp_pos_diningroommaster
@@ -2672,8 +2569,9 @@ CREATE TABLE `srp_erp_pos_diningtables` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`diningTableAutoID`),
-  KEY `status` (`status`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : to maintain each dining tables under dining rooms for restaurant POS\r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016';
+  KEY `status` (`status`) USING BTREE,
+  KEY `diningTableAutoID` (`diningTableAutoID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : to maintain each dining tables under dining rooms for restaurant POS\r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016';
 
 -- ----------------------------
 -- Records of srp_erp_pos_diningtables
@@ -2693,7 +2591,7 @@ CREATE TABLE `srp_erp_pos_franchisemaster` (
   `royaltyLiabilityGLAutoID` int(11) DEFAULT NULL,
   `royaltyExpenseGLAutoID` int(11) DEFAULT NULL,
   PRIMARY KEY (`franchiseID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_franchisemaster
@@ -2723,7 +2621,7 @@ CREATE TABLE `srp_erp_pos_giftcardmaster` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`cardMasterID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_giftcardmaster
@@ -3119,7 +3017,7 @@ CREATE TABLE `srp_erp_pos_kitchenlocation` (
   `companyID` int(11) DEFAULT NULL,
   `outletID` int(11) DEFAULT NULL,
   PRIMARY KEY (`kitchenLocationID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_kitchenlocation
@@ -3183,7 +3081,7 @@ CREATE TABLE `srp_erp_pos_menucategory` (
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`menuCategoryID`),
   KEY `showImageYN` (`showImageYN`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : To Create Categories of Restaurant Menus (Eg: Beverages, Side Dishes, Fast Foods etc..)\r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : To Create Categories of Restaurant Menus (Eg: Beverages, Side Dishes, Fast Foods etc..)\r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016';
 
 -- ----------------------------
 -- Records of srp_erp_pos_menucategory
@@ -3221,7 +3119,7 @@ CREATE TABLE `srp_erp_pos_menudetails` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`menuDetailID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : contains ingredients , raw material qty and cost for Menus \r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : contains ingredients , raw material qty and cost for Menus \r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016';
 
 -- ----------------------------
 -- Records of srp_erp_pos_menudetails
@@ -3269,17 +3167,17 @@ CREATE TABLE `srp_erp_pos_menumaster` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`menuMasterID`),
+  KEY `companyID` (`companyID`),
+  KEY `kotID` (`kotID`),
+  KEY `isPack` (`isPack`),
+  KEY `isVeg` (`isVeg`),
+  KEY `isAddOn` (`isAddOn`),
+  KEY `sortOrder` (`sortOrder`) USING BTREE,
+  KEY `isDeleted` (`isDeleted`),
   KEY `barcode` (`barcode`) USING BTREE,
   KEY `showImageYN` (`showImageYN`) USING BTREE,
-  KEY `companyID` (`companyID`) USING BTREE,
-  KEY `kotID` (`kotID`) USING BTREE,
-  KEY `isPack` (`isPack`) USING BTREE,
-  KEY `isVeg` (`isVeg`) USING BTREE,
-  KEY `isAddOn` (`isAddOn`) USING BTREE,
-  KEY `sortOrder` (`sortOrder`) USING BTREE,
-  KEY `isDeleted` (`isDeleted`) USING BTREE,
   KEY `menuStatus` (`menuStatus`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : Used To Create Menus under Menu Categories ( Eg: Under Sandwithces Category -> Menu -> Club Sandwitch)\r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : Used To Create Menus under Menu Categories ( Eg: Under Sandwithces Category -> Menu -> Club Sandwitch)\r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016';
 
 -- ----------------------------
 -- Records of srp_erp_pos_menumaster
@@ -3299,7 +3197,7 @@ CREATE TABLE `srp_erp_pos_menupackcategory` (
   `createdPc` varchar(255) DEFAULT NULL,
   `timestamp` datetime DEFAULT NULL,
   PRIMARY KEY (`menuPackCategoryID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_menupackcategory
@@ -3341,7 +3239,7 @@ CREATE TABLE `srp_erp_pos_menupackitem` (
   `createdPC` varchar(255) DEFAULT NULL,
   `timestamp` datetime DEFAULT NULL,
   PRIMARY KEY (`menuPackItemID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_menupackitem
@@ -3353,6 +3251,7 @@ CREATE TABLE `srp_erp_pos_menupackitem` (
 DROP TABLE IF EXISTS `srp_erp_pos_menusalesitemdetails`;
 CREATE TABLE `srp_erp_pos_menusalesitemdetails` (
   `menuSalesItemDetailID` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouseAutoID` int(11) NOT NULL,
   `menuSalesItemID` int(11) NOT NULL,
   `menuSalesID` int(11) DEFAULT NULL,
   `itemAutoID` int(11) DEFAULT NULL,
@@ -3382,7 +3281,7 @@ CREATE TABLE `srp_erp_pos_menusalesitemdetails` (
   `timeStamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `is_sync` int(11) DEFAULT '0',
   `id_store` int(11) NOT NULL,
-  PRIMARY KEY (`menuSalesItemDetailID`,`id_store`) USING BTREE
+  PRIMARY KEY (`menuSalesItemDetailID`,`id_store`,`warehouseAutoID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -3395,6 +3294,7 @@ CREATE TABLE `srp_erp_pos_menusalesitemdetails` (
 DROP TABLE IF EXISTS `srp_erp_pos_menusalesitems`;
 CREATE TABLE `srp_erp_pos_menusalesitems` (
   `menuSalesItemID` int(11) NOT NULL AUTO_INCREMENT,
+  `warehouseAutoID` int(11) NOT NULL,
   `menuSalesID` int(11) NOT NULL,
   `menuID` int(11) DEFAULT NULL,
   `menuCategoryID` int(11) DEFAULT NULL,
@@ -3460,7 +3360,7 @@ CREATE TABLE `srp_erp_pos_menusalesitems` (
   `timestamp` timestamp NULL DEFAULT NULL,
   `is_sync` int(11) DEFAULT '0',
   `id_store` int(11) NOT NULL,
-  PRIMARY KEY (`menuSalesItemID`,`id_store`) USING BTREE,
+  PRIMARY KEY (`menuSalesItemID`,`id_store`,`warehouseAutoID`),
   KEY `isSamplePrinted` (`isSamplePrinted`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -3593,7 +3493,7 @@ CREATE TABLE `srp_erp_pos_menusalesmaster` (
   `BOTCreatedUser` int(11) DEFAULT NULL,
   `BOTCreatedDatetime` datetime DEFAULT NULL,
   `isFromTablet` int(1) DEFAULT '0' COMMENT 'if the record created from tablet window',
-  PRIMARY KEY (`menuSalesID`,`id_store`),
+  PRIMARY KEY (`menuSalesID`,`wareHouseAutoID`),
   KEY `menuSalesID` (`menuSalesID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -3739,7 +3639,7 @@ CREATE TABLE `srp_erp_pos_menuservicecharge` (
   `modifiedUserName` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`menuServiceChargeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_menuservicecharge
@@ -3787,7 +3687,7 @@ CREATE TABLE `srp_erp_pos_menutaxes` (
   `modifiedUserName` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`menutaxID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='created by Shafry, \r\ndiscuessed with Hisham\r\nIdea by: Rilwan & Rishad';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_menutaxes
@@ -3835,7 +3735,7 @@ CREATE TABLE `srp_erp_pos_menutaxmaster` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`menuTaxAutoID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : Maintain Tax type with effective percentage amount\r\nCreated By : Mohamed Hisham11/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Nusky Rauf 11/10/2016\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : Maintain Tax type with effective percentage amount\r\nCreated By : Mohamed Hisham11/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Nusky Rauf 11/10/2016\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_pos_menutaxmaster
@@ -3893,7 +3793,7 @@ CREATE TABLE `srp_erp_pos_menuyieldpreparation` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`yieldPreparationID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_menuyieldpreparation
@@ -3927,7 +3827,7 @@ CREATE TABLE `srp_erp_pos_menuyieldpreparationdetails` (
   `modifiedUserName` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`yieldPreparationDetailID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_menuyieldpreparationdetails
@@ -3963,7 +3863,7 @@ CREATE TABLE `srp_erp_pos_menuyields` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`yieldID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_menuyields
@@ -3995,7 +3895,7 @@ CREATE TABLE `srp_erp_pos_menuyieldsdetails` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`yieldDetailID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_menuyieldsdetails
@@ -4037,7 +3937,7 @@ CREATE TABLE `srp_erp_pos_outlettemplatedetail` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`outletTemplateDetailID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_outlettemplatedetail
@@ -4054,7 +3954,7 @@ CREATE TABLE `srp_erp_pos_outlettemplatemaster` (
   `sortOrder` int(2) DEFAULT NULL,
   `isDefault` int(1) DEFAULT '0' COMMENT '1 - default selected tempate',
   PRIMARY KEY (`outletTemplateMasterID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_outlettemplatemaster
@@ -4105,7 +4005,7 @@ CREATE TABLE `srp_erp_pos_paymentglconfigdetail` (
   `modifiedDateTime` datetime DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : To set gl codes for received payment of each companies (POS)\r\nModified By : Hisham on 02.01.2017 (added paymentConfigMasterID)\r\ntable  srp_erp_pos_glconfig renamed as srp_erp_pos_paymentglconfigdetail on 02.01.2017\r\nDiscussed with :Nasik and Shafri\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : To set gl codes for received payment of each companies (POS)\r\nModified By : Hisham on 02.01.2017 (added paymentConfigMasterID)\r\ntable  srp_erp_pos_glconfig renamed as srp_erp_pos_paymentglconfigdetail on 02.01.2017\r\nDiscussed with :Nasik and Shafri\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_pos_paymentglconfigdetail
@@ -4126,7 +4026,7 @@ CREATE TABLE `srp_erp_pos_paymentglconfigmaster` (
   `selectBoxName` varchar(50) DEFAULT NULL,
   `timesstamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`autoID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : To record master records of grv\r\nCreated By : Hisham on 02.01.2017\r\nDiscussed with :Nasik and Shafri\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : To record master records of grv\r\nCreated By : Hisham on 02.01.2017\r\nDiscussed with :Nasik and Shafri\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_pos_paymentglconfigmaster
@@ -4142,7 +4042,7 @@ CREATE TABLE `srp_erp_pos_paymentmethods` (
   `isActive` int(1) DEFAULT '1' COMMENT '1 active, 0 in-active',
   `timestamp` datetime DEFAULT NULL,
   PRIMARY KEY (`paymentMethodsID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_paymentmethods
@@ -4190,16 +4090,6 @@ CREATE TABLE `srp_erp_pos_policymaster` (
 -- ----------------------------
 -- Records of srp_erp_pos_policymaster
 -- ----------------------------
-INSERT INTO `srp_erp_pos_policymaster` VALUES ('1', 'KOT', 'KOT Print Out', null);
-INSERT INTO `srp_erp_pos_policymaster` VALUES ('2', 'PRICE', 'is Price Required', null);
-INSERT INTO `srp_erp_pos_policymaster` VALUES ('3', 'PRINT_SMPL', 'Before payment, Is sample bill required', null);
-INSERT INTO `srp_erp_pos_policymaster` VALUES ('4', 'comp_email', 'Send company email', null);
-INSERT INTO `srp_erp_pos_policymaster` VALUES ('5', 'KOT_BTN_HIDE', 'Hide KOT button in POS', null);
-INSERT INTO `srp_erp_pos_policymaster` VALUES ('6', 'ITM_DISC', 'Show Item Level Discount', null);
-INSERT INTO `srp_erp_pos_policymaster` VALUES ('7', 'WIFI_PW', 'Wifi Password in the bill', null);
-INSERT INTO `srp_erp_pos_policymaster` VALUES ('8', 'CAM', 'CCTV Camera Feed', null);
-INSERT INTO `srp_erp_pos_policymaster` VALUES ('9', 'HDO', 'Hide Delivery Order Form', '0');
-INSERT INTO `srp_erp_pos_policymaster` VALUES ('10', 'DPM', 'Is delivery person mandatory', '0');
 
 -- ----------------------------
 -- Table structure for srp_erp_pos_printtemplatedetail
@@ -4221,7 +4111,7 @@ CREATE TABLE `srp_erp_pos_printtemplatedetail` (
   `modifiedUserName` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`printTemplateDetailID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_printtemplatedetail
@@ -4238,7 +4128,7 @@ CREATE TABLE `srp_erp_pos_printtemplatemaster` (
   `description` varchar(255) DEFAULT NULL,
   `templateType` enum('POS','VOID','VOIDH','SO','POSGEN') DEFAULT 'POS' COMMENT 'SO - sales order, voidH - void history',
   PRIMARY KEY (`printTemplateMasterID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_printtemplatemaster
@@ -4267,7 +4157,7 @@ CREATE TABLE `srp_erp_pos_promotionapplicableitems` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`autoID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : this table will include all the items which are included for particular promotion with promotion Id\r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Reyaas Rafaideen and Mohamed Nasik10/10/2016\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : this table will include all the items which are included for particular promotion with promotion Id\r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Reyaas Rafaideen and Mohamed Nasik10/10/2016\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_pos_promotionapplicableitems
@@ -4300,7 +4190,7 @@ CREATE TABLE `srp_erp_pos_promotionsetupdetail` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`promotionDetailID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : this table will contain promotion setup details as \r\n           if promotion type is on sale discount start range and discount prc will be stored \r\n          if promotion type is on sale coupen start range and coupen amount will be stored\r\n          if promotion type is buy one get one free buying qty  and free qty will be stored \r\nCreated By : Mohamed Hisham 10/10/2016\r\nDiscussed with : Reyaas Rafaideen and Mohamed Nasik 10/10/2016\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : this table will contain promotion setup details as \r\n           if promotion type is on sale discount start range and discount prc will be stored \r\n          if promotion type is on sale coupen start range and coupen amount will be stored\r\n          if promotion type is buy one get one free buying qty  and free qty will be stored \r\nCreated By : Mohamed Hisham 10/10/2016\r\nDiscussed with : Reyaas Rafaideen and Mohamed Nasik 10/10/2016\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_pos_promotionsetupdetail
@@ -4333,7 +4223,7 @@ CREATE TABLE `srp_erp_pos_promotionsetupmaster` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`promotionID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : Promotion will be created in this table. datas such as promotion type, valid date range will be stored in this table\r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Reyaas Rafaideen and Mohamed Nasik10/10/2016\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : Promotion will be created in this table. datas such as promotion type, valid date range will be stored in this table\r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Reyaas Rafaideen and Mohamed Nasik10/10/2016\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_pos_promotionsetupmaster
@@ -4347,7 +4237,7 @@ CREATE TABLE `srp_erp_pos_promotiontypes` (
   `promotionTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `Description` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`promotionTypeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : Master Table to store promotion types as 1. on sale disc  2. on sale coupen 3. buy one get one free\r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Reyaas Rafaideen and Mohamed Nasik 10/10/2016\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : Master Table to store promotion types as 1. on sale disc  2. on sale coupen 3. buy one get one free\r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Reyaas Rafaideen and Mohamed Nasik 10/10/2016\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_pos_promotiontypes
@@ -4376,7 +4266,7 @@ CREATE TABLE `srp_erp_pos_promotionwarehouses` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`autoID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : this table is used to maintain one promotion for multiple warehouses. \r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Reyaas Rafaideen and Mohamed Nasik 10/10/2016\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : this table is used to maintain one promotion for multiple warehouses. \r\nCreated By : Mohamed Hisham10/10/2016\r\nDiscussed with : Reyaas Rafaideen and Mohamed Nasik 10/10/2016\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_pos_promotionwarehouses
@@ -4410,12 +4300,8 @@ CREATE TABLE `srp_erp_pos_segmentconfig` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`segmentConfigID`),
-  KEY `wareHouseAutoID` (`wareHouseAutoID`) USING BTREE,
-  KEY `companyID` (`companyID`) USING BTREE,
-  KEY `segmentID` (`segmentID`) USING BTREE,
-  KEY `isGeneralPOS` (`isGeneralPOS`) USING BTREE,
-  KEY `isActive` (`isActive`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : used to configure the postemplate and warehouse details under each segments \r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016\r\n';
+  KEY `isGeneralPOS` (`isGeneralPOS`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : used to configure the postemplate and warehouse details under each segments \r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016\r\n';
 
 -- ----------------------------
 -- Records of srp_erp_pos_segmentconfig
@@ -4523,7 +4409,7 @@ CREATE TABLE `srp_erp_pos_templatemaster` (
   `templateLink` varchar(300) DEFAULT NULL,
   `isDefault` int(1) DEFAULT '0',
   PRIMARY KEY (`posTemplateID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : This Tables used to maintain diffrent template UIs for POS \r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016\r\n\r\n';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : This Tables used to maintain diffrent template UIs for POS \r\nCreated By : Mohamed Hisham 09/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Mohamed Shafry 09/10/2016\r\nReviewed By : Mohamed Zahlan 09/10/2016\r\n\r\n';
 
 -- ----------------------------
 -- Records of srp_erp_pos_templatemaster
@@ -4594,7 +4480,7 @@ CREATE TABLE `srp_erp_pos_warehousemenucategory` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`autoID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_warehousemenucategory
@@ -4628,7 +4514,7 @@ CREATE TABLE `srp_erp_pos_warehousemenumaster` (
   `modifiedUserName` varchar(200) DEFAULT NULL,
   `timeStamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`warehouseMenuID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_warehousemenumaster
@@ -4654,7 +4540,7 @@ CREATE TABLE `srp_erp_pos_wifipasswordsetup` (
   KEY `isUsed` (`isUsed`) USING BTREE,
   KEY `outletID` (`outletID`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_pos_wifipasswordsetup
@@ -4710,7 +4596,7 @@ CREATE TABLE `srp_erp_taxmaster` (
   KEY `supplierCurrencyID` (`supplierCurrencyID`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE,
   KEY `companyCode` (`companyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Use : Maintain Tax type with effective percentage amount\r\nCreated By : Mohamed Hisham11/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Nusky Rauf 11/10/2016\r\nReviewed By : ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Table Use : Maintain Tax type with effective percentage amount\r\nCreated By : Mohamed Hisham11/10/2016\r\nDiscussed with : Mohamed Rishad, Reyaas Rafaideen and Nusky Rauf 11/10/2016\r\nReviewed By : ';
 
 -- ----------------------------
 -- Records of srp_erp_taxmaster
@@ -4763,7 +4649,7 @@ CREATE TABLE `srp_erp_unitsconversion` (
   KEY `masterUnitID` (`masterUnitID`) USING BTREE,
   KEY `subUnitID` (`subUnitID`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_unitsconversion
@@ -4792,7 +4678,7 @@ CREATE TABLE `srp_erp_unit_of_measure` (
   UNIQUE KEY `UnitID` (`UnitID`) USING BTREE,
   KEY `UnitShortCode` (`UnitShortCode`),
   KEY `companyID` (`companyID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_unit_of_measure
@@ -4822,7 +4708,7 @@ CREATE TABLE `srp_erp_warehouseitems` (
   KEY `wareHouseAutoID` (`wareHouseAutoID`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE,
   KEY `companyCode` (`companyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_warehouseitems
@@ -4868,7 +4754,7 @@ CREATE TABLE `srp_erp_warehousemaster` (
   KEY `isActive` (`isActive`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE,
   KEY `companyCode` (`companyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_warehousemaster
@@ -4904,7 +4790,7 @@ CREATE TABLE `srp_erp_warehouse_users` (
   KEY `isActive` (`isActive`) USING BTREE,
   KEY `companyID` (`companyID`) USING BTREE,
   KEY `companyCode` (`companyCode`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of srp_erp_warehouse_users

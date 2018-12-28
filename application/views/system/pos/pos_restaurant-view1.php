@@ -246,6 +246,12 @@ $discountPolicy = show_item_level_discount();
                     </button>
                 <?php } ?>
 
+
+                <button type="button" class="btn btn-lg btn-default buttonDefaultSize"
+                        id="btn_pos_sales_report"><i class="fa fa-bar-chart" aria-hidden="true"></i> Sales Report
+                </button>
+
+
                 <script>
                     function POS_SizeDefault() {
                         $(".itemButton").css('min-height', 112, 'important');
@@ -700,6 +706,7 @@ $this->load->view('system/pos/modals/pos-modal-credit-sales');
 $this->load->view('system/pos/modals/pos-modal-java-app');
 $this->load->view('system/pos/modals/pos-modal-delivery', $data);
 $this->load->view('system/pos/modals/pos-modal-table-order', $data);
+$this->load->view('system/pos/modals/pos-modal-sales-report.php', $data);
 $this->load->view('system/pos/modals/rpos-modal-auth-process', $data);
 $this->load->view('system/pos/modals/rpos-modal-cctv', $data);
 $this->load->view('system/pos/js/pos-restaurant-common-js', $data);

@@ -57,15 +57,7 @@ if (!isset($pdf)) {
         }
     </style>
     <span class="pull-right">
-    <button type="button" id="btn_print_sales2" class="btn btn-default btn-xs"><i
-            class="fa fa-print"></i> <?php echo $this->lang->line('common_print'); ?><!--Print--> </button>
-        <button class="btn btn-pdf btn-xs" id="btn-pdf" type="button" onclick="generatePaymentSalesReportPdf()">
-                <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
-        </button>
-        <a href="" class="btn btn-excel btn-xs" id="btn-excel" download="Sales_Report.xls"
-           onclick="var file = tableToExcel('container_sales_report2', 'Outlet Sales Report'); $(this).attr('href', file);">
-            <i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel
-        </a>
+    <button type="button" id="btn_print_sales2" class="btn btn-default btn-xs"><i class="fa fa-print"></i> <?php echo $this->lang->line('common_print'); ?></button>
 </span>
 <?php } ?>
 
@@ -80,7 +72,6 @@ if (!isset($pdf)) {
             <div class="outletInfo">
                 <?php
                 $get_outletInfo = get_outletInfo();
-                //var_dump($get_outletInfo);
                 if (!empty($get_outletInfo['warehouseImage'])) {
                     echo '<img src="' . base_url('uploads/warehouses/' . $get_outletInfo['warehouseImage']) . '" style="max-height:60px;" /><br/>';
                 }

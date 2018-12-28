@@ -119,8 +119,8 @@ class Pos_general_report_model extends ERP_Model
 
                 FROM
                     srp_erp_pos_menusalesmaster AS salesMaster
-                JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.deliveryPersonID
-                JOIN srp_paymentmethodmaster payments ON  payments.PaymentMethodMasterID = salesMaster.paymentMethod
+                LEFT JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.deliveryPersonID
+                LEFT JOIN srp_erp_pos_paymentglconfigmaster payments ON  payments.autoID = salesMaster.paymentMethod
                 WHERE
                     salesMaster.isVoid = 0
                 AND salesMaster.isHold = 0
@@ -130,7 +130,7 @@ class Pos_general_report_model extends ERP_Model
                     salesMaster.deliveryPersonID
                 )
                 AND salesMaster.deliveryPersonID <> 0
-                AND payments.PaymentDescription = 'Cash'
+                AND payments.autoID = 1
                 " . $qString . "
                 " . $outletFilter . "
                 GROUP BY
@@ -166,7 +166,6 @@ class Pos_general_report_model extends ERP_Model
                 FROM
                     srp_erp_pos_menusalesmaster AS salesMaster
                 LEFT JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.promotionID
-                LEFT JOIN srp_paymentmethodmaster payments ON payments.PaymentMethodMasterID = salesMaster.paymentMethod
                 WHERE
                     salesMaster.isVoid = 0
                 AND salesMaster.isHold = 0

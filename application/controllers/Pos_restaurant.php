@@ -3709,6 +3709,76 @@ class Pos_restaurant extends ERP_Controller
         $this->load->view('system/pos/reports/pos-payment-sales-report-admin', $data);
     }
 
+    function loadPaymentSalesReport_terminal()
+    {
+
+        $_POST['outletID'] = $this->input->post('outletID_f');
+        $data['outletID'] = $this->input->post('outletID_f');
+        $tmpFilterDate = trim(str_replace('/', '-', $this->input->post('filterFrom')));
+        $tmpFilterDateTo = trim(str_replace('/', '-', $this->input->post('filterTo')));
+        $tmpCashierSource = $this->input->post('cashier');
+        $outletIDs = $this->input->post('outletID_f');
+
+
+        if (isset($tmpFilterDate) && !empty($tmpFilterDate)) {
+            $filterDate = date('Y-m-d H:i:s', strtotime($tmpFilterDate));
+        } else {
+            $filterDate = date('Y-m-d 00:00:00');
+        }
+
+
+        if (!empty($tmpFilterDateTo)) {
+            $date2 = date('Y-m-d H:i:s', strtotime($tmpFilterDateTo));
+        } else {
+            $date2 = date('Y-m-d 23:59:59');
+        }
+
+        if (isset($tmpCashierSource) && !empty($tmpCashierSource)) {
+            $tmpCashier = join(",", $tmpCashierSource);
+            $cashier = $tmpCashier;
+        } else {
+            $cashier = null;
+        }
+
+        if (isset($outletIDs) && !empty($outletIDs)) {
+            $outlet = join(",", $outletIDs);
+            $outlets = $outlet;
+        } else {
+            $outlets = null;
+        }
+
+
+        $lessAmounts = $this->Pos_restaurant_model->get_report_lessAmount_admin($filterDate, $date2, $cashier, $outlets);
+        $lessAmounts_promotion = $this->Pos_restaurant_model->get_report_lessAmount_promotion_admin($filterDate, $date2, $cashier, $outlets);
+        $lessAmounts_discounts = $this->Pos_restaurant_model->get_report_salesReport_discount_admin($filterDate, $date2, $cashier, $outlets);
+        $lessAmounts_discounts_item_wise = $this->Pos_restaurant_model->get_report_salesReport_discount_item_wise_admin($filterDate, $date2, $cashier, $outlets);
+        $lessAmounts_discountsJavaApp = $this->Pos_restaurant_model->get_report_salesReport_javaAppDiscount_admin($filterDate, $date2, $cashier, $outlets);
+        $lessAmountsAll = array_merge($lessAmounts_discounts, $lessAmounts, $lessAmounts_promotion, $lessAmounts_discountsJavaApp, $lessAmounts_discounts_item_wise);
+
+        $data['companyInfo'] = $this->Pos_restaurant_model->get_currentCompanyDetail();
+        $data['paymentMethod'] = $this->Pos_restaurant_model->get_report_paymentMethod_admin($filterDate, $date2, $cashier, $outlets);
+        //$data['customerTypeCount'] = $this->Pos_restaurant_model->get_report_customerTypeCount_admin($filterDate, $date2, $cashier, $outlets);
+        $data['customerTypeCount'] = $this->Pos_restaurant_model->get_report_customerTypeCount_2_admin($filterDate, $date2, $cashier, $outlets);
+        $data['lessAmounts'] = $lessAmountsAll;
+
+
+        // var_dump($lessAmountsAll);
+        $data['totalSales'] = $this->Pos_restaurant_model->get_report_salesReport_totalSales_admin($filterDate, $date2, $cashier, $outlets);
+        $data['totalTaxes'] = $this->Pos_restaurant_model->get_report_salesReport_totalTaxes_admin($filterDate, $date2, $cashier, $outlets);
+        $data['totalServiceCharge'] = $this->Pos_restaurant_model->get_report_salesReport_ServiceCharge_admin($filterDate, $date2, $cashier, $outlets);
+        $data['giftCardTopUp'] = $this->Pos_restaurant_model->get_report_giftCardTopUp_admin($filterDate, $date2, $cashier, $outlets);
+        $data['voidBills'] = $this->Pos_restaurant_model->get_report_voidBills_admin($filterDate, $date2, $cashier, $outlets);
+        $data['creditSales'] = $this->Pos_restaurant_model->get_report_creditSales($filterDate, $date2, $cashier, $outlets);
+
+        //var_dump($data['voidBills']);
+
+        $data['cashier'] = $tmpCashierSource;
+        $data['cashierTmp'] = get_cashiers();
+
+
+        $this->load->view('system/pos/reports/pos-payment-sales-report-admin', $data);
+    }
+
     function clickPowerOff()
     {
         $holdBillCount = get_pos_holdBillCount();

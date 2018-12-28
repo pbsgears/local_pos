@@ -1877,7 +1877,7 @@ class Pos_restaurant_model extends ERP_Model
                 FROM
                     srp_erp_pos_menusalesmaster AS salesMaster
                 JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.deliveryPersonID
-                JOIN srp_paymentmethodmaster payments ON  payments.PaymentMethodMasterID = salesMaster.paymentMethod
+                JOIN srp_erp_pos_paymentglconfigmaster payments ON  payments.autoID = salesMaster.paymentMethod
                 WHERE
                     salesMaster.isVoid = 0
                 AND salesMaster.isHold = 0
@@ -1892,7 +1892,7 @@ class Pos_restaurant_model extends ERP_Model
                     salesMaster.deliveryPersonID
                 )
                 AND salesMaster.deliveryPersonID <> 0 
-                AND payments.PaymentDescription = 'Cash'
+                AND payments.autoID = 1
                 " . $qString . "
                 " . $outletFilter . "
                 " . $outletsFilter . "
@@ -1929,8 +1929,8 @@ class Pos_restaurant_model extends ERP_Model
                 
                 FROM
                     srp_erp_pos_menusalesmaster AS salesMaster
-                JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.deliveryPersonID
-                JOIN srp_paymentmethodmaster payments ON  payments.PaymentMethodMasterID = salesMaster.paymentMethod
+                LEFT JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.deliveryPersonID
+                LEFT JOIN srp_erp_pos_paymentglconfigmaster paymentsConfig ON  paymentsConfig.autoID = salesMaster.paymentMethod
                 WHERE
                     salesMaster.isVoid = 0
                 AND salesMaster.isHold = 0
@@ -1940,7 +1940,7 @@ class Pos_restaurant_model extends ERP_Model
                     salesMaster.deliveryPersonID
                 )
                 AND salesMaster.deliveryPersonID <> 0 
-                AND payments.PaymentDescription = 'Cash'
+                AND paymentsConfig.autoID = 1
                 " . $qString . "
                 " . $outletFilter . "
                 GROUP BY
@@ -1978,11 +1978,10 @@ class Pos_restaurant_model extends ERP_Model
                     customers.customerName as customerName,
                     SUM(netTotal) AS netTotal,
                     SUM( ( netTotal * ( salesMaster.promotionDiscount/100 ) ) ) AS lessAmount
-                
                 FROM
                     srp_erp_pos_menusalesmaster AS salesMaster
                 JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.promotionID
-                JOIN srp_paymentmethodmaster payments ON  payments.PaymentMethodMasterID = salesMaster.paymentMethod
+                JOIN srp_erp_pos_paymentglconfigmaster paymentsConfig ON  paymentsConfig.autoID = salesMaster.paymentMethod
                 WHERE
                     salesMaster.isVoid = 0
                 AND salesMaster.isHold = 0
@@ -1997,7 +1996,7 @@ class Pos_restaurant_model extends ERP_Model
                     salesMaster.promotionID
                 )
                 AND salesMaster.promotionID <> 0 
-                AND payments.PaymentDescription = 'Cash'
+                AND paymentsConfig.autoID = 1
                 " . $qString . "
                 " . $outletFilter . "
                 " . $outletsFilter . "
@@ -2035,7 +2034,6 @@ class Pos_restaurant_model extends ERP_Model
                 FROM
                     srp_erp_pos_menusalesmaster AS salesMaster
                 LEFT JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.promotionID
-                LEFT JOIN srp_paymentmethodmaster payments ON payments.PaymentMethodMasterID = salesMaster.paymentMethod
                 WHERE
                     salesMaster.isVoid = 0
                 AND salesMaster.isHold = 0
@@ -2049,32 +2047,6 @@ class Pos_restaurant_model extends ERP_Model
                     customers.customerName
                 ORDER BY
                     salesMaster.isPromotion";
-        /*$q = "SELECT
-                    salesMaster.promotionDiscount as deliveryCommission,
-                    customers.customerName as customerName,
-                    SUM(netTotal) AS netTotal,
-                    SUM( ( netTotal * ( salesMaster.promotionDiscount/100 ) ) ) AS lessAmount
-
-                FROM
-                    srp_erp_pos_menusalesmaster AS salesMaster
-                JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.promotionID
-                JOIN srp_paymentmethodmaster payments ON  payments.PaymentMethodMasterID = salesMaster.paymentMethod
-                WHERE
-                    salesMaster.isVoid = 0
-                AND salesMaster.isHold = 0
-                AND salesMaster.companyID = '" . current_companyID() . "'
-                AND salesMaster.createdDateTime BETWEEN '" . $date . "' AND '" . $date2 . "'
-                AND NOT ISNULL(
-                    salesMaster.promotionID
-                )
-                AND salesMaster.promotionID <> 0
-                AND payments.PaymentDescription = 'Cash'
-                " . $qString . "
-                " . $outletFilter . "
-                GROUP BY
-                    customers.customerName
-                ORDER BY
-                    salesMaster.isPromotion";*/
 
         //echo $q;
 
@@ -3545,7 +3517,7 @@ class Pos_restaurant_model extends ERP_Model
                 FROM
                     srp_erp_pos_menusalesmaster AS salesMaster
                 JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.deliveryPersonID
-                JOIN srp_paymentmethodmaster payments ON  payments.PaymentMethodMasterID = salesMaster.paymentMethod
+                JOIN srp_erp_pos_paymentglconfigmaster configMaster ON  configMaster.autoID = salesMaster.paymentMethod
                 WHERE
                     salesMaster.isVoid = 0
                 AND salesMaster.isHold = 0
@@ -3555,7 +3527,7 @@ class Pos_restaurant_model extends ERP_Model
                     salesMaster.deliveryPersonID
                 )
                 AND salesMaster.deliveryPersonID <> 0
-                AND payments.PaymentDescription = 'Cash'
+                AND configMaster.autoID = 1 
                 " . $qString . "
                 " . $outletFilter . "
                 GROUP BY
@@ -3592,7 +3564,6 @@ class Pos_restaurant_model extends ERP_Model
                 FROM
                     srp_erp_pos_menusalesmaster AS salesMaster
                 LEFT JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.promotionID
-                LEFT JOIN srp_paymentmethodmaster payments ON payments.PaymentMethodMasterID = salesMaster.paymentMethod
                 WHERE
                     salesMaster.isVoid = 0
                 AND salesMaster.isHold = 0
@@ -3606,32 +3577,7 @@ class Pos_restaurant_model extends ERP_Model
                     customers.customerName
                 ORDER BY
                     salesMaster.isPromotion";
-        /*$q = "SELECT
-                    salesMaster.promotionDiscount as deliveryCommission,
-                    customers.customerName as customerName,
-                    SUM(netTotal) AS netTotal,
-                    SUM( ( netTotal * ( salesMaster.promotionDiscount/100 ) ) ) AS lessAmount
 
-                FROM
-                    srp_erp_pos_menusalesmaster AS salesMaster
-                JOIN srp_erp_pos_customers customers ON customers.customerID = salesMaster.promotionID
-                JOIN srp_paymentmethodmaster payments ON  payments.PaymentMethodMasterID = salesMaster.paymentMethod
-                WHERE
-                    salesMaster.isVoid = 0
-                AND salesMaster.isHold = 0
-                AND salesMaster.companyID = '" . current_companyID() . "'
-                AND salesMaster.createdDateTime BETWEEN '" . $date . "' AND '" . $date2 . "'
-                AND NOT ISNULL(
-                    salesMaster.promotionID
-                )
-                AND salesMaster.promotionID <> 0
-                AND payments.PaymentDescription = 'Cash'
-                " . $qString . "
-                " . $outletFilter . "
-                GROUP BY
-                    customers.customerName
-                ORDER BY
-                    salesMaster.isPromotion";*/
 
         //echo $q;
 

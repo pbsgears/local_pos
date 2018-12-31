@@ -74,8 +74,9 @@ if (!empty($counters)) {
     $current_outletID = get_outletID();
     $assigned_outlet = $tmp['wareHouseID'];
 
+    $pending_shift = get_pendingShift();
 
-    if ($assigned_outlet != $current_outletID) {
+    if ($assigned_outlet != $current_outletID && empty($pending_shift)) {
         $currentOutletInfo = wareHouseDetails($current_outletID);
 
         $error = 'This is user is not assigned for <strong>' . $currentOutletInfo['wareHouseDescription'] . ' - ' . $currentOutletInfo['wareHouseCode'] . '</strong> in Local POS database.<br/><br/> If you shifted to new outlet, please pull data from Live and check again';
@@ -137,7 +138,7 @@ if (!empty($counters)) {
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>
-                <td >&nbsp;</td>
+                <td>&nbsp;</td>
                 <td colspan="3">&nbsp;</td>
             </tr>
             <?php
@@ -174,7 +175,7 @@ if (!empty($counters)) {
                     <?php echo $this->lang->line('posr_other'); ?><!--Other--></td>
                 <td colspan="7">
                     <input type="text" id="otherAmount" class="form-control number"
-                                       onkeyup="till_totalCalculate()"/>
+                           onkeyup="till_totalCalculate()"/>
                 </td>
             </tr>
             </tbody>

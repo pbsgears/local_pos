@@ -80,6 +80,19 @@ if (!function_exists('load_pos_location_drop')) {
     }
 }
 
+if (!function_exists('get_pendingShift')) {
+    function get_pendingShift()
+    {
+        $CI =& get_instance();
+        $CI->db->select("*");
+        $CI->db->from('srp_erp_pos_shiftdetails');
+        $CI->db->where('empID', current_userID());
+        $CI->db->where('companyID', current_companyID());
+        $CI->db->where('isClosed', 0);
+        return $CI->db->get()->result_array();
+    }
+}
+
 if (!function_exists('get_gpos_location')) {
     function get_gpos_location()
     {

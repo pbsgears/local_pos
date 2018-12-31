@@ -1,16 +1,17 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * -- File Name : currency_denomination_view
+ * -- File Name : pos_helper.php
  * -- Project Name : SME
  * -- Module Name : POS
- * -- Author : Nasik Ahamed
- * -- Create date : unknown
- * -- Description : currency denomination
+ * -- Author : Mohamed Shafri
+ * -- Create date : 2016
+ * -- Description : Common Class for Local POS
  *
  * -- REVISION HISTORY
  *
- * -- Date: 04 - OCT 2016 By: NSK Created .
+ * -- Date: 04 - OCT 2016 By: auto Generated Comment Created NSK Created .
+ * -- Date: 31 - DEC 2018 By: Comment patten changed according to Zahlan's methord.
  * -- Date: 31 - DEC 2018 By: Mohamed Shafri: SME-1300 Local POS : Block Login if user is not assigned for current outlet.
  *
  */

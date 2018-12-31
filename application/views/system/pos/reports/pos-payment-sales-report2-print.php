@@ -76,7 +76,7 @@ if (!isset($pdf)) {
         <h4 style="margin-top:2px;"><strong><?php echo $companyInfo['company_name'] ?></strong></h4>
     </div>
     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="outletInfo">
                 <?php
                 $get_outletInfo = get_outletInfo();
@@ -92,7 +92,7 @@ if (!isset($pdf)) {
                 ?>
             </div>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="pull-right"><?php echo $this->lang->line('common_date'); ?><!--Date-->:
                 <strong><?php echo date('d/m/Y'); ?></strong>
                 <br/><?php echo $this->lang->line('posr_time'); ?><!--Time-->: <strong>

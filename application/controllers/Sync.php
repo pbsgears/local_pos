@@ -32,7 +32,8 @@ class Sync extends ERP_Controller
             "srp_erp_customerinvoicedetails_sync" => array('invoiceDetailsAutoID'),
             "srp_erp_generalledger_sync" => array('generalLedgerAutoID'),
             "srp_erp_itemledger_sync" => array('itemLedgerAutoID'),
-            "srp_erp_documentapproved_sync" => array('documentApprovedID')
+            "srp_erp_documentapproved_sync" => array('documentApprovedID'),
+            "srp_erp_pos_wifipasswordsetup" => array('id')
 
         );
 
@@ -145,6 +146,7 @@ class Sync extends ERP_Controller
     {
 
         $qry = htmlspecialchars(urlencode($qry));
+        //echo $qry;
         $data = "qry=" . $qry;
 
         $ch = curl_init();
@@ -164,16 +166,16 @@ class Sync extends ERP_Controller
         }
 
 
-        /*var_dump($result);
+        //var_dump($result);
 
-        echo $this->config->item("sync_server_url");
+        /*echo $this->config->item("sync_server_url");
         echo $data;
         echo '<br/><br/>'; 
-
-        echo '<h3> Curl Result </h2>'; 
-        echo $result; //testing remote it later
-
         */
+        //echo '<h3> Curl Result </h2>';
+        //echo $result; //testing remote it later
+
+
 
 
         curl_close($ch);

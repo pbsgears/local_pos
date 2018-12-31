@@ -1,10 +1,18 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Created by PhpStorm.
- * User: NSK
- * Date: 2016-10-04
- * Time: 3:41 PM
+ * -- File Name : currency_denomination_view
+ * -- Project Name : SME
+ * -- Module Name : POS
+ * -- Author : Nasik Ahamed
+ * -- Create date : unknown
+ * -- Description : currency denomination
+ *
+ * -- REVISION HISTORY
+ *
+ * -- Date: 04 - OCT 2016 By: NSK Created .
+ * -- Date: 31 - DEC 2018 By: Mohamed Shafri: SME-1300 Local POS : Block Login if user is not assigned for current outlet.
+ *
  */
 
 if (!function_exists('actionCounter_fn')) {
@@ -844,7 +852,7 @@ if (!function_exists('wareHouseDetails')) {
     function wareHouseDetails($id)
     {
         $CI =& get_instance();
-        $CI->db->select("warehouseAddress, warehouseTel");
+        $CI->db->select("*");
         $CI->db->from('srp_erp_warehousemaster');
         $CI->db->where('wareHouseAutoID', $id);
         $result = $CI->db->get()->row_array();
@@ -3082,6 +3090,24 @@ if (!function_exists('get_outletInfo_byid')) {
 
     }
 }
+
+
+if (!function_exists('get_user_assigned_outlet')) {
+    function get_user_assigned_outlet()
+    {
+        $CI =& get_instance();
+        $result = $CI->db->select('w.*')
+            ->from('srp_erp_warehouse_users w')
+            ->where('w.userID', current_userID())
+            ->where('w.companyID', current_companyID())
+            ->where('w.isActive', 1)
+            ->get()->row_array();
+
+        return $result;
+    }
+}
+
+
 
 
 if (!function_exists('isDeliveryConfirmedOrder')) {

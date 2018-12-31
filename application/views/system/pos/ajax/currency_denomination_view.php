@@ -14,7 +14,7 @@ $this->lang->load('calendar', $primaryLanguage);
  * --REVISION HISTORY
  * Date: 13 - Dec 2016 By: Mohamed Shafri: worked on the double entry work in restaurant pos.
  * Date: 20 - Oct 2017 By: Mohamed Shafri: cash payment moved to srp_erp_pos_menusalespayment table and load the current cash from said table.
- *
+ * Date: 31 - DEC 2018 By: Mohamed Shafri: SME-1300 Local POS : Block Login if user is not assigned for current outlet.
  */
 ?>
 <style type="text/css">
@@ -68,138 +68,160 @@ $m = ($notesCount > $coinCount) ? $notesCount : $coinCount;
 $x = 0;
 
 
-
 if (!empty($counters)) {
-    ?>
-    <span class="hide">
-        <?php echo $this->lang->line('posr_opening_balance'); ?><!--Opening Balance--> : <?php
-        $counterData = get_counterData();
-        $d = $counterData['transactionCurrencyDecimalPlaces'];
-        $c = $counterData['transactionCurrency'];
-        $b = $counterData['startingBalance_transaction'];
-        $openingBalance = number_format($b, $d);
-        $netSales = 0;
-        $discount = 0;
-        $ExpectedCounterBalance = 0;
-        echo $openingBalance . ' ' . $c;
+
+    $tmp = get_user_assigned_outlet();
+    $current_outletID = get_outletID();
+    $assigned_outlet = $tmp['wareHouseID'];
 
 
-        if (isset($session_data) && !empty($session_data)) {
+    if ($assigned_outlet != $current_outletID) {
+        $currentOutletInfo = wareHouseDetails($current_outletID);
 
-            if (isset($isRestaurant) && $isRestaurant) {
-
-                $cashSales_tmp = get_totalCashSales($session_data);
-                $netCashSales = !empty($cashSales_tmp) ? $cashSales_tmp['NetCashSales'] : 0;
-
-                $cashSales = number_format($netCashSales, $d);
-                $tot_cash_sales = $this->lang->line('posr_total_cash_sales');
-                $tot_discount = $this->lang->line('posr_total_discount');
-                $exp_coun_balance = $this->lang->line('posr_expected_counter_balance');
-
-                echo '<br/>' . $tot_cash_sales . '<!--Total Cash Sales--> : ' . number_format($netCashSales, $d) . " " . $c;
-                //echo '<br/>' . $tot_discount . '<!--Total Discount -->: ' . number_format($discount, $d) . " " . $c;
-                $ExpectedCounterBalance = ($netCashSales + $b + $cardCollection) - $discount;
-                echo '<br/>' . $exp_coun_balance . '<!--Expected Counter Balance--> : <strong>' . number_format($ExpectedCounterBalance, $d) . "</strong> " . $c;
-                echo '<br/> Card Collection : <strong>' . number_format($cardCollection, $d) . "</strong> " . $c;
-            }
-        }
+        $error = 'This is user is not assigned for <strong>' . $currentOutletInfo['wareHouseDescription'] . ' - ' . $currentOutletInfo['wareHouseCode'] . '</strong> in Local POS database.<br/><br/> If you shifted to new outlet, please pull data from Live and check again';
         ?>
-    </span>
-    <!--<hr style="margin: 7px 0px;">-->
-
-    <table style="width: 95% !important;" id="denominationTB">
-        <tbody>
-        <tr>
-            <td colspan="3" align="center" style="font-weight:bolder"><span
-                    style="bolder;border-bottom: 1px solid; font-size: 16px !important"><?php echo $this->lang->line('common_notes'); ?><!--Notes--></span>
-            </td>
-            <td style="width:30px;">&nbsp;</td>
-            <td colspan="3" align="center" style="font-weight:bolder"><span
-                    style="bolder;border-bottom: 1px solid; font-size: 16px !important"><?php echo $this->lang->line('posr_coins'); ?><!--Coins--></span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">&nbsp;</td>
-            <td style="/*width:30px; border-right:1px solid*/">&nbsp;</td>
-            <td colspan="3">&nbsp;</td>
-        </tr>
+        <div class="alert alert-warning">
+            <?php echo $error; ?>
+        </div>
         <?php
-        while ($m > $x) {
-            echo '<tr>';
-            if (array_key_exists($x, $notesArray)) {
-                echo '<td align="right"><label for="tillTxtN_' . $x . '">' . $notesArray[$x]['amount'] . ' ' . $notesArray[$x]['caption'] . '</label></td>
+    } else {
+        ?>
+        <span class="hide">
+        <?php echo $this->lang->line('posr_opening_balance'); ?><!--Opening Balance--> : <?php
+            $counterData = get_counterData();
+            $d = $counterData['transactionCurrencyDecimalPlaces'];
+            $c = $counterData['transactionCurrency'];
+            $b = $counterData['startingBalance_transaction'];
+            $openingBalance = number_format($b, $d);
+            $netSales = 0;
+            $discount = 0;
+            $ExpectedCounterBalance = 0;
+            echo $openingBalance . ' ' . $c;
+
+
+            if (isset($session_data) && !empty($session_data)) {
+
+                if (isset($isRestaurant) && $isRestaurant) {
+
+                    $cashSales_tmp = get_totalCashSales($session_data);
+                    $netCashSales = !empty($cashSales_tmp) ? $cashSales_tmp['NetCashSales'] : 0;
+
+                    $cashSales = number_format($netCashSales, $d);
+                    $tot_cash_sales = $this->lang->line('posr_total_cash_sales');
+                    $tot_discount = $this->lang->line('posr_total_discount');
+                    $exp_coun_balance = $this->lang->line('posr_expected_counter_balance');
+
+                    echo '<br/>' . $tot_cash_sales . '<!--Total Cash Sales--> : ' . number_format($netCashSales, $d) . " " . $c;
+                    $ExpectedCounterBalance = ($netCashSales + $b + $cardCollection) - $discount;
+                    echo '<br/>' . $exp_coun_balance . '<!--Expected Counter Balance--> : <strong>' . number_format($ExpectedCounterBalance, $d) . "</strong> " . $c;
+                    echo '<br/> Card Collection : <strong>' . number_format($cardCollection, $d) . "</strong> " . $c;
+                }
+            }
+            ?>
+    </span>
+        <!--<hr style="margin: 7px 0px;">-->
+
+        <table style="width: 95% !important;" id="denominationTB">
+            <tbody>
+            <tr>
+                <td colspan="3" align="center" style="font-weight:bolder">
+                    <span style="bolder;border-bottom: 1px solid; font-size: 16px !important">
+                        <?php echo $this->lang->line('common_notes'); ?><!--Notes-->
+                    </span>
+                </td>
+                <td style="width:30px;">&nbsp;</td>
+                <td colspan="3" align="center" style="font-weight:bolder">
+                    <span style="bolder;border-bottom: 1px solid; font-size: 16px !important">
+                        <?php echo $this->lang->line('posr_coins'); ?><!--Coins--></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+                <td >&nbsp;</td>
+                <td colspan="3">&nbsp;</td>
+            </tr>
+            <?php
+            while ($m > $x) {
+                echo '<tr>';
+                if (array_key_exists($x, $notesArray)) {
+                    echo '<td align="right"><label for="tillTxtN_' . $x . '">' . $notesArray[$x]['amount'] . ' ' . $notesArray[$x]['caption'] . '</label></td>
                           <td align="center" width="30px"><label> X </label></td>
                           <td style="width: 80px;"><input type="text" name="tillTxtN_' . $x . '" id="tillTxtN_' . $x . '" data-id="totN_' . $x . '"
                               class="form-control number tillCalculate"  data-value="' . $notesArray[$x]['value'] . '" /></td>
                           <td style="">= <span class="pull-right inlineTot" id="totN_' . $x . '">' . number_format(0, $dPlace) . '</span></td>
-                          <td style="/*border-right:1px solid*/">&nbsp;</td>';
-            } else {
-                echo '<td colspan="5" style="/*border-right:1px solid*/">&nbsp;</td>';
-            }
+                          <td >&nbsp;</td>';
+                } else {
+                    echo '<td colspan="5">&nbsp;</td>';
+                }
 
-            if (array_key_exists($x, $coinArray)) {
-                echo '<td align="right"><label for="tillTxtC_' . $x . '">' . $coinArray[$x]['amount'] . ' ' . $coinArray[$x]['caption'] . '</label></td>
+                if (array_key_exists($x, $coinArray)) {
+                    echo '<td align="right"><label for="tillTxtC_' . $x . '">' . $coinArray[$x]['amount'] . ' ' . $coinArray[$x]['caption'] . '</label></td>
                           <td align="center" width="30px"><label> X </label>
                           <td style="width: 80px;"><input type="text" name="tillTxtC_' . $x . '" id="tillTxtC_' . $x . '" data-id="totC_' . $x . '"
                             class="form-control number tillCalculate" data-value="' . $coinArray[$x]['value'] . '"/></td>
                           <td>= <span class="pull-right inlineTot" id="totC_' . $x . '">' . number_format(0, $dPlace) . '</span></td> ';
-            } else {
-                echo '<td colspan="4">&nbsp;</td>';
+                } else {
+                    echo '<td colspan="4">&nbsp;</td>';
+                }
+
+                echo '</tr>';
+                $x++;
             }
+            ?>
 
-            echo '</tr>';
-            $x++;
-        }
-        ?>
-
-        <tr style="/*border-bottom: 1px solid; border-top: 1px solid;*/">
-            <td colspan="2" align="right" style="/*padding: 15px*/">
-                <?php echo $this->lang->line('posr_other'); ?><!--Other--></td>
-            <td colspan="7"><input type="text" id="otherAmount" class="form-control number"
-                                   onkeyup="till_totalCalculate()"/></td>
-        </tr>
-        <!--<tr><td colspan="9" style="border-top: 1px solid">&nbsp;</td></tr>-->
-        </tbody>Notes
-    </table>
-    <hr style="margin:10px !important;">
-    <div calss="row">
-        <div class="col-sm-6">
-            <div class="form-group">
-                <label for="till_total" class="control-label col-xs-3">
-                    <?php echo $this->lang->line('common_total'); ?><!--Total--></label>
-                <div class="col-xs-9">
-                    <input type="text" class="form-control number tillBoxInputs" id="till_total" readonly>
+            <tr>
+                <td colspan="2" align="right">
+                    <?php echo $this->lang->line('posr_other'); ?><!--Other--></td>
+                <td colspan="7">
+                    <input type="text" id="otherAmount" class="form-control number"
+                                       onkeyup="till_totalCalculate()"/>
+                </td>
+            </tr>
+            </tbody>
+            Notes
+        </table>
+        <hr style="margin:10px !important;">
+        <div calss="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="till_total" class="control-label col-xs-3">
+                        <?php echo $this->lang->line('common_total'); ?><!--Total--></label>
+                    <div class="col-xs-9">
+                        <input type="text" class="form-control number tillBoxInputs" id="till_total" readonly>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="form-group" id="counterDiv" style="/*display: none*/">
-                <label for="user_counter" class="control-label col-xs-3">
-                    <?php echo $this->lang->line('posr_counter'); ?><!--Counter--></label>
-                <div class="col-xs-9">
-                    <select name="counterID" id="counterID" class="form-control tillBoxInputs">
-                        <option value=""></option>
-                        <?php
-                        foreach ($counters as $counter) {
-                            $sel = '';
-                            if ($trillCounter == $counter['counterID']) {
-                                $sel = "selected";
-                            }
+            <div class="col-sm-6">
+                <div class="form-group" id="counterDiv" style="/*display: none*/">
+                    <label for="user_counter" class="control-label col-xs-3">
+                        <?php echo $this->lang->line('posr_counter'); ?><!--Counter--></label>
+                    <div class="col-xs-9">
+                        <select name="counterID" id="counterID" class="form-control tillBoxInputs">
+                            <option value=""></option>
+                            <?php
+                            foreach ($counters as $counter) {
+                                $sel = '';
+                                if ($trillCounter == $counter['counterID']) {
+                                    $sel = "selected";
+                                }
 
-                            echo '<option value="' . $counter['counterID'] . '" ' . $sel . '>
+                                echo '<option value="' . $counter['counterID'] . '" ' . $sel . '>
                                 ' . $counter['counterCode'] . ' - ' . $counter['counterName'] . '
                              </option>';
-                        }
-                        ?>
-                    </select>
+                            }
+                            ?>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <?php
+        <?php
+    }
+
 } else {
     $error = '';
     $myOutletID = get_outletID();
+
     //$q = $this->db->last_query();
     if (empty(trim($myOutletID))) {
         $error .= '<strong>This user is not assigned for any outlet.</strong><br/> help:  You Can setup this under Master  <i class="fa fa-arrow-right"></i> Outlet Users  ';
@@ -208,7 +230,7 @@ if (!empty($counters)) {
         $error .= '<strong>' . $this->lang->line('posr_counter_not_configured') . '</strong>';
         $error .= '<br>' . $this->lang->line('posr_please_create_counter_and_come_back');
         $Logout = site_url('Login/logout');
-        $error .= '<br><br><a href="'.$Logout.'" class="btn btn-danger"> <i class="fa fa-power-off"></i> Logout </a>';
+        $error .= '<br><br><a href="' . $Logout . '" class="btn btn-danger"> <i class="fa fa-power-off"></i> Logout </a>';
     }
     ?>
     <script>
@@ -234,11 +256,11 @@ if (!empty($counters)) {
 
             if ($(this).attr('id') == thisID) {
                 var inlineID = $(this).attr('data-id');
-                var inlineTot = ( count * thisValue );
+                var inlineTot = (count * thisValue);
                 $('#' + inlineID).text(commaSeparateNumber(inlineTot, dPlaces));
             }
 
-            sum += ( count * thisValue );
+            sum += (count * thisValue);
         });
         var otherAmount = getNumberAndValidate($('#otherAmount').val());
         sum += otherAmount;
@@ -265,9 +287,9 @@ if (!empty($counters)) {
                 else if (data[0] == 's') {
                     <?php
                     if (isset($isRestaurant) && $isRestaurant) {
-                        if(isset($isRestaurant_mobile) && $isRestaurant_mobile){
+                        if (isset($isRestaurant_mobile) && $isRestaurant_mobile) {
                             echo 'window.location = "' . site_url('m-pos') . '"';
-                        }else {
+                        } else {
                             echo 'window.location = "' . site_url('restaurant/') . '"';
                         }
                     } else {

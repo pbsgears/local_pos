@@ -14,6 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 --Date: 14 - NOV 2016 By: Mohamed Shafri: POS Footer functions
 --Date: 15 - NOV 2016 By: Mohamed Shafri: POS Payment Receipt
 --Date: 16 - NOV 2016 By: Mohamed Shafri: Hold invoice modal
+--Date: 31 - DEC 2018 By: Mohamed Shafri: SME-1300 Local POS : Block Login if user is not assigned for current outlet.
 
 -- =============================================
  */
@@ -43,6 +44,7 @@ class Pos_restaurant extends ERP_Controller
 
     function index()
     {
+
         $tmpWarehouseID = $this->Pos_restaurant_model->get_srp_erp_warehouse_users_WarehouseID();
         $warehouseID = isset($tmpWarehouseID) && !empty($tmpWarehouseID) ? $tmpWarehouseID : 0;
 
@@ -110,6 +112,8 @@ class Pos_restaurant extends ERP_Controller
         $output3 = $this->Pos_restaurant_model->get_warehouseSubCategory($warehouseID);
 
         $invCodeDet = $this->Pos_restaurant_model->getInvoiceCode();
+
+
         $data['title'] = 'POS';
         $data['extra'] = 'sidebar-collapse fixed';
         $data['refNo'] = $invCodeDet['refCode'];
@@ -131,6 +135,8 @@ class Pos_restaurant extends ERP_Controller
         $data['isPriceRequired'] = $isPriceRequired;
         $data['tables_list'] = $this->Pos_restaurant_model->get_tableList();
         $data['sampleBillPolicy'] = $this->pos_policy->isSampleBillRequired();
+
+
 
         /** load template */
         $templateLink = get_pos_templateView();

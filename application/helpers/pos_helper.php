@@ -834,22 +834,6 @@ if (!function_exists('get_outletInfo')) {
     }
 }
 
-/*if (!function_exists('get_outletID')) {
-    function get_outletID()
-    {
-        $CI =& get_instance();
-        $CI->db->select("srp_erp_warehousemaster.wareHouseAutoID as outletID");
-        $CI->db->from('srp_erp_warehouse_users');
-        $CI->db->join('srp_erp_warehousemaster', ' srp_erp_warehousemaster.wareHouseAutoID =srp_erp_warehouse_users.wareHouseID ', 'left');
-        $CI->db->where('srp_erp_warehouse_users.userID', current_userID());
-        $CI->db->where('srp_erp_warehouse_users.companyID', current_companyID());
-        $CI->db->where('srp_erp_warehousemaster.isPosLocation', 1);
-        $result = $CI->db->get()->row_array();
-        return $result['outletID'];
-
-    }
-}*/
-
 
 if (!function_exists('format_dateTime_pos_printFormat_date')) {
     function format_dateTime_pos_printFormat_date($date = null)

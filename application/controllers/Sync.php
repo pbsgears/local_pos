@@ -33,7 +33,8 @@ class Sync extends ERP_Controller
             "srp_erp_generalledger_sync" => array('generalLedgerAutoID'),
             "srp_erp_itemledger_sync" => array('itemLedgerAutoID'),
             "srp_erp_documentapproved_sync" => array('documentApprovedID'),
-            "srp_erp_pos_wifipasswordsetup" => array('id')
+            "srp_erp_pos_wifipasswordsetup" => array('id'),
+            "srp_erp_pos_cardissue" => array('cardIssueID')
 
         );
 

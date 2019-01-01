@@ -157,7 +157,9 @@ class Pos_giftCard extends ERP_Controller
                             //gc_creditCustomerID
 
                             $data_card['giftCardGLAutoID'] = $giftCardGLAutoID;
+                            $data_card['wareHouseAutoID'] = $outletID;
                             $data_card['outletID'] = $outletID;
+                            $data_card['id_store'] = $outletID;
                             $data_card['reference'] = isset($references[$key]) ? $references[$key] : '';
                             $data_card['shiftID'] = $shiftID;
                             $data_card['companyID'] = current_companyID();
@@ -242,6 +244,7 @@ class Pos_giftCard extends ERP_Controller
                     $telephone = $this->input->post('customerTelephone');
                     $posCustomerAutoID = $this->db->select('posCustomerAutoID')->from('srp_erp_pos_customermaster')->where('customerTelephone', $telephone)->get()->row('posCustomerAutoID');
                     if (!$posCustomerAutoID) {
+
                         /** register this customer */
                         $customerInfo['CustomerName'] = $this->input->post('CustomerName');
                         $customerInfo['customerCountry'] = $companyInfo['company_country'];
@@ -267,7 +270,7 @@ class Pos_giftCard extends ERP_Controller
                     $curDatetime = format_date_mysql_datetime();
 
                     $this->topUpGiftCard(true);
-
+                    $outletID = get_outletID();
                     /** issue card */
                     $data_cardIssue['cardMasterID'] = $cardMaster['cardMasterID'];
                     $data_cardIssue['barCode'] = $barCode;
@@ -282,6 +285,9 @@ class Pos_giftCard extends ERP_Controller
                     $data_cardIssue['createdDateTime'] = $curDatetime;
                     $data_cardIssue['createdUserName'] = current_user();
                     $data_cardIssue['timestamp'] = $curDatetime;
+                    $data_cardIssue['wareHouseAutoID'] = $outletID;
+                    $data_cardIssue['id_store'] = $outletID;
+                    $data_cardIssue['is_sync'] = 0;
 
 
                     $this->db->insert('srp_erp_pos_cardissue', $data_cardIssue);

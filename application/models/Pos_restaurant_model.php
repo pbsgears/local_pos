@@ -3081,7 +3081,8 @@ class Pos_restaurant_model extends ERP_Model
             $companyCode = current_company_code();
 
             $masterData = get_pos_invoice_id($invoiceID);
-
+            $counterInfo = get_counterData();
+            $shiftID = $counterInfo['shiftID'];
 
             $reference = $this->input->post('reference');
             $customerAutoIDs = $this->input->post('customerAutoID');
@@ -3205,7 +3206,8 @@ class Pos_restaurant_model extends ERP_Model
                             $dta_GC['createdUserName'] = $createdUserName;
                             $dta_GC['createdUserGroup'] = $createdUserGroup;
                             $dta_GC['timestamp'] = $createdDateTime;
-
+                            $dta_GC['shiftID'] = $shiftID;
+                            $dta_GC['id_store'] = $outletID;
 
                             $this->db->insert('srp_erp_pos_cardtopup', $dta_GC);
 

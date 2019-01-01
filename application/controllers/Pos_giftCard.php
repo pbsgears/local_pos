@@ -10,7 +10,12 @@
  * -- Description : Gift Card masters and Gift Card Process .
  *
  * --REVISION HISTORY
+ * 
  * --Date: 19-Oct 2017 By: Mohamed Shafri: file created
+ * --Date: 01-JAN 2019 By: Mohamed Shafri: SME-1305  Local POS - Gift card two way syncing, Manual Pulling only for Git Card
+ * --Date: 01-JAN 2019 By: Mohamed Shafri: Changes Reference https://github.com/pbsgears/local_pos/commit/7d30b122f5b9d2467220dc34c60bdd660d1ca16e
+ *
+ *
  * -- =============================================
  **/
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -270,7 +275,9 @@ class Pos_giftCard extends ERP_Controller
                     $curDatetime = format_date_mysql_datetime();
 
                     $this->topUpGiftCard(true);
+
                     $outletID = get_outletID();
+
                     /** issue card */
                     $data_cardIssue['cardMasterID'] = $cardMaster['cardMasterID'];
                     $data_cardIssue['barCode'] = $barCode;
@@ -285,6 +292,7 @@ class Pos_giftCard extends ERP_Controller
                     $data_cardIssue['createdDateTime'] = $curDatetime;
                     $data_cardIssue['createdUserName'] = current_user();
                     $data_cardIssue['timestamp'] = $curDatetime;
+                    /*SME-1305*/
                     $data_cardIssue['wareHouseAutoID'] = $outletID;
                     $data_cardIssue['id_store'] = $outletID;
                     $data_cardIssue['is_sync'] = 0;

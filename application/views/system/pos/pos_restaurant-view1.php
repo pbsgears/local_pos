@@ -247,9 +247,14 @@ $discountPolicy = show_item_level_discount();
                 <?php } ?>
 
 
-                <button type="button" class="btn btn-lg btn-default buttonDefaultSize"
-                        id="btn_pos_sales_report"><i class="fa fa-bar-chart" aria-hidden="true"></i> Sales Report
-                </button>
+                <?php
+                $isSalesReportEnabled = isSalesReportEnabled();
+                if ($isSalesReportEnabled) {
+                    ?>
+                    <button type="button" class="btn btn-lg btn-default buttonDefaultSize"
+                            id="btn_pos_sales_report"><i class="fa fa-bar-chart" aria-hidden="true"></i> Sales Report
+                    </button>
+                <?php } ?>
 
 
                 <script>
@@ -1020,7 +1025,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
 
         var parentID_addOn = 0;
 
-        function LoadToInvoice(id, parentID=0, source=0) {
+        function LoadToInvoice(id, parentID = 0, source = 0) {
             var discountPolicy = '<?php echo $discountPolicy ? 0 : 1;  ?>';
             var classDiscountHide = '<?php echo $discountPolicy ? '' : 'hide';  ?>';
             var dynamicWidth = '<?php echo $discountPolicy ? '16.5%' : '24.5%';  ?>';

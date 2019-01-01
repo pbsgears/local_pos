@@ -1201,6 +1201,22 @@ if (!function_exists('defaultCustomerType')) {
     }
 }
 
+if (!function_exists('isSalesReportEnabled')) {
+    function isSalesReportEnabled()
+    {
+        $CI =& get_instance();
+        $CI->db->select("isLocalPosSalesRptEnable");
+        $CI->db->from('srp_employeesdetails');
+        $CI->db->where('EIdNo', current_userID());
+        $result = $CI->db->get()->row_array();
+        if (!empty($result['isLocalPosSalesRptEnable'] == 1)) {
+            return true;
+        } else {
+            return null;
+        }
+    }
+}
+
 
 if (!function_exists('get_paymentMethods_drop')) {
     function get_paymentMethods_drop()
@@ -3104,8 +3120,6 @@ if (!function_exists('get_user_assigned_outlet')) {
         return $result;
     }
 }
-
-
 
 
 if (!function_exists('isDeliveryConfirmedOrder')) {

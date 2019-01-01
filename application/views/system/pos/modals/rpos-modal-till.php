@@ -5,7 +5,8 @@ $this->lang->load('common', $primaryLanguage);
 $this->lang->load('calendar', $primaryLanguage);
 
 ?>
-<div aria-hidden="true" role="dialog" tabindex="-1" id="till_modal" class="modal fade" data-keyboard="false" style="display: none;">
+<div aria-hidden="true" role="dialog" tabindex="-1" id="till_modal" class="modal fade" data-keyboard="false"
+     style="display: none;">
     <div class="modal-dialog" style="/*width: 50%*/">
         <div class="modal-content">
             <div class="color-line"></div>
@@ -13,7 +14,8 @@ $this->lang->load('calendar', $primaryLanguage);
                 <!--style="background-color: #373942; color:#ffffff;"-->
                 <!--<button type="button" class="close tillModal_close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>-->
-                <h5 class="modal-title" id="tillModal_title"><?php echo $this->lang->line('posr_start_day');?><!--Start Day--></h5>
+                <h5 class="modal-title" id="tillModal_title">
+                    <?php echo $this->lang->line('posr_start_day'); ?><!--Start Day--></h5>
             </div>
             <div class="modal-body" style="padding: 10px; height: auto">
                 <div class="smallScroll" id="currencyDenomination_data" align="center"
@@ -36,11 +38,21 @@ $this->lang->load('calendar', $primaryLanguage);
                     </button>
                 <?php } ?>
 
+                <?php
+                $isSalesReportEnabled = isSalesReportEnabled();
+                if ($isSalesReportEnabled) {
+                    ?>
+                    <button type="button" class="btn btn-xs btn-default" onclick="table_order_init()">
+                        <i class="fa fa-bar-chart" aria-hidden="true"></i> Sales Report
+                    </button>
+                <?php } ?>
+
                 <button class="btn btn-primary btn-xs" type="button" id="tillSave_Btn">
-                    <?php echo $this->lang->line('common_save');?><!--Save-->
+                    <?php echo $this->lang->line('common_save'); ?><!--Save-->
                 </button>
                 </a>
-                <a href="<?php echo site_url('dashboard') ?>" class="btn btn-default btn-xs"><?php echo $this->lang->line('common_Close');?><!--Close--></a>
+                <a href="<?php echo site_url('dashboard') ?>" class="btn btn-default btn-xs">
+                    <?php echo $this->lang->line('common_Close'); ?><!--Close--></a>
             </div>
         </div>
     </div>
@@ -57,8 +69,11 @@ $this->lang->load('calendar', $primaryLanguage);
                        style="text-decoration: none">
                         <i class="fa fa-refresh fa-spin fa-3x fa-fw" style="font-size:15px"></i>
                     </a>
-                    <strong><?php echo $this->lang->line('posr_session_successfully_closed');?><!--Session Successfully closed-->.</strong> <?php echo $this->lang->line('posr_redirect_in');?><!--Redirect in--> <span id="countDown"> 5 </span>
-                    <?php echo $this->lang->line('posr_seconds');?><!--Seconds-->.
+                    <strong>
+                        <?php echo $this->lang->line('posr_session_successfully_closed'); ?><!--Session Successfully closed-->
+                        .</strong> <?php echo $this->lang->line('posr_redirect_in'); ?><!--Redirect in--> <span
+                            id="countDown"> 5 </span>
+                    <?php echo $this->lang->line('posr_seconds'); ?><!--Seconds-->.
                 </div>
             </div>
         </div>

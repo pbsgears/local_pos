@@ -540,6 +540,7 @@ $config['outletID'] = 108;
 $config['sync_server_url'] = "https://cloud.spur-int.com/index.php/sync_server";
 $config['sync_url'] = "http://localhost/local_pos/index.php/sync";
 
-/** Pulling */
-$config['sync_server_pull_url'] = "https://cloud.spur-int.com/index.php/sync_server/pull_data"; // whoes pc is this lis this?
+/** Pulling URL  */
+$config['sync_server_pull_url'] = "https://cloud.spur-int.com/index.php/sync_server/pull_data";
+$config['sync_server_pull_url_gift_card'] = "https://cloud.spur-int.com/index.php/sync_server/pull_data_giftCard";
 $config['local_central_db'] = "central_db_local";

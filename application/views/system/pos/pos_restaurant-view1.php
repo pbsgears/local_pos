@@ -240,7 +240,7 @@ $discountPolicy = show_item_level_discount();
                 $isLocalPOSEnabled = isLocalPOSEnabled();
                 if ($isLocalPOSEnabled) {
                     ?>
-                    <button type="button" onclick="updateLiveTables()" class="btn btn-lg btn-warning buttonDefaultSize">
+                    <button type="button" onclick="openSyncModal()" class="btn btn-lg btn-warning buttonDefaultSize">
                         <i class="fa fa-cloud-download" aria-hidden="true"></i>
                         Pull Data
                     </button>
@@ -714,6 +714,7 @@ $this->load->view('system/pos/modals/pos-modal-table-order', $data);
 $this->load->view('system/pos/modals/pos-modal-sales-report.php', $data);
 $this->load->view('system/pos/modals/rpos-modal-auth-process', $data);
 $this->load->view('system/pos/modals/rpos-modal-cctv', $data);
+$this->load->view('system/pos/modals/rpos-modal-sync', $data);
 $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
 
 ?>

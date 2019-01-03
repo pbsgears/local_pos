@@ -388,6 +388,9 @@
     -webkit-animation: showSweetAlert 0.3s;
     -moz-animation: showSweetAlert 0.3s;
     animation: showSweetAlert 0.3s;
+    -webkit-box-shadow: -4px 3px 70px 6px rgba(0,0,0,0.28);
+    -moz-box-shadow: -4px 3px 70px 6px rgba(0,0,0,0.28);
+    box-shadow: -4px 3px 70px 6px rgba(0,0,0,0.28);
 }
 
 .hideSweetAlert {

@@ -129,23 +129,6 @@ if (!function_exists('applicableItems')) {
     }
 }
 
-if (!function_exists('promoWarehouses')) {
-    function promoWarehouses($promotionID)
-    {
-        /*$CI =& get_instance();
-        $result = $CI->db->select('wareHouseCode, wareHouseLocation')
-                     ->from('srp_erp_pos_promotionwarehouses promo')
-                     ->join('srp_erp_warehousemaster house', 'house.wareHouseAutoID = promo.wareHouseID')
-                     ->where('promo.promotionID', $promotionID)
-                     ->get()->result_array();
-        $houses = '';
-        foreach($result as $row){
-            $houses .=  $row['wareHouseLocation'].'<br>';
-        }
-        return $houses;*/
-    }
-}
-
 
 if (!function_exists('get_warehouse_drop')) {
     function get_warehouse_drop()
@@ -241,8 +224,6 @@ if (!function_exists('col_posConfig')) {
     function col_posConfig($id)
     {
         $output = '<div style="text-align: center;">';
-
-        //$output .= '<button class="btn btn-default btn-xs" onclick="employee_profile_edit(\'' . $id . '\')" rel="tooltip" title="Edit Profile" ><i class="fa fa-edit"></i></button>';
         $output .= '<button class="btn btn-danger btn-xs" onclick="delete_segmentConfig(\'' . $id . '\')" rel="tooltip" title="Delete" ><i class="fa fa-trash"></i></button>';
 
         $output .= '</div>';
@@ -438,13 +419,11 @@ if (!function_exists('col_btnSet')) {
     {
         $cls = $isPack == 0 ? 'display: none; ' : '';
         $output = '<div style="text-align: right; ">';
-        //$output .= '<span><input type="text" style="width: 20px;"/> </span>';
         $output .= '<span id="packBtnID_' . $id . '" style="' . $cls . '">';
         $output .= '<button class="btn btn-default btn-sm" onclick="packConfig_modal(\'' . $id . '\')" rel="tooltip"  ><i class="fa fa-coffee" aria-hidden="true"></i></button>&nbsp;&nbsp;&nbsp;';
         $output .= '</span>';
 
         $output .= '<button class="btn btn-default btn-sm" onclick="loadMenuDetail(\'' . $id . '\')" rel="tooltip" ><i class="fa fa-cogs"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;';
-        //$output .= '<button class="btn btn-default btn-sm" onclick="" rel="tooltip" data-original-title="" title=""><i class="fa fa-cogs"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;';
         $output .= '<button class="btn btn-default btn-sm" onclick="editMenu(\'' . $id . '\',\'' . $categoryID . '\')" rel="tooltip" title="Edit Menu" ><i class="fa fa-edit"></i></button>&nbsp;&nbsp;&nbsp;';
         $output .= '<button class="btn btn-danger btn-sm" onclick="deleteMenu(\'' . $id . '\')" rel="tooltip" title="Delete" ><i class="fa fa-trash"></i></button>';
 
@@ -886,12 +865,6 @@ if (!function_exists('payableGL_drop')) {
         $CI->db->where('approvedYN', 1);
         $CI->db->where('companyID', current_companyID());
         $data = $CI->db->get()->result_array();
-        /*$data_arr = array('' => 'Select GL Account');
-        if (isset($data)) {
-            foreach ($data as $row) {
-                $data_arr[trim($row['GLAutoID'])] = trim($row['systemAccountCode']) . ' | ' . trim($row['GLSecondaryCode']) . ' | ' . trim($row['GLDescription']) . ' | ' . trim($row['subCategory']);
-            }
-        }*/
         return $data;
     }
 }
@@ -915,10 +888,7 @@ if (!function_exists('isPaxBtn')) {
     function isPaxBtn($id, $categoryID = 0, $value = 0)
     {
         $checked = $value == 1 ? 'checked' : '';
-
         $output = '<div style="text-align: center;">';
-
-        //$output .= $id . ' - ' . $categoryID . ' - ' . $value . '<br/>';
         $output .= '<input class="mySwitch" type="checkbox" id="isPax_' . $id . $categoryID . '"  name="isPax" 
                                    onchange="updateIsPaxValue(' . $id . ',\'m\',' . $categoryID . ')"
                                    data-size="mini" data-on-text="<i class=\'fa fa-coffee text-purple\'></i> Pax"
@@ -935,16 +905,12 @@ if (!function_exists('showImageYN_btn')) {
     function showImageYN_btn($id, $categoryID = 0, $value = 0)
     {
         $checked = $value == 1 ? 'checked' : '';
-
         $output = '<div style="text-align: center;">';
-
-        //$output .= $id . ' - ' . $categoryID . ' - ' . $value . '<br/>';
         $output .= '<input class="mySwitch" type="checkbox" id="showImageYN_' . $id . $categoryID . '"  name="showImageYN" 
                                    onchange="update_showImageYN(' . $id . ',\'m\',' . $categoryID . ')"
                                    data-size="mini" data-on-text="<i class=\'fa fa-image text-green\'></i> On"
                                    data-handle-width="50" data-off-color="default" data-on-color="default"
                                    data-off-text="Off" data-label-width="0" ' . $checked . ' >';
-
         $output .= '</div>';
 
         return $output;
@@ -966,12 +932,7 @@ if (!function_exists('get_itemPackItem')) {
         $CI->db->where('menuMaster.isPack', 0);
         $CI->db->where('menuCategory.isActive', 1);
         $CI->db->where('menuCategory.isDeleted', 0);
-        //$CI->db->where('menuCategory.isPack', 0);
         $result = $CI->db->get()->result_array();
-
-        //echo $CI->db->last_query();
-        //exit;
-
 
         $output_arr = array('' => 'Please Select');
         if (isset($result)) {
@@ -994,8 +955,6 @@ if (!function_exists('col_pos_packItem')) {
     function col_pos_packItem($id)
     {
         $output = '<div style="text-align: center;">';
-        /*$output .= '<button class="btn btn-default btn-xs" onclick="edit_pos_crew_config(\'' . $id . '\')" rel="tooltip" ><i class="fa fa-pencil-square-o"></i></button>';
-        $output .= '| ';*/
         $output .= '<button class="btn btn-danger btn-xs" onclick="delete_pos_packGroup(' . $id . ')" rel="tooltip" ><i class="fa fa-trash-o"></i></button>';
         $output .= '</div>';
 
@@ -1007,8 +966,6 @@ if (!function_exists('col_pos_packItemCategory')) {
     function col_pos_packItemCategory($id)
     {
         $output = '<div style="text-align: center;">';
-        /*$output .= '<button class="btn btn-default btn-xs" onclick="edit_pos_crew_config(\'' . $id . '\')" rel="tooltip" ><i class="fa fa-pencil-square-o"></i></button>';
-        $output .= '| ';*/
         $output .= '<button class="btn btn-danger btn-xs" onclick="delete_pos_packItemCategory(' . $id . ')" rel="tooltip" ><i class="fa fa-trash-o"></i></button>';
         $output .= '</div>';
 

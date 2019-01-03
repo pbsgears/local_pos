@@ -49,6 +49,16 @@ $this->lang->load('calendar', $primaryLanguage);
                                 onclick="loadHistoryModal()">
                             <i class="fa fa-history"></i> History
                         </button>
+
+                        <?php
+                        $isLocalPOSEnabled = isLocalPOSEnabled();
+                        if ($isLocalPOSEnabled) {
+                            ?>
+                            <button class="btn btn-lg btn-warning giftCardBtnContainer" type="button"
+                                    onclick="pullFromLive_giftCard()">
+                                <i class="fa fa-cloud-download"></i> Pull Gift Card Data
+                            </button>
+                        <?php } ?>
                     </div>
 
                 </div>
@@ -490,6 +500,8 @@ $this->lang->load('calendar', $primaryLanguage);
             });
         });
     });
+
+
 
     /** Card Redeem */
     function openGiftCardRedeemModal() {

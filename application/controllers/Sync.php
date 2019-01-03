@@ -188,7 +188,6 @@ class Sync extends ERP_Controller
         }
     }
 
-
     function pull_data()
     {
         $companyID = current_companyID();
@@ -288,5 +287,73 @@ class Sync extends ERP_Controller
         curl_close($ch);
     }
 
+    function pull_data_giftCard()
+    {
+        $companyID = current_companyID();
+        $companyInfo = get_companyInformation($companyID);
+        $values = array(
+            'companyID' => $companyID,
+            'token' => $companyInfo['localposaccesstoken']
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->config->item("sync_server_pull_url_gift_card"));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+        $params = http_build_query($values);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        $server_output = curl_exec($ch);
+        $result = json_decode($server_output, true);
+
+        if (curl_error($ch)) {
+            echo json_encode(array('error' => 1, 'message' => curl_error($ch)));
+            exit;
+        }
+
+        if (isset($result['error']) && $result['error'] == 0) {
+
+            $records = 0;
+            $tables = 1;
+            $outputMsg = '';
+
+            /** Local central db */
+            $db3 = $this->load->database('db3', TRUE);
+            $db3->query('DROP TABLE IF EXISTS ' . $result['c_db_data']['table']);
+            $db3->query($result['c_db_data']['query']);
+            $db3->insert_batch($result['c_db_data']['table'], $result['c_db_data']['data']);
+            $outputMsg .= $db3->database . '.' . $result['c_db_data']['table'] . ' table updated with ' . $result['c_db_data']['count'] . ' records.<br/>';
+            $records += $result['c_db_data']['count'];
+            /** End Local central db */
+
+            if (isset($result['data_output']) && !empty($result['data_output'])) {
+                foreach ($result['data_output'] as $tmpData) {
+                    if (!empty($tmpData)) {
+                        $tables++;
+                        $table_name = $tmpData['table'];
+                        $new_data = $tmpData['data'];
+                        $records += $tmpData['count'];
+
+
+                        if ($table_name != 'srp_erp_pos_kitchennotesamples' && $table_name != 'srp_erp_pos_outletprinters') {
+                            $this->db->query('DROP TABLE IF EXISTS ' . $table_name);
+                            $this->db->query($tmpData['query']);
+                            if (!empty($new_data)) {
+                                $r = $this->db->insert_batch($table_name, $new_data);
+                            }
+                        }
+                        $outputMsg .= $table_name . ' updated with ' . $tmpData['count'] . ' records.<br/>';
+                    }
+                }
+            }
+            $msg = number_format($tables) . ' table updated with ' . number_format($records) . ' records';
+            echo json_encode(array('from_DB' => $result['db'], 'to_DB' => $this->db->database, 'error' => 0, 'message' => $msg));
+        } else {
+            echo json_encode($result);
+        }
+        curl_close($ch);
+    }
 
 }

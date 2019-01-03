@@ -37,6 +37,12 @@
                             </div>
                         </a>
                     </li>
+                    <li id="show_syncing_progress" style="display: none;">
+                        <a style="border-left: 1px solid #eee; padding: 10px;" href=""
+                           id="sync_progress_icon_container">
+                            <i class="fa fa-cloud-upload fa-2x text-info blink_me" aria-hidden="true"></i>
+                        </a>
+                    </li>
                 </ul>
             </div>
 

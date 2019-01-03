@@ -15,7 +15,9 @@ $companyInfo = get_companyInfo();
 $templateInfo = get_pos_templateInfo();
 $templateID = get_pos_templateID();
 $discountPolicy = show_item_level_discount();
+
 ?>
+
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/pos/pos-min.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/pos/pos-style-all-device.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/slick/slick/slick.css') ?>">
@@ -38,6 +40,7 @@ $discountPolicy = show_item_level_discount();
             padding-right: 3px;
         }
     </style>
+
     <div id="posHeader_2" class="hide" style="display: none;"></div>
     <div id="form_div" style="padding: 1%; margin-top: 40px">
         <div class="row" style="margin-top: 0px;">
@@ -1959,9 +1962,22 @@ if ($sync) {
                     jQuery.post(
                         "<?php echo $this->config->item("sync_url"); ?>", {},
                         function (ret) {
+                            var obj = jQuery.parseJSON(ret);
                             working = false;
+                            if (obj.status == 1) {
+                                $("#sync_progress_icon_container").html('<i class="fa fa-2x fa-cloud-upload text-info blink_me" aria-hidden="true"></i>');
+                                $("#show_syncing_progress").show();
+                            } else if (obj.status == 0) {
+                                $("#show_syncing_progress").hide();
+                            } else if (obj.status == 3) {
+                                /** No internet */
+                                $("#sync_progress_icon_container").html('<i class="fa fa-2x fa-cloud-upload text-red" title="No Internet" aria-hidden="true"></i>');
+                                $("#show_syncing_progress").show();
+                            }
                         }
-                    );
+                    ).fail(function (xhr, status, error) {
+                        do_sync;
+                    });
                 }
                 window.setInterval(do_sync, 10000);
             });

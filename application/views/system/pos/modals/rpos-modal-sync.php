@@ -88,6 +88,10 @@ $this->lang->load('calendar', $primaryLanguage);
                                     location.reload();
                                 }, 3000);
 
+                            } else if (data['error'] == 2) {
+                                myAlert('w', data.message)
+                            } else if (data['error'] == 3) {
+                                myAlert('i', data.message)
                             } else {
                                 myAlert('d', data.message)
                             }

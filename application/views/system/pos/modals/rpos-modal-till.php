@@ -32,7 +32,7 @@ $this->lang->load('calendar', $primaryLanguage);
                 $isLocalPOSEnabled = isLocalPOSEnabled();
                 if ($isLocalPOSEnabled) {
                     ?>
-                    <button type="button" onclick="updateLiveTables()" class="btn btn-xs btn-warning">
+                    <button type="button" onclick="openSyncModal()" class="btn btn-xs btn-warning">
                         <i class="fa fa-cloud-download" aria-hidden="true"></i>
                         Pull Data
                     </button>

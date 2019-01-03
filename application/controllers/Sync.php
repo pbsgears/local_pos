@@ -44,7 +44,7 @@ class Sync extends ERP_Controller
 
     function index()
     {
-        echo date("H:i:s A") . '<br/>';
+        $message = 'Started on ' . date("H:i:s A") . " \n ";
 
         $newLine = "\r\n";
         $output = $update = "";
@@ -58,12 +58,8 @@ class Sync extends ERP_Controller
             $numOfRows = count($col_exists);
 
             if ($numOfRows > 0) { // is_sync column exists for this table
-                //echo 'is_sync column exists for this table';
-
                 $sql = "SELECT * FROM {$table_name} WHERE is_sync = 0 LIMIT 50";
-
                 $rows = $this->db->query($sql);
-
                 $rowCount2 = count($rows);
                 if ($rowCount2 > 0) { // where is_sync = 0
                     foreach ($rows->result_array() as $row) {
@@ -73,52 +69,34 @@ class Sync extends ERP_Controller
                             if (is_null($val)) {
                                 continue;
                             }
-                            //$val = mysql_real_escape_string($val);
-
                             $search_string = "'";
                             $pos = strpos($val, $search_string);
-
                             $val = str_replace(array("'", "\"", "`"), array('&#8217;', '&#8221;', '&#96;'), $val);
-
                             if ($pos === false) {
                                 $update_col_val[] = " `{$name}` = '{$val}' ";
                             }
-
-
                             if ("is_sync" === $name) {
                                 $val = 1;
                             }
-
                             if ("id_store" === $name) {
                                 $val = $this->id_store;
                             }
-
                             $col_val[] = " `{$name}` = '{$val}' ";
-
-
                             if (isset($columns[0]) && $name === $columns[0]) {
                                 $already_exists[] = " `$columns[0]` = '{$val}'";
                             }
-
                             if (isset($columns[1]) && $name === $columns[1]) {
                                 $already_exists[] = " `$columns[1]` = '{$val}'";
                             }
-
-
                         }
 
 
                         if (is_array($col_val) && count($col_val) > 0) {
-
-                            //echo $this->table_keys[$table_name];
                             $output .= "SELECT * FROM `{$table_name}` WHERE `id_store` = {$this->id_store} AND " . implode(" AND ", $already_exists) . " ||";
                             $output .= "INSERT INTO `{$table_name}` SET " . implode(",", $col_val) . " ||";
                             $output .= "UPDATE `{$table_name}` SET " . implode(",", $col_val) . " WHERE `id_store` = {$this->id_store} AND " . implode(" AND ", $already_exists);
-                            //$output .= " ;; ".current_companyID();
                             $output .= " ;; ";
-
                             $update .= "UPDATE {$table_name} SET is_sync = 1 WHERE " . implode(" AND ", $update_col_val) . " ;; ";
-
                         }
                     }
                 } // if is_sync = 0
@@ -134,12 +112,18 @@ class Sync extends ERP_Controller
                     $this->db->query($upq);
                 }
             }
-            echo '<br/>updated!<br/>';
+            $message .= "data updated! \n";
+            $s_msg = 'updated!';
+            $state = 1;
         } else {
-            echo '<br/>empty<br/>';
+            $state = 0;
+            $message .= "empty \n";
+            $s_msg = 'empty';
         }
 
-        echo '<br/>' . date("H:i:s A");
+        $message .= " \n End Time" . date("H:i:s A");
+
+        echo json_encode(array('status' => $state, 'message' => $message, 'shortMessage' => $s_msg));
 
     }
 
@@ -163,7 +147,9 @@ class Sync extends ERP_Controller
         $result = curl_exec($ch);
 
         if (curl_error($ch)) {
-            var_dump(curl_error($ch));
+            $message = curl_error($ch);
+            echo json_encode(array('status' => 3, 'message' => 'No internet connection!.<br/>' . $message, 'shortMessage' => 'Can not reach host'));
+            exit;
         }
 
 
@@ -175,8 +161,6 @@ class Sync extends ERP_Controller
         */
         //echo '<h3> Curl Result </h2>';
         //echo $result; //testing remote it later
-
-
 
 
         curl_close($ch);
@@ -309,7 +293,7 @@ class Sync extends ERP_Controller
         $result = json_decode($server_output, true);
 
         if (curl_error($ch)) {
-            echo json_encode(array('error' => 1, 'message' => curl_error($ch)));
+            echo json_encode(array('error' => 2, 'message' => 'No Internet, try again!.<br/>' . curl_error($ch)));
             exit;
         }
 
@@ -351,7 +335,7 @@ class Sync extends ERP_Controller
             $msg = number_format($tables) . ' table updated with ' . number_format($records) . ' records';
             echo json_encode(array('from_DB' => $result['db'], 'to_DB' => $this->db->database, 'error' => 0, 'message' => $msg));
         } else {
-            echo json_encode($result);
+            echo json_encode(array('error' => 3, 'message' => 'Something went wrong, Please refresh your browser and check it again'));
         }
         curl_close($ch);
     }

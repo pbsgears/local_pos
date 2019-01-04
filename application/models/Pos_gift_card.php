@@ -100,7 +100,7 @@ class Pos_gift_card extends ERP_Model
     function loadCardIssueData($barCode)
     {
         $q = "SELECT cardIssueID, cardMasterID, expiryDate, srp_erp_pos_customermaster.* FROM srp_erp_pos_cardissue
-            LEFT JOIN srp_erp_pos_customermaster ON srp_erp_pos_customermaster.posCustomerAutoID = srp_erp_pos_cardissue.posCustomerAutoID
+            LEFT JOIN srp_erp_pos_customermaster ON srp_erp_pos_customermaster.posCustomerAutoID = srp_erp_pos_cardissue.posCustomerAutoID AND srp_erp_pos_customermaster.wareHouseAutoID = srp_erp_pos_cardissue.wareHouseAutoID
             WHERE barCode = '" . $barCode . "'";
         $customerInfo = $this->db->query($q)->row_array();
         return $customerInfo;

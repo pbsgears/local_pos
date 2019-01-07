@@ -249,7 +249,7 @@ class Pos_giftCard extends ERP_Controller
                     $telephone = $this->input->post('customerTelephone');
                     $posCustomerAutoID = $this->db->select('posCustomerAutoID')->from('srp_erp_pos_customermaster')->where('customerTelephone', $telephone)->get()->row('posCustomerAutoID');
                     if (!$posCustomerAutoID) {
-
+						$outletID = get_outletID();
                         /** register this customer */
                         $customerInfo['CustomerName'] = $this->input->post('CustomerName');
                         $customerInfo['customerCountry'] = $companyInfo['company_country'];
@@ -264,6 +264,9 @@ class Pos_giftCard extends ERP_Controller
                         $customerInfo['createdDateTime'] = format_date_mysql_datetime();
                         $customerInfo['isCardHolder'] = 1;
                         $customerInfo['isFromERP'] = 0;
+                        $customerInfo['is_sync'] = 0;
+                        $customerInfo['wareHouseAutoID'] = $outletID;
+                        $customerInfo['id_store'] = $outletID;
 
 
                         $result = $this->db->insert('srp_erp_pos_customermaster', $customerInfo);

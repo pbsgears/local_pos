@@ -984,6 +984,7 @@ class Pos_restaurant extends ERP_Controller
                         $data['id_store'] = $this->config->item('id_store');
                         $data['isFromTablet'] = $this->input->post('isFromTablet');
                         $data['is_sync'] = 1;
+                        $data['paymentMethod'] = 1;
 
 
                         $invoiceID = $this->Pos_restaurant_model->insert_srp_erp_pos_menusalesmaster($data);
@@ -1743,7 +1744,7 @@ class Pos_restaurant extends ERP_Controller
             $data['discountPer'] = $this->input->post('discount_percentage');
             $data['discountAmount'] = $this->input->post('total_discount_amount');
             $data['netTotal'] = $this->input->post('total_payable_amt'); // amount has to be paid : net Amount
-            $data['paidAmount'] = $this->input->post('total_payable_amt');
+            $data['paidAmount'] = $this->input->post('netTotalAmount');
 
             $data['balanceAmount'] = $this->input->post('returned_change'); // remain amount
             $data['cashReceivedAmount'] = $paid;  // cash paid by user may be there will be return
@@ -1975,6 +1976,7 @@ class Pos_restaurant extends ERP_Controller
         $promotionID = trim($this->input->post('promotionID'));
         $promotional_discount = trim($this->input->post('promotional_discount'));
         $promotionIDdatacp = trim($this->input->post('promotionIDdatacp'));
+        $this->update_posListItems();
 
         $this->Pos_restaurant_model->update_isSampleBillPrintFlag($invoiceID, $outletID);
 
@@ -2023,6 +2025,7 @@ class Pos_restaurant extends ERP_Controller
                 $data['holdDatetime'] = format_date_mysql_datetime();
                 $data['holdRemarks'] = $this->input->post('holdReference');
 
+                $this->update_posListItems();
                 $result = $this->Pos_restaurant_model->update_srp_erp_pos_menusalesmaster($data, $id);
                 if ($result) {
                     echo json_encode(array('error' => 0, 'message' => 'Receipt hold successfully'));

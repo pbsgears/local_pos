@@ -117,11 +117,23 @@ $this->lang->load('calendar', $primaryLanguage);
     }
 
     function submitHoldReceipt() {
+        var formData = $(".form_pos_receipt,#frm_POS_holdReceipt").serializeArray();
+        var date = new Date,
+            hour = date.getHours(),
+            minute = date.getMinutes(),
+            seconds = date.getSeconds(),
+            minute = minute > 9 ? minute : "0" + minute;
+        seconds = seconds > 9 ? seconds : "0" + seconds;
+        hour = hour > 9 ? hour : "0" + hour;
+
+        date = hour + ":" + minute + ":" + seconds;
+        formData.push({'name': 'currentTime', 'value': date});
+
         $.ajax({
             type: 'POST',
             dataType: 'json',
             url: "<?php echo site_url('Pos_restaurant/submitHoldReceipt'); ?>",
-            data: $("#frm_POS_holdReceipt").serialize(),
+            data: formData,
             cache: false,
             beforeSend: function () {
                 startLoad();

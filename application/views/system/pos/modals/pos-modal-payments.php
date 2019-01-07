@@ -1290,10 +1290,28 @@ $this->lang->load('calendar', $primaryLanguage);
 
     function print_sample_bill() {
         var invoiceID = $("#holdInvoiceID").val();
+        var outletID = $("#holdOutletID_input").val();
         // var tmp_promotion = $("#tmp_promotion").val();
         var promotional_discount = $("#promotional_discount").val();
         var promotionID = $("#promotionID").val();
         var promotionIDdatacp = $("#promotionID").find(':selected').attr('data-cp');
+
+        var formData = $(".form_pos_receipt").serializeArray();
+        var date = new Date,
+            hour = date.getHours(),
+            minute = date.getMinutes(),
+            seconds = date.getSeconds(),
+            minute = minute > 9 ? minute : "0" + minute;
+        seconds = seconds > 9 ? seconds : "0" + seconds;
+        hour = hour > 9 ? hour : "0" + hour;
+
+        date = hour + ":" + minute + ":" + seconds;
+        formData.push({'name': 'currentTime', 'value': date});
+        formData.push({'name': 'invoiceID', 'value': invoiceID});
+        formData.push({'name': 'promotional_discount', 'value': promotional_discount});
+        formData.push({'name': 'promotionID', 'value': promotionID});
+        formData.push({'name': 'promotionIDdatacp', 'value': promotionIDdatacp});
+        formData.push({'name': 'outletID', 'value': outletID});
 
 
         if (invoiceID > 0) {
@@ -1301,12 +1319,7 @@ $this->lang->load('calendar', $primaryLanguage);
                 type: 'POST',
                 dataType: 'html',
                 url: "<?php echo site_url('Pos_restaurant/loadPrintTemplateSampleBill'); ?>",
-                data: {
-                    invoiceID: invoiceID,
-                    promotional_discount: promotional_discount,
-                    promotionID: promotionID,
-                    promotionIDdatacp: promotionIDdatacp
-                },
+                data: formData,
                 cache: false,
                 beforeSend: function () {
                     $("#pos_sampleBill").modal('show');

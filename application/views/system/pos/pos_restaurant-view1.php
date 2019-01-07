@@ -567,9 +567,9 @@ $discountPolicy = show_item_level_discount();
                             <div class="btn-group btn-group-lg">
                                 <?php
                                 $defaultID = 0;
+                                $isDelivery = 0;
+                                $isDineIn = 0;
                                 foreach ($customerType as $val) {
-                                    $isDelivery = 0;
-                                    $isDineIn = 0;
                                     if (trim(strtolower($val['customerDescription'])) == 'delivery orders' || trim(strtolower($val['customerDescription'])) == 'delivery' || trim(strtolower($val['customerDescription'])) == 'delivery order') {
                                         $isDelivery = 1;
                                     } else if (trim(strtolower($val['customerDescription'])) == 'dine-in' || trim(strtolower($val['customerDescription'])) == 'eat-in') {

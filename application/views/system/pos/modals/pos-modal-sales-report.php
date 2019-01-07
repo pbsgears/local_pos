@@ -94,7 +94,7 @@ $this->lang->load('pos_config_restaurant', $primaryLanguage);
 <script>
     $(document).ready(function () {
         $("#btn_pos_sales_report").click(function () {
-            table_order_init();
+            sales_report_init();
         })
 
         $("#cashier2").multiselect2({
@@ -121,7 +121,7 @@ $this->lang->load('pos_config_restaurant', $primaryLanguage);
     });
 
 
-    function table_order_init() {
+    function sales_report_init() {
         $("#pos_salesReportModal").modal('show');
         $("#pos_modalBody_posPayment_sales_report2").html('<div class="text-center" style="color:#9c9c9c; font-size:20px; margin-top:75px; "> Click on the Generate Report </div>');
     }

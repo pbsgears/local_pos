@@ -3237,6 +3237,36 @@ class Pos_restaurant_model extends ERP_Model
         }
     }
 
+    function get_report_fullyDiscountBills_admin($date, $data2, $cashier = null, $outlets = null)
+    {
+        $qString = '';
+        if ($cashier != null) {
+            $qString = " AND salesMaster.createdUserID IN(" . $cashier . ") ";
+        }
+
+        $outletFilter = '';
+        if ($outlets != null) {
+            $outletFilter = " AND salesMaster.wareHouseAutoID IN(" . $outlets . ")";
+        }
+
+        $q = "SELECT
+                  count( salesMaster.menuSalesID ) AS fullyDiscountBills 
+                FROM
+                      srp_erp_pos_menusalesmaster AS salesMaster
+                      LEFT JOIN srp_erp_pos_menusalespayments msp ON msp.menuSalesID = salesMaster.menuSalesID
+                      AND msp.wareHouseAutoID = salesMaster.wareHouseAutoID
+                WHERE
+                  msp.menuSalesID IS NULL 
+                  AND salesMaster.isVoid = 0 
+                  AND salesMaster.isHold = 0
+                  AND salesMaster.companyID = '" . current_companyID() . "'
+                  AND salesMaster.createdDateTime BETWEEN '" . $date . "' AND '" . $data2 . "'
+                " . $qString . $outletFilter;
+        //echo $q;
+        $result = $this->db->query($q)->row_array();
+        return $result;
+    }
+
     function update_menuSalesTax($menuSalesID)
     {
         $q = "INSERT INTO srp_erp_pos_menusalestaxes (

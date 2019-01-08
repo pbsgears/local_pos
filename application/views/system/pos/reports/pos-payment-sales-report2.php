@@ -408,7 +408,7 @@ if (!isset($pdf)) {
                     </tr>
                     </tfoot>
                 </table>
-                
+
                 <div class="hide">
                     <hr>
                     <h4>Sales Summary </h4>

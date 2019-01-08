@@ -2340,10 +2340,11 @@ class Pos_restaurant extends ERP_Controller
 
     function loadPaymentSalesReport2()
     {
-        $_POST['outletID'] = get_outletID();
+        $_POST['outletID'] = array(get_outletID());
         $tmpFilterDate = trim(str_replace('/', '-', $this->input->post('filterFrom')));
         $tmpFilterDateTo = trim(str_replace('/', '-', $this->input->post('filterTo')));
         $tmpCashierSource = $this->input->post('cashier');
+        $outletIDs = $this->input->post('outletID_f');
 
 
         if (isset($tmpFilterDate) && !empty($tmpFilterDate)) {
@@ -2366,35 +2367,41 @@ class Pos_restaurant extends ERP_Controller
             $cashier = null;
         }
 
+        if (isset($outletIDs) && !empty($outletIDs)) {
+            $outlet = join(",", $outletIDs);
+            $outlets = $outlet;
+        } else {
+            $outlets = null;
+        }
 
-        $lessAmounts = $this->Pos_restaurant_model->get_report_lessAmount2($filterDate, $date2, $cashier);
-        $lessAmounts_promotion = $this->Pos_restaurant_model->get_report_lessAmount_promotion2($filterDate, $date2, $cashier);
-        $lessAmounts_discounts = $this->Pos_restaurant_model->get_report_salesReport_discount($filterDate, $date2, $cashier);
-        $lessAmounts_discountsJavaApp = $this->Pos_restaurant_model->get_report_salesReport_javaAppDiscount($filterDate, $date2, $cashier);
-        $outlets = $_POST['outletID'];
+
+        $lessAmounts = $this->Pos_restaurant_model->get_report_lessAmount_admin($filterDate, $date2, $cashier, $outlets);
+        $lessAmounts_promotion = $this->Pos_restaurant_model->get_report_lessAmount_promotion_admin($filterDate, $date2, $cashier, $outlets);
+        $lessAmounts_discounts = $this->Pos_restaurant_model->get_report_salesReport_discount_admin($filterDate, $date2, $cashier, $outlets);
         $lessAmounts_discounts_item_wise = $this->Pos_restaurant_model->get_report_salesReport_discount_item_wise_admin($filterDate, $date2, $cashier, $outlets);
+        $lessAmounts_discountsJavaApp = $this->Pos_restaurant_model->get_report_salesReport_javaAppDiscount_admin($filterDate, $date2, $cashier, $outlets);
         $lessAmountsAll = array_merge($lessAmounts_discounts, $lessAmounts, $lessAmounts_promotion, $lessAmounts_discountsJavaApp, $lessAmounts_discounts_item_wise);
 
-
         $data['companyInfo'] = $this->Pos_restaurant_model->get_currentCompanyDetail();
-        $data['paymentMethod'] = $this->Pos_restaurant_model->get_report_paymentMethod2($filterDate, $date2, $cashier);;
-        //$data['customerTypeCount'] = $this->Pos_restaurant_model->get_report_customerTypeCount2($filterDate, $date2, $cashier);
-        $data['customerTypeCount'] = $this->Pos_restaurant_model->get_report_customerTypeCount2_new($filterDate, $date2, $cashier);
+        $data['paymentMethod'] = $this->Pos_restaurant_model->get_report_paymentMethod_admin($filterDate, $date2, $cashier, $outlets);
+
+        $data['customerTypeCount'] = $this->Pos_restaurant_model->get_report_customerTypeCount_2_admin($filterDate, $date2, $cashier, $outlets);
         $data['lessAmounts'] = $lessAmountsAll;
 
 
         // var_dump($lessAmountsAll);
-        $data['totalSales'] = $this->Pos_restaurant_model->get_report_salesReport_totalSales($filterDate, $date2, $cashier);
-        $data['totalTaxes'] = $this->Pos_restaurant_model->get_report_salesReport_totalTaxes($filterDate, $date2, $cashier);
-        $data['totalServiceCharge'] = $this->Pos_restaurant_model->get_report_salesReport_ServiceCharge($filterDate, $date2, $cashier);
-        $data['giftCardTopUp'] = $this->Pos_restaurant_model->get_report_giftCardTopUp($filterDate, $date2, $cashier);
-        $data['voidBills'] = $this->Pos_restaurant_model->get_report_voidBills($filterDate, $date2, $cashier);
-        $outletID = get_outletID();
-        $data['creditSales'] = $this->Pos_restaurant_model->get_report_creditSales($filterDate, $date2, $cashier, $outletID);
+        $data['totalSales'] = $this->Pos_restaurant_model->get_report_salesReport_totalSales_admin($filterDate, $date2, $cashier, $outlets);
+        $data['totalTaxes'] = $this->Pos_restaurant_model->get_report_salesReport_totalTaxes_admin($filterDate, $date2, $cashier, $outlets);
+        $data['totalServiceCharge'] = $this->Pos_restaurant_model->get_report_salesReport_ServiceCharge_admin($filterDate, $date2, $cashier, $outlets);
+        $data['giftCardTopUp'] = $this->Pos_restaurant_model->get_report_giftCardTopUp_admin($filterDate, $date2, $cashier, $outlets);
+        $data['voidBills'] = $this->Pos_restaurant_model->get_report_voidBills_admin($filterDate, $date2, $cashier, $outlets);
+        $data['creditSales'] = $this->Pos_restaurant_model->get_report_creditSales($filterDate, $date2, $cashier, $outlets);
+        $data['fullyDiscountBill'] = $this->Pos_restaurant_model->get_report_fullyDiscountBills_admin($filterDate, $date2, $cashier, $outlets);
 
-        //var_dump($data['voidBills']);
         $data['cashier'] = $tmpCashierSource;
         $data['cashierTmp'] = get_cashiers();
+
+
         $html = $this->load->view('system/pos/reports/pos-payment-sales-report2', $data, true);
         if ($this->input->post('html')) {
             echo $html;

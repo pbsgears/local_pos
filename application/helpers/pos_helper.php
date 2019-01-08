@@ -3646,15 +3646,16 @@ if (!function_exists('get_random_wifi_password')) {
 if (!function_exists('update_wifi_password')) {
     function update_wifi_password($id, $menuSalesID)
     {
+        /** We remove where house auto ID because it is already set while uploading wifi password in live. */
         $outletID = get_outletID();
         $data['menuSalesID'] = $menuSalesID;
         $data['isUsed'] = 1;
-        $data['wareHouseAutoID'] = $outletID;
         $data['id_store'] = $outletID;
         $data['is_sync'] = 0;
 
         $CI =& get_instance();
         $CI->db->where('id', $id);
+        $CI->db->where('wareHouseAutoID', $outletID);
         $result = $CI->db->update('srp_erp_pos_wifipasswordsetup', $data);
         return $result;
     }

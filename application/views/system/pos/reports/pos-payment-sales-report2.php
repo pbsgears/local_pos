@@ -7,6 +7,7 @@ $lessTotal = 0;
 $paymentTypeTransaction = 0;
 $totalCashSales = 0;
 $voidedTotal = !empty($voidBills['NetTotal']) ? $voidBills['NetTotal'] : 0;
+$fullyDiscountedBills = $fullyDiscountBill['fullyDiscountBills'];
 if (!empty($paymentMethod)) {
     foreach ($paymentMethod as $report2) {
         $netTotal += $report2['NetTotal'];
@@ -38,35 +39,66 @@ $this->lang->load('common', $primaryLanguage);
 $this->lang->load('calendar', $primaryLanguage);
 //print_r($companyInfo);
 //echo $netTotal;
+
+$netBillCount = $grandTotalCount - $fullyDiscountedBills;
+?>
+<style>
+    .outletInfo {
+
+    }
+
+    .subHeadingTitle {
+        margin-top: 10px;
+        color: #cd3b43;
+        font-size: 15px;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+</style>
+<?php
 if (!isset($pdf)) {
     ?>
     <style>
-        .outletInfo {
-
-        }
-
-        .subHeadingTitle {
-            margin-top: 10px;
-            color: #cd3b43;
-            font-size: 15px;
-            font-weight: bold;
-            text-decoration: underline;
-        }
         .customPad {
             padding: 3px 0px;
         }
     </style>
     <span class="pull-right">
-    <button type="button" id="btn_print_sales2" class="btn btn-default btn-xs"><i class="fa fa-print"></i> <?php echo $this->lang->line('common_print'); ?></button>
+    <button type="button" id="btn_print_sales2" class="btn btn-default btn-xs"> <i
+                class="fa fa-print"></i> <?php echo $this->lang->line('common_print'); ?><!--Print--> </button>
+        <!--        <button class="btn btn-pdf btn-xs" id="btn-pdf" type="button" onclick="generatePaymentSalesReportPdf()">
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
+                </button>-->
+        <a href="" class="btn btn-excel btn-xs" id="btn-excel" download="Sales_Report.xls"
+           onclick="var file = tableToExcel('container_sales_report2', 'Sales Report'); $(this).attr('href', file);">
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel
+        </a>
 </span>
 <?php } ?>
-
 <div id="container_sales_report2">
-
-    </span>
     <div class="text-center">
         <h4 style="margin-top:2px;"><strong><?php echo $companyInfo['company_name'] ?></strong></h4>
     </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="outletInfo">
+                <?php
+                $outletInput = $this->input->post('outletID_f');
+                echo get_outletFilterInfo($outletInput);
+
+                if (isset($outletID) && !empty($outletID)) {
+                    $tmpArrayout = array();
+                    foreach ($outletID as $c) {
+                        $tmpArrayout[] = get_outletInfo_byid2($c);
+                    }
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <hr style="margin:2px 0px;">
+
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <div class="outletInfo">
@@ -184,9 +216,6 @@ if (!isset($pdf)) {
                         <td></td>
                     </tr>
 
-                    <!--<tr>
-                        <td colspan="5"></td>
-                    </tr>-->
 
                     <tr>
                         <td>
@@ -198,8 +227,6 @@ if (!isset($pdf)) {
                         <td></td>
                     </tr>
                     <?php
-
-
                     if (!empty($lessAmounts)) {
                         foreach ($lessAmounts as $less) {
                             if ($less['lessAmount'] > 0) {
@@ -215,9 +242,8 @@ if (!isset($pdf)) {
                                         ?>
                                     </td>
                                     <td></td>
-                                    <td class="text-right"><?php echo number_format(($less['lessAmount'] / ($totalBill)) * 100, 2) . '%' ?> </td>
+                                    <td class="text-right"><?php echo number_format(($less['lessAmount'] / ($totalBill)) * 100, 2) . '%' ?></php></td>
                                 </tr>
-
                                 <?php
                             }
                         }
@@ -247,8 +273,19 @@ if (!isset($pdf)) {
                     </tr>
                     <tfoot>
                     <tr>
+                        <td><strong>Gross Bills </strong></td>
+                        <td class="text-right"><?php echo number_format($grandTotalCount) ?></td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fully Discounted Bills </strong></td>
+                        <td class="text-right"><?php echo number_format($fullyDiscountedBills) ?></td>
+                        <td colspan="3"></td>
+                    </tr>
+
+                    <tr>
                         <td><strong>Net Sales</strong></td>
-                        <td class="text-right"><?php echo $grandTotalCount ?></td>
+                        <td class="text-right"><?php echo number_format($netBillCount) ?></td>
                         <td></td>
                         <td class="text-right"><strong><?php echo number_format($netTotal, $d) ?></strong></td>
                         <td class="text-right"><?php echo $totalBill > 0 ? number_format(($netTotal / ($totalBill)) * 100, 2) . '%' : 0; ?></td>
@@ -263,7 +300,8 @@ if (!isset($pdf)) {
                         <td class="text-right"></td>
                         <td></td>
                         <td class="text-right">
-                            <strong><?php echo $grandTotalCount > 0 ? number_format(($netTotal / $grandTotalCount), $d) : 0; ?></strong>
+                            <!--<strong><?php /*echo $grandTotalCount > 0 ? number_format(($netTotal / $grandTotalCount), $d) : 0; */ ?></strong>-->
+                            <strong><?php echo $grandTotalCount > 0 ? number_format(($netTotal / $paymentTypeTransaction), $d) : 0; ?></strong>
                         </td>
                         <td></td>
                     </tr>
@@ -275,7 +313,6 @@ if (!isset($pdf)) {
 
 
             </div>
-            <hr>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <table class="<?php echo table_class_pos(5) ?> hide">
                     <tbody>
@@ -409,6 +446,7 @@ if (!isset($pdf)) {
                     </tfoot>
                 </table>
 
+
                 <div class="hide">
                     <hr>
                     <h4>Sales Summary </h4>
@@ -489,8 +527,6 @@ if (!isset($pdf)) {
 
 
     <div style="margin-top:20px; border:1px solid #a3a3a3; padding:5px;">
-
-
         <div class="subHeadingTitle"> Sales Collection</strong></div>
         <table class="<?php echo table_class_pos(5) ?>">
             <thead>
@@ -504,10 +540,7 @@ if (!isset($pdf)) {
             </thead>
             <tbody>
             <?php
-
             if (!empty($paymentMethod)) {
-
-
                 foreach ($paymentMethod as $report2) {
                     if ($report2['NetTotal'] == 0) {
                         continue;
@@ -525,9 +558,7 @@ if (!isset($pdf)) {
                             ?>
                         </td>
                         <td class="text-right">
-
                             <?php
-                            //echo $netTotal . '<br/>';
                             $paymentTypeTransactionTmp = ($report2['countTransaction'] / $paymentTypeTransaction) * 100;
                             echo number_format($paymentTypeTransactionTmp, 2) . '%';
                             $transPercentage += $paymentTypeTransactionTmp;
@@ -537,14 +568,12 @@ if (!isset($pdf)) {
                             <div class="text-right">
                                 <?php
                                 echo number_format($report2['NetTotal'], $d);
-                                //$netTotal += $report2['NetTotal'];
                                 ?>
                             </div>
                         </td>
                         <td>
                             <div class="text-right">
                                 <?php
-                                //echo $netTotal . '<br/>';
                                 $tmpPer = ($report2['NetTotal'] / $netTotal) * 100;
                                 echo number_format($tmpPer, 2) . '%';
                                 $valuePercentage += $tmpPer;
@@ -648,52 +677,37 @@ if (!isset($pdf)) {
         <?php echo $this->lang->line('posr_report_print'); ?><!--Report print by--> : <?php echo current_user() ?>
     </div>
 </div>
+<script type="text/javascript" src="<?php echo base_url('plugins/printJS/jQuery.print.js'); ?>"></script>
 <script>
-    function get_currentTime() {
-        var date = new Date();
-        var nHour = date.getHours(), nMin = date.getMinutes(), nSec = date.getSeconds(), ap;
-
-        if (nHour == 0) {
-            ap = " AM";
-            nHour = 12;
-        }
-        else if (nHour < 12) {
-            ap = " AM";
-        }
-        else if (nHour == 12) {
-            ap = "PM";
-        }
-        else if (nHour > 12) {
-            ap = "PM";
-            nHour -= 12;
-        }
-
-        if (nMin <= 9) {
-            nMin = "0" + nMin;
-        }
-        if (nSec <= 9) {
-            nSec = "0" + nSec;
-        }
-
-        var output = nHour + ":" + nMin + " " + ap;
-        return output;
-
-    }
 
     $(document).ready(function (e) {
         $("#btn_print_sales2").click(function (e) {
             $.print("#container_sales_report2");
         });
-        var currentTime = get_currentTime();
+        var date = new Date,
+            hour = date.getHours(),
+            minute = date.getMinutes(),
+            seconds = date.getSeconds(),
+            ampm = hour > 12 ? "PM" : "AM";
 
-        $(".pcCurrentTime").html(currentTime);
-    });
+        hour = hour % 12;
+        hour = hour ? hour : 12; // zero = 12
+
+        minute = minute > 9 ? minute : "0" + minute;
+        seconds = seconds > 9 ? seconds : "0" + seconds;
+        hour = hour > 9 ? hour : "0" + hour;
+
+
+        date = hour + ":" + minute + " " + ampm;
+        $(".pcCurrentTime").html(date);
+    })
 
     function generatePaymentSalesReportPdf() {
-        var form = document.getElementById('frm_salesReport2');
+        var form = document.getElementById('frm_salesReport');
         form.target = '_blank';
-        form.action = '<?php echo site_url('Pos_restaurant/loadPaymentSalesReport2'); ?>';
+        form.action = '<?php echo site_url('Pos_restaurant/loadPaymentSalesReportPdf'); ?>';
         form.submit();
     }
+
 
 </script>

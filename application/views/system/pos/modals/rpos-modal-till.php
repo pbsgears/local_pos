@@ -42,7 +42,7 @@ $this->lang->load('calendar', $primaryLanguage);
                 $isSalesReportEnabled = isSalesReportEnabled();
                 if ($isSalesReportEnabled) {
                     ?>
-                    <button type="button" class="btn btn-xs btn-default" onclick="table_order_init()">
+                    <button type="button" class="btn btn-xs btn-default" onclick="sales_report_init()">
                         <i class="fa fa-bar-chart" aria-hidden="true"></i> Sales Report
                     </button>
                 <?php } ?>

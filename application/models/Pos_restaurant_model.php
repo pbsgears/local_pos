@@ -1406,7 +1406,6 @@ class Pos_restaurant_model extends ERP_Model
     }
 
 
-
     function delete_menuSalesItem($id, $outletID = 0)
     {
         if ($outletID == 0) {
@@ -3120,26 +3119,33 @@ class Pos_restaurant_model extends ERP_Model
                                     //$payable = $netTotalAmount - ($advancePayment + $cardTotalAmount); bug because of this.
                                     $payable = $grossTotal - ($advancePayment + $cardTotalAmount);
 
-
                                     if ($amount == $payable) {
                                         $cashPaidAmount = $amount;
                                         $returnChange = 0;
                                     } else if ($amount > $payable) {
                                         $cashPaidAmount = $payable;
                                         $returnChange = $amount - $payable;
-
-
                                     } else {
 
                                         /** Advance payment */
                                         $cashPaidAmount = $amount;
                                         $returnChange = 0;
                                     }
-
                                 }
                             }
-
                             $amount = $cashPaidAmount;
+                        }
+
+                        /** Credit Customer's GL Code should be picked from Customer */
+                        $GLCode = null;
+                        if ($r['autoID'] == 7) {
+                            if (isset($customerAutoIDs[$key]) && $customerAutoIDs[$key]) {
+                                $receivableAutoID = $this->db->select('receivableAutoID')
+                                    ->from('srp_erp_customermaster')
+                                    ->where('customerAutoID', $customerAutoIDs[$key])
+                                    ->get()->row('receivableAutoID');
+                                $GLCode = $receivableAutoID;
+                            }
 
                         }
 
@@ -3147,14 +3153,13 @@ class Pos_restaurant_model extends ERP_Model
                         $paymentData[$i]['wareHouseAutoID'] = $outletID;
                         $paymentData[$i]['paymentConfigMasterID'] = $r['autoID'];
                         $paymentData[$i]['paymentConfigDetailID'] = $key;
-                        $paymentData[$i]['GLCode'] = $r['autoID'] == 7 ? null : $r['GLCode'];
+                        $paymentData[$i]['GLCode'] = $r['autoID'] == 7 ? $GLCode : $r['GLCode'];
                         $paymentData[$i]['glAccountType'] = $r['glAccountType'];
                         $paymentData[$i]['amount'] = $amount;
                         $paymentData[$i]['reference'] = isset($reference[$key]) ? $reference[$key] : null;
                         $paymentData[$i]['customerAutoID'] = isset($customerAutoIDs[$key]) ? $customerAutoIDs[$key] : null;
 
-
-                        /*Common Data*/
+                        /** Common Data */
                         $paymentData[$i]['createdUserGroup'] = $createdUserGroup;
                         $paymentData[$i]['createdPCID'] = $createdPCID;
                         $paymentData[$i]['createdUserID'] = $createdUserID;
@@ -3162,6 +3167,7 @@ class Pos_restaurant_model extends ERP_Model
                         $paymentData[$i]['createdDateTime'] = $createdDateTime;
                         $paymentData[$i]['timestamp'] = $timestamp;
 
+                        /** Java App Redeem */
                         if ($r['autoID'] == 25) {
                             $data_JA['menuSalesID'] = $invoiceID;
                             $data_JA['outletID'] = $outletID;
@@ -3177,10 +3183,9 @@ class Pos_restaurant_model extends ERP_Model
                             $data_JA['timestamp'] = $createdDateTime;
 
                             $this->db->insert('srp_erp_pos_javaappredeemhistory', $data_JA);
-
-
                         }
 
+                        /** Gift Card Top Up*/
                         if ($r['autoID'] == 5) {
                             $barCode = isset($reference[$key]) ? $reference[$key] : null;
                             $cardInfo = get_giftCardInfo($barCode);

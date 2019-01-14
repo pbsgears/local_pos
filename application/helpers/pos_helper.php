@@ -3124,8 +3124,9 @@ if (!function_exists('get_employeeShortName')) {
 if (!function_exists('get_paidAmount')) {
     function get_paidAmount($invoiceID)
     {
+        $outletID = get_outletID();
         $CI =& get_instance();
-        $q = "SELECT SUM(amount) as tmpAmount FROM srp_erp_pos_menusalespayments WHERE menuSalesID=  '" . $invoiceID . "'";
+        $q = "SELECT SUM(amount) as tmpAmount FROM srp_erp_pos_menusalespayments WHERE menuSalesID=  '" . $invoiceID . "' AND wareHouseAutoID= " . $outletID;
         $amount = $CI->db->query($q)->row('tmpAmount');
         return $amount;
 

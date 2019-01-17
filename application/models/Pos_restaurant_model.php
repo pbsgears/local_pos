@@ -3341,7 +3341,7 @@ class Pos_restaurant_model extends ERP_Model
     function update_menuSalesServiceCharge($menuSalesID)
     {
         $q = "INSERT INTO srp_erp_pos_menusalesservicecharge (
-                wareHouseAutoID, menuSalesID, menuServiceChargeID, menuMasterID, serviceChargePercentage, serviceChargeAmount,
+                wareHouseAutoID, menuSalesID, menuSalesItemID, menuServiceChargeID, menuMasterID, serviceChargePercentage, serviceChargeAmount,
                 GLAutoID, beforeDiscountTotalServiceCharge, menusalesDiscount,
                 menusalesPromotionalDiscount, unitMenuServiceCharge, menusalesItemQty,
                 companyID, companyCode, createdUserGroup, createdPCID, createdUserID,
@@ -3350,6 +3350,7 @@ class Pos_restaurant_model extends ERP_Model
                 (SELECT
                 msm.wareHouseAutoID as wareHouseAutoID,
                 msi.menuSalesID as menuSalesID,
+                msi.menuSalesItemID as menuSalesItemID,
                 msc.menuServiceChargeID AS menuServiceChargeID,
                 msc.menuMasterID AS menuMasterID,
                 msc.serviceChargePercentage AS serviceChargePercentage,

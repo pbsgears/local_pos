@@ -16,6 +16,11 @@ $this->lang->load('calendar', $primaryLanguage);
                         aria-hidden="true">&times;</span></button>-->
                 <h5 class="modal-title" id="tillModal_title">
                     <?php echo $this->lang->line('posr_start_day'); ?><!--Start Day--></h5>
+                <div class="show_syncing_progress" style="display: none;">
+                    <a style="border-left: 1px solid #eee; padding: 10px;" href="" class="sync_progress_icon_container">
+                        <i class="fa fa-cloud-upload fa-2x text-info blink_me" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
             <div class="modal-body" style="padding: 10px; height: auto">
                 <div class="smallScroll" id="currencyDenomination_data" align="center"
@@ -37,6 +42,11 @@ $this->lang->load('calendar', $primaryLanguage);
                         Pull Data
                     </button>
                 <?php } ?>
+
+                <button type="button" onclick="manual_sync()" class="btn btn-xs btn-success">
+                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                    Sync Data
+                </button>
 
                 <?php
                 $isSalesReportEnabled = isSalesReportEnabled();

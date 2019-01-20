@@ -24,7 +24,7 @@
         <nav class="navbar navbar-static-top" role="navigation">
             <div id=""></div>
             <!-- Sidebar toggle button-->
-            <div class="col-md-4 pull-left" id="master-time-div" style="">
+            <div class="col-md-5 pull-left" id="master-time-div" style="">
                 <ul class="nav navbar-nav hidden-xs">
                     <li>
                         <a style="border: none" id="timeBox_style">
@@ -37,10 +37,18 @@
                             </div>
                         </a>
                     </li>
-                    <li id="show_syncing_progress" style="display: none;">
+                    <li class="show_syncing_progress" style="display: none;">
                         <a style="border-left: 1px solid #eee; padding: 10px;" href=""
-                           id="sync_progress_icon_container">
+                           class="sync_progress_icon_container">
                             <i class="fa fa-cloud-upload fa-2x text-info blink_me" aria-hidden="true"></i>
+                            <!--<span class="label label-warning" id="count_of_to_be_synced">0</span>-->
+                        </a>
+                    </li>
+                    <li>
+                        <a style="border-left: 1px solid #eee; padding: 10px;" href="#">
+                            <button class="btn btn-default" type="button" onclick="manual_sync()">Sync</button>
+                            <span class="label label-warning" id="count_of_to_be_synced">0</span>
+                            <input type="hidden" id="input_count_of_to_be_synced" value="0">
                         </a>
                     </li>
                 </ul>

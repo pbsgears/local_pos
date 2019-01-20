@@ -123,7 +123,10 @@ class Sync extends ERP_Controller
 
         $message .= " \n End Time" . date("H:i:s A");
 
-        echo json_encode(array('status' => $state, 'message' => $message, 'shortMessage' => $s_msg));
+        $sql = 'select count(menuSalesID) as syncCount from srp_erp_pos_menusalesmaster where is_sync = 0';
+        $count = $this->db->query($sql)->row('syncCount');
+
+        echo json_encode(array('status' => $state, 'message' => $message, 'shortMessage' => $s_msg, 'sync_pending_bill_count' => $count));
 
     }
 

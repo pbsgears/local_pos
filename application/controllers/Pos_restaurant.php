@@ -1098,6 +1098,9 @@ class Pos_restaurant extends ERP_Controller
 
     function checkPosSession()
     {
+        $sql = 'select count(menuSalesID) as syncCount from srp_erp_pos_menusalesmaster where is_sync = 0';
+        $count = $this->db->query($sql)->row('syncCount');
+
         $result = isPos_invoiceSessionExist();
         if ($result) {
             $get_invoice = $this->Pos_restaurant_model->get_srp_erp_pos_menusalesmaster($result);
@@ -1108,13 +1111,13 @@ class Pos_restaurant extends ERP_Controller
                     $isDineIn = 1;
                 }
 
-                $result = array_merge($get_invoice, array('error' => 0, 'message' => 'Invoice Exist', 'code' => $result, 'master' => $get_invoice, 'dine_in' => $isDineIn));
+                $result = array_merge($get_invoice, array('error' => 0, 'message' => 'Invoice Exist', 'code' => $result, 'master' => $get_invoice, 'dine_in' => $isDineIn, 'sync_pending_bill_count' => $count));
                 echo json_encode($result);
             } else {
-                echo json_encode(array('error' => 1, 'message' => 'This invoice is already closed', 'code' => 0));
+                echo json_encode(array('error' => 1, 'message' => 'This invoice is already closed', 'code' => 0, 'sync_pending_bill_count' => $count));
             }
         } else {
-            echo json_encode(array('error' => 1, 'message' => 'Invoice not exist!', 'code' => 0));
+            echo json_encode(array('error' => 1, 'message' => 'Invoice not exist!', 'code' => 0, 'sync_pending_bill_count' => $count));
         }
     }
 
@@ -1834,17 +1837,19 @@ class Pos_restaurant extends ERP_Controller
 
             $this->Pos_restaurant_model->update_diningTableReset($invoice['tableID']); // DO NOT NEED SYNC - because table status are doesn't need to be updated in the server.
 
+            $sql = 'select count(menuSalesID) as syncCount from srp_erp_pos_menusalesmaster where is_sync = 0';
+            $count = $this->db->query($sql)->row('syncCount');
 
             $this->db->trans_complete();
 
             if ($this->db->trans_status() === FALSE) {
                 $this->db->trans_rollback();
-                echo json_encode(array('error' => 1, 'message' => 'error, please contact your support team' . $this->db->_error_message()));
+                echo json_encode(array('error' => 1, 'message' => 'error, please contact your support team' . $this->db->_error_message(), 'sync_pending_bill_count'=>$count));
             } else {
                 $this->db->trans_commit();
                 $this->session->unset_userdata('pos_invoice_no');
                 $outletID = get_outletID();
-                echo json_encode(array('error' => 0, 'message' => 'payment submitted', 'invoiceID' => $invoiceID, 'outletID' => $outletID));
+                echo json_encode(array('error' => 0, 'message' => 'payment submitted', 'invoiceID' => $invoiceID, 'outletID' => $outletID, 'sync_pending_bill_count'=>$count));
             }
 
 

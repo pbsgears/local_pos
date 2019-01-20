@@ -40,6 +40,10 @@ $discountPolicy = show_item_level_discount();
             padding-right: 3px;
         }
     </style>
+    <script>
+        /** Sync varibale init */
+        var xhr = $.ajax();
+    </script>
 
     <div id="posHeader_2" class="hide" style="display: none;"></div>
     <div id="form_div" style="padding: 1%; margin-top: 40px">
@@ -248,7 +252,6 @@ $discountPolicy = show_item_level_discount();
                         Pull Data
                     </button>
                 <?php } ?>
-
 
                 <?php
                 $isSalesReportEnabled = isSalesReportEnabled();
@@ -885,6 +888,9 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                 $("#pos_payments_modal").modal('hide');
                 clearSalesInvoice();
                 resetPayTypeBtn();
+                /*setTimeout(function () {
+                    sync_live();
+                }, 3000);*/
             });
 
             $('.numberFloat').keypress(function (event) {
@@ -903,6 +909,16 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
             checkPosSession();
             <?php } ?>
         });
+
+        function setUpSyncCount(count) {
+            $("#count_of_to_be_synced").html(count);
+            $("#input_count_of_to_be_synced").val(count);
+            if (count == 0) {
+                //$("#count_of_to_be_synced").hide();
+            } else {
+                //$("#count_of_to_be_synced").show();
+            }
+        }
 
         function clickPowerOff() {
             if ($("#holdInvoiceID").val() == 0) {
@@ -1030,6 +1046,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
         var parentID_addOn = 0;
 
         function LoadToInvoice(id, parentID = 0, source = 0) {
+            abortSync();
             var discountPolicy = '<?php echo $discountPolicy ? 0 : 1;  ?>';
             var classDiscountHide = '<?php echo $discountPolicy ? '' : 'hide';  ?>';
             var dynamicWidth = '<?php echo $discountPolicy ? '16.5%' : '24.5%';  ?>';
@@ -1455,6 +1472,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                             $('#btn_pos_sendtokitchen').addClass('btn-success');
                         }
                     }
+                    setUpSyncCount(data['sync_pending_bill_count']);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     if (jqXHR.status == false) {
@@ -1789,6 +1807,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                         clearCreditSales();
                         resetGiftCardForm();
                         clearPromotion();
+                        setUpSyncCount(data['sync_pending_bill_count']);
 
                     } else {
                         myAlert('d', data['message']);
@@ -1950,38 +1969,59 @@ $sync = $this->config->item("sync");
 if ($sync) {
     ?>
     <script type="text/javascript" language="javascript">
-        // Table Account Sync
+
         $(document).ready(function (e) {
-            jQuery(document).ready(function ($) {
-                working = false;
-                var do_sync = function () {
-                    if (working) {
-                        return;
+            setTimeout(function () {
+                sync_live();
+            }, 3000);
+        });
+
+        function manual_sync() {
+            sync_live();
+        }
+
+        function abortSync() {
+            $(".show_syncing_progress").hide();
+            xhr.abort();
+        }
+
+        function sync_live() {
+            xhr = $.ajax({
+                type: "get",
+                url: "<?php echo $this->config->item("sync_url"); ?>",
+                data: null,
+                async: true,
+                beforeSend: function () {
+                    $(".sync_progress_icon_container").html('<i class="fa fa-2x fa-cloud-upload text-info blink_me" aria-hidden="true"></i>');
+                    $(".show_syncing_progress").show();
+                    console.log('request started.');
+                },
+                success: function (msg) {
+                    var obj = jQuery.parseJSON(msg);
+                    working = false;
+                    if (obj.status == 1) {
+                        console.log('updated');
+                        setTimeout(function () {
+                            sync_live();
+                        }, 3000);
+                        $(".sync_progress_icon_container").html('<i class="fa fa-2x fa-cloud-upload text-info blink_me" aria-hidden="true"></i>');
+                        $(".show_syncing_progress").show();
+                    } else if (obj.status == 0) {
+                        console.log('update completed');
+                        $(".show_syncing_progress").hide();
+                        //xhr.abort();
+                    } else if (obj.status == 3) {
+                        console.log('no internet');
+                        /** No internet */
+                        bootbox.alert('<div class="alert alert-warning"><strong> <i class="fa fa-wifi" aria-hidden="true"></i> No Internet.</strong></div>');
+                        $(".sync_progress_icon_container").html('<i class="fa fa-2x fa-cloud-upload text-red" title="No Internet" aria-hidden="true"></i>');
+                        $(".show_syncing_progress").show();
+                        // xhr.abort();
                     }
-                    working = true;
-                    jQuery.post(
-                        "<?php echo $this->config->item("sync_url"); ?>", {},
-                        function (ret) {
-                            var obj = jQuery.parseJSON(ret);
-                            working = false;
-                            if (obj.status == 1) {
-                                $("#sync_progress_icon_container").html('<i class="fa fa-2x fa-cloud-upload text-info blink_me" aria-hidden="true"></i>');
-                                $("#show_syncing_progress").show();
-                            } else if (obj.status == 0) {
-                                $("#show_syncing_progress").hide();
-                            } else if (obj.status == 3) {
-                                /** No internet */
-                                $("#sync_progress_icon_container").html('<i class="fa fa-2x fa-cloud-upload text-red" title="No Internet" aria-hidden="true"></i>');
-                                $("#show_syncing_progress").show();
-                            }
-                        }
-                    ).fail(function (xhr, status, error) {
-                        do_sync;
-                    });
+                    setUpSyncCount(obj.sync_pending_bill_count);
                 }
-                window.setInterval(do_sync, 10000);
             });
-        })
+        }
 
 
     </script>

@@ -1501,7 +1501,7 @@ class Pos_restaurant extends ERP_Controller
 
     }
 
-    function update_posListItems()
+    function update_posListItems($isHold=false)
     {
         $invoiceID = isPos_invoiceSessionExist();
         if ($invoiceID) {
@@ -1622,7 +1622,9 @@ class Pos_restaurant extends ERP_Controller
                     $data[$i]['modifiedUserID'] = $modifiedUserID;
                     $data[$i]['modifiedDateTime'] = $modifiedDateTime;
                     $data[$i]['modifiedUserName'] = $modifiedUserName;
-                    $data[$i]['is_sync'] = 0;
+                    if(!$isHold){
+                        $data[$i]['is_sync'] = 0;
+                    }
 
                     $i++;
                 }
@@ -2030,7 +2032,7 @@ class Pos_restaurant extends ERP_Controller
                 $data['holdDatetime'] = format_date_mysql_datetime();
                 $data['holdRemarks'] = $this->input->post('holdReference');
 
-                $this->update_posListItems();
+                $this->update_posListItems(true);
                 $result = $this->Pos_restaurant_model->update_srp_erp_pos_menusalesmaster($data, $id);
                 if ($result) {
                     echo json_encode(array('error' => 0, 'message' => 'Receipt hold successfully'));

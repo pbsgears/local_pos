@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : localhost
 Source Server Version : 50505
 Source Host           : localhost:3306
-Source Database       : pos_localdb
+Source Database       : pos_localdb2
 
 Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-12-17 10:04:48
+Date: 2019-03-28 12:20:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -123,6 +123,7 @@ CREATE TABLE `srp_employeesdetails` (
   `isCheckin` int(11) DEFAULT NULL,
   `token` varchar(400) DEFAULT NULL,
   `overTimeGroup` int(11) DEFAULT NULL,
+  `familyStatusID` int(11) DEFAULT NULL,
   `gratuityID` int(11) DEFAULT '0' COMMENT 'FK srp_erp_pay_gratuitymaster.gratuityID',
   `isSystemAdmin` int(1) DEFAULT '0',
   `isHRAdmin` int(1) DEFAULT NULL,
@@ -137,6 +138,7 @@ CREATE TABLE `srp_employeesdetails` (
   `pos_userGroupMasterID` tinyint(4) DEFAULT NULL,
   `pos_barCode` varchar(255) DEFAULT NULL,
   `isLocalPosSyncEnable` int(1) DEFAULT '0',
+  `isLocalPosSalesRptEnable` int(1) DEFAULT '0',
   `LocalPOSUserType` enum('POS','KOT','POS_KOT') NOT NULL DEFAULT 'POS',
   PRIMARY KEY (`EIdNo`),
   UNIQUE KEY `EIdNo` (`EIdNo`) USING BTREE,
@@ -155,7 +157,7 @@ CREATE TABLE `srp_employeesdetails` (
 -- ----------------------------
 -- Records of srp_employeesdetails
 -- ----------------------------
-INSERT INTO `srp_employeesdetails` VALUES ('1139', null, 'RCC/EMP000002', 'RCC/EMP000002', '21', '', null, '44', 'Abolade Gbadegesin', 'A . Gbadegesin', 'Abolade', null, null, null, null, 'Abolad', null, null, null, null, null, null, null, 'rccemp000002_1488866058.jpg', '1', '1082', 'Forsyth Line Rd', 'rural Hall', '150', '27045  ', '+1-815-852-6776', '(336) 969-5610', null, '1082', 'Forsyth Line Rd', 'Rural Hall', '150', '1082', '1082', null, '+1-618-548-9166', null, '(336) 969-5610', '+1-773-815-5371', 'Gbadegesin@gmail.com', null, '1969-09-30', '2013-10-16', '509213727', null, '750271045', null, null, '45', '40', '', null, '0', '0', 'pos@mail.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '0', '0', '0', '1', '2', 'USD', '0', null, null, '1', '2013-10-16', null, '0', null, '1', null, null, null, '0', '2', null, '0', '0', 'Mushtak Ahamed M', '2016-11-16 18:07:59', '192.168.1.33', 'Alex', '2018-12-16 04:42:52', '124.43.20.242', '1', '0', '2', null, '7', '11', '10', '4029', '1', '0', null, '0', '0', '0', null, null, null, null, null, '1', null, null, '1', '6', '', '1', 'POS');
+INSERT INTO `srp_employeesdetails` VALUES ('1139', null, 'RCC/EMP000002', 'RCC/EMP000002', '21', '', null, '44', 'Abolade Gbadegesin', 'A . Gbadegesin', 'Abolade', null, null, null, null, 'Abolad', null, null, null, null, null, null, null, 'rccemp000002_1488866058.jpg', '1', '1082', 'Forsyth Line Rd', 'rural Hall', '150', '27045  ', '+1-815-852-6776', '(336) 969-5610', null, '1082', 'Forsyth Line Rd', 'Rural Hall', '150', '1082', '1082', null, '+1-618-548-9166', null, '(336) 969-5610', '+1-773-815-5371', 'Gbadegesin@gmail.com', null, '1969-09-30', '2013-10-16', '509213727', null, '750271045', null, null, '45', '40', '', null, '0', '0', 'pos@mail.com', 'e10adc3949ba59abbe56e057f20f883e', '0', '0', '0', '0', '1', '2', 'USD', '0', null, null, '1', '2013-10-16', null, '0', null, '1', null, null, null, '0', '2', null, '0', '0', 'Mushtak Ahamed M', '2016-11-16 18:07:59', '192.168.1.33', 'Alex', '2018-12-16 04:42:52', '124.43.20.242', '1', '0', '2', null, '7', '11', '10', '4029', '1', '0', null, '0', null, '0', '0', null, null, null, null, null, '1', null, null, '1', '6', '', '1', '0', 'POS');
 
 -- ----------------------------
 -- Table structure for srp_erp_bankledger
@@ -2224,6 +2226,7 @@ CREATE TABLE `srp_erp_pos_camera_setup` (
 DROP TABLE IF EXISTS `srp_erp_pos_cardissue`;
 CREATE TABLE `srp_erp_pos_cardissue` (
   `cardIssueID` int(11) NOT NULL AUTO_INCREMENT,
+  `wareHouseAutoID` int(11) NOT NULL DEFAULT '0',
   `cardMasterID` int(11) DEFAULT NULL,
   `barCode` varchar(300) DEFAULT NULL,
   `posCustomerAutoID` int(11) DEFAULT NULL,
@@ -2240,8 +2243,10 @@ CREATE TABLE `srp_erp_pos_cardissue` (
   `modifiedUserID` varchar(45) DEFAULT NULL,
   `modifiedDateTime` datetime DEFAULT NULL,
   `modifiedUserName` varchar(200) DEFAULT NULL,
+  `is_sync` int(1) DEFAULT '0',
   `timestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`cardIssueID`)
+  `id_store` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`cardIssueID`,`wareHouseAutoID`,`id_store`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -2254,7 +2259,7 @@ CREATE TABLE `srp_erp_pos_cardissue` (
 DROP TABLE IF EXISTS `srp_erp_pos_cardtopup`;
 CREATE TABLE `srp_erp_pos_cardtopup` (
   `cardTopUpID` int(11) NOT NULL AUTO_INCREMENT,
-  `wareHouseAutoID` int(11) NOT NULL DEFAULT '0',
+  `wareHouseAutoID` int(11) DEFAULT '0',
   `giftCardReceiptID` int(11) DEFAULT '0' COMMENT 'to identify the transaction',
   `cardMasterID` int(11) DEFAULT NULL,
   `barCode` varchar(300) DEFAULT NULL,
@@ -3281,7 +3286,18 @@ CREATE TABLE `srp_erp_pos_menusalesitemdetails` (
   `timeStamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `is_sync` int(11) DEFAULT '0',
   `id_store` int(11) NOT NULL,
-  PRIMARY KEY (`menuSalesItemDetailID`,`id_store`,`warehouseAutoID`)
+  PRIMARY KEY (`menuSalesItemDetailID`,`id_store`,`warehouseAutoID`),
+  KEY `menuSalesItemID` (`menuSalesItemID`) USING BTREE,
+  KEY `menuSalesID` (`menuSalesID`) USING BTREE,
+  KEY `itemAutoID` (`itemAutoID`) USING BTREE,
+  KEY `warehouseAutoID` (`warehouseAutoID`) USING BTREE,
+  KEY `qty` (`qty`) USING BTREE,
+  KEY `menuID` (`menuID`) USING BTREE,
+  KEY `costGLAutoID` (`costGLAutoID`) USING BTREE,
+  KEY `assetGLAutoID` (`assetGLAutoID`) USING BTREE,
+  KEY `companyID` (`companyID`) USING BTREE,
+  KEY `segmentID` (`segmentID`) USING BTREE,
+  KEY `is_sync` (`is_sync`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -3361,7 +3377,17 @@ CREATE TABLE `srp_erp_pos_menusalesitems` (
   `is_sync` int(11) DEFAULT '0',
   `id_store` int(11) NOT NULL,
   PRIMARY KEY (`menuSalesItemID`,`id_store`,`warehouseAutoID`),
-  KEY `isSamplePrinted` (`isSamplePrinted`) USING BTREE
+  KEY `isSamplePrinted` (`isSamplePrinted`) USING BTREE,
+  KEY `warehouseAutoID` (`warehouseAutoID`) USING BTREE,
+  KEY `menuSalesID` (`menuSalesID`) USING BTREE,
+  KEY `menuID` (`menuID`) USING BTREE,
+  KEY `menuCategoryID` (`menuCategoryID`) USING BTREE,
+  KEY `warehouseMenuID` (`warehouseMenuID`) USING BTREE,
+  KEY `warehouseMenuCategoryID` (`warehouseMenuCategoryID`) USING BTREE,
+  KEY `qty` (`qty`) USING BTREE,
+  KEY `companyID` (`companyID`) USING BTREE,
+  KEY `revenueGLAutoID` (`revenueGLAutoID`) USING BTREE,
+  KEY `is_sync` (`is_sync`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -3494,7 +3520,23 @@ CREATE TABLE `srp_erp_pos_menusalesmaster` (
   `BOTCreatedDatetime` datetime DEFAULT NULL,
   `isFromTablet` int(1) DEFAULT '0' COMMENT 'if the record created from tablet window',
   PRIMARY KEY (`menuSalesID`,`wareHouseAutoID`),
-  KEY `menuSalesID` (`menuSalesID`)
+  KEY `menuSalesID` (`menuSalesID`),
+  KEY `invoiceCode` (`invoiceCode`) USING BTREE,
+  KEY `wareHouseAutoID` (`wareHouseAutoID`) USING BTREE,
+  KEY `deliveryPersonID` (`deliveryPersonID`) USING BTREE,
+  KEY `shiftID` (`shiftID`) USING BTREE,
+  KEY `menuSalesDate` (`menuSalesDate`) USING BTREE,
+  KEY `totalQty` (`totalQty`) USING BTREE,
+  KEY `isHold` (`isHold`) USING BTREE,
+  KEY `segmentID` (`segmentID`) USING BTREE,
+  KEY `companyID` (`companyID`) USING BTREE,
+  KEY `isVoid` (`isVoid`) USING BTREE,
+  KEY `isCreditSales` (`isCreditSales`) USING BTREE,
+  KEY `documentMasterAutoID` (`documentMasterAutoID`) USING BTREE,
+  KEY `isDelivery` (`isDelivery`) USING BTREE,
+  KEY `isPromotion` (`isPromotion`) USING BTREE,
+  KEY `promotionID` (`promotionID`) USING BTREE,
+  KEY `is_sync` (`is_sync`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -3529,7 +3571,14 @@ CREATE TABLE `srp_erp_pos_menusalespayments` (
   `timestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `is_sync` int(1) DEFAULT '0',
   `id_store` int(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`menuSalesPaymentID`,`id_store`)
+  PRIMARY KEY (`menuSalesPaymentID`,`id_store`),
+  KEY `wareHouseAutoID` (`wareHouseAutoID`) USING BTREE,
+  KEY `menuSalesID` (`menuSalesID`) USING BTREE,
+  KEY `paymentConfigMasterID` (`paymentConfigMasterID`) USING BTREE,
+  KEY `paymentConfigDetailID` (`paymentConfigDetailID`) USING BTREE,
+  KEY `GLCode` (`GLCode`) USING BTREE,
+  KEY `customerAutoID` (`customerAutoID`) USING BTREE,
+  KEY `is_sync` (`is_sync`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -3544,6 +3593,7 @@ CREATE TABLE `srp_erp_pos_menusalesservicecharge` (
   `menusalesServiceChargeID` int(11) NOT NULL AUTO_INCREMENT,
   `wareHouseAutoID` int(11) NOT NULL DEFAULT '0',
   `menuSalesID` int(11) DEFAULT NULL,
+  `menuSalesItemID` int(11) DEFAULT '0',
   `menuServiceChargeID` int(11) DEFAULT NULL,
   `menuMasterID` int(11) DEFAULT NULL,
   `serviceChargePercentage` double DEFAULT '0',
@@ -3568,7 +3618,14 @@ CREATE TABLE `srp_erp_pos_menusalesservicecharge` (
   `timestamp` timestamp NULL DEFAULT NULL,
   `is_sync` int(1) DEFAULT '0',
   `id_store` int(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`menusalesServiceChargeID`,`id_store`)
+  PRIMARY KEY (`menusalesServiceChargeID`,`id_store`),
+  KEY `wareHouseAutoID` (`wareHouseAutoID`) USING BTREE,
+  KEY `menuSalesID` (`menuSalesID`) USING BTREE,
+  KEY `menuSalesItemID` (`menuSalesItemID`) USING BTREE,
+  KEY `menuServiceChargeID` (`menuServiceChargeID`) USING BTREE,
+  KEY `GLAutoID` (`GLAutoID`) USING BTREE,
+  KEY `companyID` (`companyID`) USING BTREE,
+  KEY `is_sync` (`is_sync`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
@@ -3609,7 +3666,13 @@ CREATE TABLE `srp_erp_pos_menusalestaxes` (
   `timestamp` timestamp NULL DEFAULT NULL,
   `is_sync` int(1) DEFAULT '0',
   `id_store` int(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`menuSalesTaxID`,`id_store`)
+  PRIMARY KEY (`menuSalesTaxID`,`id_store`),
+  KEY `wareHouseAutoID` (`wareHouseAutoID`) USING BTREE,
+  KEY `menuSalesID` (`menuSalesID`) USING BTREE,
+  KEY `menuSalesItemID` (`menuSalesItemID`) USING BTREE,
+  KEY `GLCode` (`GLCode`) USING BTREE,
+  KEY `companyID` (`companyID`) USING BTREE,
+  KEY `is_sync` (`is_sync`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='transaction level tabled - created by shafri ';
 
 -- ----------------------------
@@ -4526,6 +4589,7 @@ CREATE TABLE `srp_erp_pos_warehousemenumaster` (
 DROP TABLE IF EXISTS `srp_erp_pos_wifipasswordsetup`;
 CREATE TABLE `srp_erp_pos_wifipasswordsetup` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `wareHouseAutoID` int(11) NOT NULL DEFAULT '0',
   `wifiPassword` varchar(255) DEFAULT NULL,
   `isUsed` int(1) DEFAULT '0',
   `menuSalesID` int(11) DEFAULT NULL,
@@ -4535,7 +4599,9 @@ CREATE TABLE `srp_erp_pos_wifipasswordsetup` (
   `companyID` int(11) DEFAULT NULL,
   `createdBy` int(11) DEFAULT NULL,
   `createdDatetime` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`) USING BTREE,
+  `is_sync` int(1) DEFAULT '1',
+  `id_store` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`,`wareHouseAutoID`,`id_store`),
   KEY `wifiPassword` (`wifiPassword`) USING BTREE,
   KEY `isUsed` (`isUsed`) USING BTREE,
   KEY `outletID` (`outletID`) USING BTREE,
@@ -4730,6 +4796,7 @@ CREATE TABLE `srp_erp_warehousemaster` (
   `warehouseAddress` varchar(255) DEFAULT NULL,
   `warehouseTel` varchar(255) DEFAULT NULL,
   `isActive` int(1) DEFAULT '1',
+  `isLocalPosEnabled` int(1) DEFAULT '0',
   `warehouseImage` varchar(300) DEFAULT NULL,
   `pos_footNote` text,
   `companyID` int(11) DEFAULT NULL,

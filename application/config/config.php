@@ -371,7 +371,7 @@ $config['encryption_key'] = 'CKXH2U9RP';
 
 $config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = 'srperp';
-$config['sess_expiration'] = 0;
+$config['sess_expiration'] = 3000000;
 $config['sess_save_path'] = 'srp_erp_sessions';
 $config['sess_match_ip'] = FALSE;
 /*$config['sess_time_to_update'] = 100000;*/

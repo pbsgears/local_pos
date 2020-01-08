@@ -88,6 +88,7 @@
         <script>
             function print_paymentReceipt() {
                 $.print('#print_content<?php echo $uniqueID ?>');
+                $("#pos_sampleBill").modal('hide');
                 setTimeout(function () {
                     $("#rpos_print_template").modal('hide');
                 }, 3000);

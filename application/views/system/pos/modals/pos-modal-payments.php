@@ -1296,6 +1296,13 @@ $this->lang->load('calendar', $primaryLanguage);
     }
 
     function print_sample_bill() {
+        <?php
+        if (isset($isHidePrintPreview) && $isHidePrintPreview) {
+            echo "app.submit_mode = 'submit_and_send_to_printer';";
+        } else {
+            echo "app.submit_mode = 'submit_and_print';";
+        }
+        ?>
         var invoiceID = $("#holdInvoiceID").val();
         var outletID = $("#holdOutletID_input").val();
         // var tmp_promotion = $("#tmp_promotion").val();
@@ -1338,6 +1345,9 @@ $this->lang->load('calendar', $primaryLanguage);
                 success: function (data) {
                     stopLoad();
                     $("#pos_modalBody_sampleBill").html(data);
+                    if(app.submit_mode == 'submit_and_send_to_printer'){
+                        print_paymentReceipt()
+                    }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     if (jqXHR.status == false) {

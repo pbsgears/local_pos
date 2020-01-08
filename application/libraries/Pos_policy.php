@@ -59,6 +59,20 @@ class pos_policy
         return $policyID;
     }
 
+    function isHidePrintPreview(){
+        $this->outletID = get_outletID();
+        $this->companyID = current_companyID();
+        $this->ci->db->select('*');
+        $this->ci->db->from('srp_erp_pos_policydetail');
+        $this->ci->db->where('posPolicyMasterID', 19);
+        $this->ci->db->where('outletID', $this->outletID);
+        $this->ci->db->where('companyID', $this->companyID);
+        $this->ci->db->limit(1);
+        $policyID = $this->ci->db->get()->row('posPolicyID');
+        $policyID = !empty($policyID) ? true : false;
+        return $policyID;
+    }
+
     function isCompanyEmail()
     {
         /**

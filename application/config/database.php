@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
     'dsn' => '',
-    'hostname' => 'localhost', 
+    'hostname' => '192.168.51.2',
     'username' => 'root',
-    'password' => '', 
+    'password' => 'root',
     'database' => 'central_db_local',
     'dbdriver' => 'mysqli',
     'dbprefix' => '',
@@ -98,9 +98,9 @@ $db['default'] = array(
 
 $db['db2'] = array(
     'dsn' => '',
-    'hostname' => 'localhost',  
+    'hostname' => '192.168.51.2',
     'username' => 'root',
-    'password' => '', 
+    'password' => 'root',
     'database' => 'central_db_local',//
     'dbdriver' => 'mysqli',
     'dbprefix' => '',
@@ -120,9 +120,9 @@ $db['db2'] = array(
 
 $db['db3'] = array(
     'dsn' => '',
-    'hostname' => 'localhost',
+    'hostname' => '192.168.51.2',
     'username' => 'root',
-    'password' => '',
+    'password' => 'root',
     'database' => 'central_db_local',//
     'dbdriver' => 'mysqli',
     'dbprefix' => '',

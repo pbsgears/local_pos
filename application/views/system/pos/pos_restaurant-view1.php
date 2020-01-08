@@ -643,6 +643,13 @@ $discountPolicy = show_item_level_discount();
                     </div>
 
                     <div class="col-xs-3 col-sm-2 col-md-12 col-lg-12 mainBtnList">
+                        <button type="button" onclick="print_sample_bill()" class="btn btn-block btn-lg btn-default btn-myCustom" style="padding: 10px 0">
+                            <i class="fa fa-print"></i><br/> &nbsp;
+                            Print Sample
+                        </button>
+                    </div>
+
+                    <div class="col-xs-3 col-sm-2 col-md-12 col-lg-12 mainBtnList">
                         <a href="#holdmodel" data-toggle="modal" style="text-decoration: none;">
                             <button class="btn btn-block btn-lg btn-danger dangerCustom2 btn-myCustom" rel="tooltip"
                                     title="short cut  Ctrl+S "
@@ -1729,7 +1736,17 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
             }
         }
 
+        app = {};
+        app.submit_mode = null;
+
         function submit_pos_payments() {
+            <?php
+            if (isset($isHidePrintPreview) && $isHidePrintPreview) {
+                echo "app.submit_mode = 'submit_and_close';";
+            } else {
+                echo "app.submit_mode = 'submit_and_print';";
+            }
+            ?>
             var isDelivery = $("#isDelivery").val();
             var deliveryPersonID = $("#deliveryPersonID").val();
             if (isDelivery == 1) {
@@ -1738,6 +1755,29 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                 } else {
                     myAlert('e', 'Please select Delivery person before submit person.')
                     return false;
+                }
+            } else {
+                validateBalanceAmount();
+            }
+        }
+
+        function submit_and_close_pos_payments() {
+            app.submit_mode = 'submit_and_close';
+            $("#customerNameTmp").val('');
+            $("#customerTelephoneTmp").val('');
+            $("#customerAddressTmp").val('');
+            $("#customerIDTmp").val('');
+            $("#customerEmailTmp").val('');
+            //setDeliveryInfo();
+            var isDelivery = $("#isDelivery").val();
+            var deliveryPersonID = $("#deliveryPersonID").val();
+            if (isDelivery == 1) {
+                if (deliveryPersonID > 0 || deliveryPersonID == -1) {
+                    validateBalanceAmount();
+                } else {
+                    /*myAlert('e', 'Please select Delivery person before submit person.')
+                    return false;*/
+                    validateBalanceAmount();
                 }
             } else {
                 validateBalanceAmount();
@@ -1796,12 +1836,14 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
 
                 },
                 success: function (data) {
-                    $("#submit_btn_pos_receipt").html('Submit');
+                    $("#submit_btn_pos_receipt").html('Submit and Print');
                     $("#submit_btn").prop('disabled', false); // Please comment it later
                     $("#backToCategoryBtn").click();
                     if (data['error'] == 0) {
                         //myAlert('s', data['message']);
-                        loadPrintTemplate(data['invoiceID']);
+                        if (app.submit_mode == 'submit_and_print') {
+                            loadPrintTemplate(data['invoiceID']);
+                        }
                         $("#email_invoiceID").val(data['invoiceID']);
                         resetKotButton();
                         clearCreditSales();
@@ -1815,9 +1857,14 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     $("#deliveryDateDiv").hide();
                     resetPaymentForm();
                     reset_delivery_order();
+
+                    if (app.submit_mode == 'submit_and_close') {
+                        clearSalesInvoice();
+                        $("#pos_payments_modal").modal('hide');
+                    }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    $("#submit_btn_pos_receipt").html('Submit');
+                    $("#submit_btn_pos_receipt").html('Submit and Print');
                     $("#submit_btn").prop('disabled', false);
                     if (jqXHR.status == false) {
                         myAlert('w', 'Local Server is Offline,  Please try again');
@@ -1848,7 +1895,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
 
                 },
                 success: function (data) {
-                    $("#submit_btn_pos_receipt").html('Submit');
+                    $("#submit_btn_pos_receipt").html('Submit and Print');
                     $("#submit_btn").prop('disabled', false); // Please comment it later
 
                     if (data['error'] == 0) {
@@ -1859,7 +1906,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    $("#submit_btn_pos_receipt").html('Submit');
+                    $("#submit_btn_pos_receipt").html('Submit and Print');
                     $("#submit_btn").prop('disabled', false);
                     if (jqXHR.status == false) {
                         myAlert('w', 'Local Server is Offline,  Please try again');
@@ -1873,7 +1920,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
 
         function holdAndCreateNewBill() {
             /** when submit */
-            $("#submit_btn_pos_receipt").html('Submit');
+            $("#submit_btn_pos_receipt").html('Submit and Print');
             $("#submit_btn").prop('disabled', false); // Please comment it later
             $("#backToCategoryBtn").click();
             resetKotButton();

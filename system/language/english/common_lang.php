@@ -120,6 +120,8 @@ $lang['common_report'] = 'Report';
 $lang['common_form'] = 'Form';
 $lang['common_generate'] = 'Generate';
 $lang['common_print'] = 'Print';
+$lang['common_submit_and_print'] = 'Submit and Print';
+$lang['common_submit_and_close'] = 'Submit and Close';
 
 
 

@@ -449,11 +449,16 @@ if ($_SERVER["REQUEST_URI"] === '/local_pos/index.php/sync_server') {
     $config['csrf_protection'] = false;
 } else if ($_SERVER["REQUEST_URI"] === '/local_pos/index.php/Login/logout') {
     $config['csrf_protection'] = false;
-} else if ($_SERVER["REQUEST_URI"] === '/local_pos/index.php/sync_server/pull_data') {
+}  else if ($_SERVER["REQUEST_URI"] === '/local_pos/index.php/sync_server/pull_data') {
+    $config['csrf_protection'] = false;
+}  else if ($_SERVER["REQUEST_URI"] === '/local_pos/index.php/login/loginSubmit') {
     $config['csrf_protection'] = false;
 } else {
     $config['csrf_protection'] = TRUE;
 }
+
+
+
 
 $config['csrf_token_name'] = 'csrf_token';
 $config['csrf_cookie_name'] = 'csrf_token';

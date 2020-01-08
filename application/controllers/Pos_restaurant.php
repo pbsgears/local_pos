@@ -135,7 +135,7 @@ class Pos_restaurant extends ERP_Controller
         $data['isPriceRequired'] = $isPriceRequired;
         $data['tables_list'] = $this->Pos_restaurant_model->get_tableList();
         $data['sampleBillPolicy'] = $this->pos_policy->isSampleBillRequired();
-
+        $data['isHidePrintPreview'] = $this->pos_policy->isHidePrintPreview();
 
 
         /** load template */

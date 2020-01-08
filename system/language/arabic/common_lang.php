@@ -36,6 +36,8 @@ $lang['common_bank'] = 'بنك';
 $lang['common_branch'] = 'الفرع';
 $lang['common_please_select'] = 'الرجاء التحديد';
 $lang['common_previous'] = 'السابق';
+$lang['common_submit_and_print'] = 'إرسال وطباعة';
+$lang['common_submit_and_close'] = 'إرسال وإغلاق';
 
 $lang['common_gender'] = 'جنس';
 $lang['common_religion'] = 'دين';

@@ -662,12 +662,14 @@ $this->lang->load('calendar', $primaryLanguage);
                     <?php
                 }
                 ?>
-
+                <button id="submit_and_close_btn" type="button" onclick="submit_and_close_pos_payments()" class="btn btn-lg btn-primary"
+                        style="background-color: #3fb618; color: #FFF; border: 0px;">
+                    <span><?php echo $this->lang->line('common_submit_and_close'); ?><!--Submit--></span>
+                </button>
 
                 <button id="submit_btn" type="submit" onclick="submit_pos_payments()" class="btn btn-lg btn-primary"
                         style="background-color: #3fb618; color: #FFF; border: 0px; float: right; display: none;">
-                    <span
-                            id="submit_btn_pos_receipt"><?php echo $this->lang->line('common_submit'); ?><!--Submit--></span>
+                    <span id="submit_btn_pos_receipt"><?php echo $this->lang->line('common_submit_and_print'); ?><!--Submit--></span>
                 </button>
             </div>
         </div>
@@ -1345,4 +1347,16 @@ $this->lang->load('calendar', $primaryLanguage);
         }
 
     }
+
+    $('#pos_sampleBill').on('hidden.bs.modal', function (e) {
+        confirmation_to_hold_bill();
+    });
+    function confirmation_to_hold_bill(){
+        bootbox.confirm('Are you sure you want to hold this bill?', function (result) {
+            if (result) {
+                holdReceipt();
+            }
+        });
+    }
+
 </script>

@@ -1,4 +1,10 @@
 <style>
+    .touchSizeButton{
+        width: 100px;
+        height: 66px;
+        font-weight: 700;
+    }
+
     .customBtnNumb {
         padding: 17px;
         margin: 3px 4px;
@@ -1350,10 +1356,24 @@ $this->lang->load('calendar', $primaryLanguage);
     $('#pos_sampleBill').on('hidden.bs.modal', function (e) {
         confirmation_to_hold_bill();
     });
-    function confirmation_to_hold_bill(){
-        bootbox.confirm('Do you want to hold this bill?', function (result) {
-            if (result) {
-                holdReceipt();
+
+    function confirmation_to_hold_bill() {
+        bootbox.confirm({
+            message: "Do you want to hold this bill?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-lg btn-success touchSizeButton'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-lg btn-danger touchSizeButton'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    holdReceipt();
+                }
             }
         });
     }

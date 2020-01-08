@@ -537,7 +537,7 @@ $config['sync'] = TRUE;
 
 
 /** Contact Hisham and setup this */
-$config['outletID'] = 108;
+$config['outletID'] = 27;
 
 
 /*database synchronize */

@@ -650,25 +650,24 @@ $this->lang->load('calendar', $primaryLanguage);
             </div>
 
             <div class="modal-footer" style="margin-top: 0px;">
-                <button type="button" class="btn btn-lg btn-default" data-dismiss="modal">
+                <button type="button" class="btn btn-lg btn-default" data-dismiss="modal" style="height: 57px;">
                     <?php echo $this->lang->line('common_Close'); ?><!--Close--></button>
 
                 <?php
                 if (isset($sampleBillPolicy) && $sampleBillPolicy) {
                     ?>
-                    <button type="button" onclick="print_sample_bill()" class="btn btn-lg btn-default">
+                    <button type="button" onclick="print_sample_bill()" class="btn btn-lg btn-default" style="height: 57px;">
                         <i class="fa fa-print"></i>Print Sample
                     </button>
                     <?php
                 }
                 ?>
-                <button id="submit_and_close_btn" type="button" onclick="submit_and_close_pos_payments()" class="btn btn-lg btn-primary"
-                        style="background-color: #3fb618; color: #FFF; border: 0px;">
+                <button id="submit_and_close_btn" type="button" onclick="submit_and_close_pos_payments()" class="btn btn-lg btn-default" style="height: 57px;">
                     <span><?php echo $this->lang->line('common_submit_and_close'); ?><!--Submit--></span>
                 </button>
 
                 <button id="submit_btn" type="submit" onclick="submit_pos_payments()" class="btn btn-lg btn-primary"
-                        style="background-color: #3fb618; color: #FFF; border: 0px; float: right; display: none;">
+                        style="background-color: #3fb618; color: #FFF; border: 0px; float: right; display: none;height: 57px;">
                     <span id="submit_btn_pos_receipt"><?php echo $this->lang->line('common_submit_and_print'); ?><!--Submit--></span>
                 </button>
             </div>
@@ -1352,7 +1351,7 @@ $this->lang->load('calendar', $primaryLanguage);
         confirmation_to_hold_bill();
     });
     function confirmation_to_hold_bill(){
-        bootbox.confirm('Are you sure you want to hold this bill?', function (result) {
+        bootbox.confirm('Do you want to hold this bill?', function (result) {
             if (result) {
                 holdReceipt();
             }

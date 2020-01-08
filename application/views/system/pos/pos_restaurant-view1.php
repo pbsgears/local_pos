@@ -642,12 +642,18 @@ $discountPolicy = show_item_level_discount();
                         </button>
                     </div>
 
-                    <div class="col-xs-3 col-sm-2 col-md-12 col-lg-12 mainBtnList">
-                        <button type="button" onclick="print_sample_bill()" class="btn btn-block btn-lg btn-default btn-myCustom" style="padding: 10px 0">
-                            <i class="fa fa-print"></i><br/> &nbsp;
-                            Print Sample
-                        </button>
-                    </div>
+                    <?php
+                    if (isset($sampleBillPolicy) && $sampleBillPolicy) {
+                        ?>
+                        <div class="col-xs-3 col-sm-2 col-md-12 col-lg-12 mainBtnList">
+                            <button type="button" onclick="print_sample_bill()" class="btn btn-block btn-lg btn-default btn-myCustom" style="padding: 10px 0;">
+                                <i class="fa fa-print"></i><br/> &nbsp;
+                                <span style="font-size: 12px;">Print Sample</span>
+                            </button>
+                        </div>
+                        <?php
+                    }
+                    ?>
 
                     <div class="col-xs-3 col-sm-2 col-md-12 col-lg-12 mainBtnList">
                         <a href="#holdmodel" data-toggle="modal" style="text-decoration: none;">
@@ -1742,7 +1748,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
         function submit_pos_payments() {
             <?php
             if (isset($isHidePrintPreview) && $isHidePrintPreview) {
-                echo "app.submit_mode = 'submit_and_close';";
+                echo "app.submit_mode = 'submit_and_send_to_printer';";
             } else {
                 echo "app.submit_mode = 'submit_and_print';";
             }
@@ -1844,6 +1850,12 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                         if (app.submit_mode == 'submit_and_print') {
                             loadPrintTemplate(data['invoiceID']);
                         }
+
+                        if (app.submit_mode == 'submit_and_send_to_printer') {
+                            loadPrintTemplate(data['invoiceID']);
+                            print_paymentReceipt();
+                        }
+
                         $("#email_invoiceID").val(data['invoiceID']);
                         resetKotButton();
                         clearCreditSales();

@@ -33,6 +33,7 @@ $this->lang->load('calendar', $primaryLanguage);
     function loadPrintTemplate(invoiceID) {
         if (invoiceID > 0) {
             $.ajax({
+                async: false,
                 type: 'POST',
                 dataType: 'html',
                 url: "<?php echo site_url('Pos_restaurant/loadPrintTemplate'); ?>",

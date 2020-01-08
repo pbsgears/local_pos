@@ -782,8 +782,8 @@ $this->lang->load('calendar', $primaryLanguage);
         $("#delivery_advancePaymentAmountShow").html('0.00');
         $("#current_table_description").text('Table');
         resetKotButton();
-        //updateCustomerTypeBtn(defaultDineinButtonID);
         reset_paymentMode();
+        updateCustomerTypeBtn(defaultDineinButtonID);
     }
 
     function open_pos_payments_modal() {

@@ -51,6 +51,14 @@
         border-radius: 0px !important;
     }
 
+    @page
+    {
+        size: auto;   /* auto is the initial value */
+        margin-left: 10mm;  /* this affects the margin in the printer settings */
+        margin-top: 0mm;  /* this affects the margin in the printer settings */
+        margin-bottom: 0mm;  /* this affects the margin in the printer settings */
+    }
+
 </style>
 <div id="wrapper">
 

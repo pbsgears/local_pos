@@ -1,7 +1,7 @@
 <style>
     .touchSizeButton{
-        width: 100px;
-        height: 66px;
+        width: 50px;
+        height: 33px;
         font-weight: 700;
     }
 

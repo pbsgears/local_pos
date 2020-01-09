@@ -1,0 +1,82 @@
+span.multiselect2-native-select {
+    position: relative
+}
+
+span.multiselect2-native-select select {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1px !important;
+    margin: -1px -1px -1px -3px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+    left: 50%;
+    top: 30px
+}
+
+.multiselect2-container {
+    position: absolute !important;
+    list-style-type: none !important;
+    margin: 0;
+    padding: 0
+}
+
+.multiselect2-container .input-group {
+    margin: 5px !important
+}
+
+.multiselect2-container > li {
+    padding: 0 !important
+}
+
+.multiselect2-container > li > a.multiselect2-all label {
+    font-weight: 700 !important
+}
+
+.multiselect2-container > li.multiselect2-group label {
+    margin: 0 !important;
+    padding: 3px 20px 3px 20px !important;
+    height: 100% !important;
+    font-weight: 700 !important
+}
+
+.multiselect2-container > li.multiselect2-group-clickable label {
+    cursor: pointer !important
+}
+
+.multiselect2-container > li > a {
+    padding: 0 !important
+}
+
+.multiselect2-container > li > a > label {
+    margin: 0;
+    height: 100% !important;
+    cursor: pointer !important;
+    font-weight: 400 !important;
+    padding: 3px 20px 3px 40px !important;
+}
+
+.multiselect2-container > li > a > label.radio, .multiselect2-container > li > a > label.checkbox {
+    margin: 0 !important;
+}
+
+.multiselect2-container > li > a > label > input[type=checkbox] {
+    margin-bottom: 5px !important;
+    opacity: 1 !important
+}
+
+.btn-group > .btn-group:nth-child(2) > .multiselect2.btn {
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important
+}
+
+.form-inline .multiselect2-container label.checkbox, .form-inline .multiselect2-container label.radio {
+    padding: 3px 20px 3px 40px !important
+}
+
+.form-inline .multiselect2-container li a label.checkbox input[type=checkbox], .form-inline .multiselect2-container li a label.radio input[type=radio] {
+    margin-left: -20px !important;
+    margin-right: 0 !important
+}
+

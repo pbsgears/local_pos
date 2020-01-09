@@ -1,0 +1,181 @@
+<?php
+
+
+/**
+ * System messages translation for CodeIgniter(tm)
+ *
+ * @author    Shafri
+ * @copyright    Copyright (c), GEARS Software Solution Pvt. Ltd. (http://gears-int.com)
+ * @link :   http://gears-int.com
+ *
+ * @prefix : sales_markating_transaction
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/** Common */
+$lang['sales_markating_transaction_quotation_Contract_sales_order'] ='عرض التكلفة أو الأسعار  / عقد / طلب المبيعات';/*Done*/
+$lang['sales_markating_transaction_to'] ='إلى';/*Done*/
+$lang['sales_markating_transaction_document_type'] ='نوع المستندات';/*Done*/
+$lang['sales_markating_transaction_quotation']='عرض الأسعار';/*Done*/
+$lang['sales_markating_transaction_contract']='عقد';/*Done*/
+$lang['sales_markating_transaction_sales_order']='طلب مبيعات';/*Done*/
+$lang['sales_markating_transaction_create']='إنشاء';/*Done*/
+$lang['sales_markating_transaction_model_title']='عنوان المشروط - تعديل ';/*Done*/
+$lang['sales_markating_transaction_quotation_version']='نسخة عرض التكلفة أو الأسعار ';/*Done*/
+$lang['sales_markating_transaction_drill_down']='حفر لأسفل';
+$lang['sales_markating_transaction_invoice_code']='رمز الفاتورة';/*Done*/
+$lang['sales_markating_transaction_invoice_date']='تاريخ الفاتورة ';/*Done*/
+$lang['sales_markating_transaction_close']='إلغاء';/*Done*/
+$lang['sales_markating_transaction_you_want_to_reversing_this_quotation']='تريد إسترجاع هذا الإصدار';/*Done*/
+$lang['sales_markating_transaction_you_want_to_re_open']='تريد إعادة فتح';/*Done*/
+$lang['sales_markating_transaction_quotation_contract'] ='السعر جديد / عقد';/*Done*/
+$lang['sales_markating_transaction_step_one'] ='الخطوة 1';/*Done*/
+$lang['sales_markating_transaction_header'] =' عنوان';
+$lang['sales_markating_transaction_step_two'] ='الخطوة 2';/*Done*/
+$lang['sales_markating_transaction_detail'] ='تفاصيل';/*Done*/
+$lang['sales_markating_transaction_step_three'] ='الخطوة 3';/*Done*/
+$lang['sales_markating_transaction_confirmation'] = 'التأكيد';/*Done*/
+$lang['sales_markating_transaction_document_type'] = 'نوع المستندات';/*Done*/
+$lang['sales_markating_transaction_quotation']='عرض التكلفة أو الأسعار';/*Done*/
+$lang['sales_markating_transaction_document_expiry_date']='تاريخ انتهاء الوثيقة';
+$lang['sales_markating_transaction_document_reference']='مرجع';/*Done*/
+$lang['sales_markating_transaction_document_document_currency']='عملة المستند';/*Done*/
+$lang['sales_markating_transaction_document_contact_person_name']='اسم جهة الاتصال ';/*Done*/
+$lang['sales_markating_transaction_document_persons_telephone_number']='رقم الهاتف';/*Done*/
+$lang['sales_markating_transaction_document_narration']='شرح';/*Done*/
+$lang['sales_markating_transaction_document_add_item']='اضافة عنصر';
+$lang['sales_markating_transaction_document_item_details']='تفاصيل العنصر';/*Done*/
+$lang['sales_markating_transaction_document_uom']='وحدة القياس ';/*Done*/
+$lang['sales_markating_transaction_document_qty']='الكمية ';/*Done*/
+$lang['sales_markating_transaction_document_unit']='وحدة';/*Done*/
+$lang['sales_markating_transaction_discount']='خصم';/*Done*/
+$lang['sales_markating_transaction_net_unit_price']='صافي سعر الوحدة';/*Done*/
+$lang['sales_markating_transaction_net_tax_for']='الضرائب ل';/*Done*/
+$lang['sales_markating_transaction_net_tax_type']='نوع الضريبة';/*Done*/
+$lang['sales_markating_transaction_tax']='ضريبة';/*Done*/
+$lang['sales_markating_transaction_item_code']='رمز العنصر ';/*Done*/
+$lang['sales_markating_transaction_item_ref']='البند المرجع';/*Done*/
+$lang['sales_markating_transaction_sales_price']='سعر المبيعات';/*Done*/
+$lang['sales_markating_transaction_net_unit_cost']='صافي تكلفة الوحدة';/*Done*/
+$lang['sales_markating_transaction_net_amount']='صافي المبلغ ';/*Done*/
+$lang['sales_markating_transaction_remarks']='ملاحظات';/*Done*/
+$lang['sales_markating_transaction_waited_average_cost']='رمز متوسط التكلفة المرجح';/*Done*/
+$lang['sales_markating_transaction_item_id']='رمز المعرف للعنصر ';/*Done*/
+$lang['sales_markating_transaction_secondary_item_code']='رمز العنصر الثانوي';/*Done*/
+$lang['sales_markating_transaction_secondary_item_description']='وصف العنصر';/*Done*/
+$lang['sales_markating_transaction_secondary_select_uom']='تحديد وحده القياس';/*Done*/
+$lang['sales_markating_transaction_item_comment']='تعليق البند ';/*Done*/
+$lang['sales_markating_transaction_item_remarks']='ملاحظات البند';/*Done*/
+$lang['sales_markating_transaction_edit_item_details']='تحرير تفاصيل البند';/*Done*/
+$lang['sales_markating_transaction_tax_amount_required']='مبلغ مطلوب للضريبة ';/*Done*/
+$lang['sales_markating_transaction_tax_type_required']='نوع الضريبة مطلوب';/*Done*/
+$lang['sales_markating_transaction_percentage_is_required']='النسبة المئوية مطلوبة';/*Done*/
+$lang['sales_markating_transaction_contract_type_is_required']='نوع العقد مطلوب';/*Done*/
+$lang['sales_markating_transaction_contract_exp_is_required']='تاريخ انتهاء العقد مطلوب';/*Done*/
+$lang['sales_markating_transaction_contract_date_is_required']='تاريخ العقد مطلوب';/*Done*/
+$lang['sales_markating_transaction_contract_ref_is_required']='رقم المرجع المطلوب ';/*Done*/
+$lang['sales_markating_transaction_customer_is_required']='العميل مطلوب';/*Done*/
+$lang['sales_markating_transaction_currency_is_required']='عملة المعاملة مطلوبة';/*Done*/
+$lang['sales_markating_transaction_narration_is_required']='راوية *إلزامي';/*Done*/
+$lang['sales_markating_transaction_you_want_to_delete_this_attachment_file']='تريد حذف ملف المرفق هذا!';/*Done*/
+$lang['sales_markating_transaction_tax_applicable_amount']='مبلغ الضريبة المطبق';/*Done*/
+
+$lang['sales_markating_transaction_customer_invoice']='فاتورة العميل';/*Done*/
+$lang['sales_markating_transaction_customer_draft']='مشروع';/*Done*/
+$lang['sales_markating_transaction_create_invoice']='إنشاء فاتورة';/*Done*/
+$lang['sales_markating_transaction_total_value']='إجمالي القيمة';/*Done*/
+$lang['sales_markating_transaction_you_want_to_re_open!']='تريد إعادة فتح';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_invoice']='إضافة فاتورة جديدة للعميل';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_invoice_header']='رأس الفاتورة';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_invoice_detail']='تفاصيل الفاتورة';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_invoice_confirmation']='تأكيد الفاتورة ';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_invoice_type']='نوع الفاتورة';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_direct_invoice']='فاتورة مباشرة';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_quotation_based']='عرض أسعار';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_contract_based']='عقد';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_sales_order_based']='طلب مبيعات';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_invoice_date']='تاريخ الفاتورة للعميل';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_invoice_due_date']='تاريخ استحقاق الفاتورة';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_invoice_currency']='عملة الفاتورة';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_financial_year']='سنه مالية ';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_financial_period']='لفترة المالية';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_select_financial_period']='حدد فترة المالية';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_remittance_details']='تفاصيل التحويلات';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_print_invoice_only']='طباعة الفاتورة فقط';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_print_invoice_and_delivery_note']='طباعة الفاتورة والتسليم ';/*Done*/
+$lang['sales_markating_transaction_sales_person']='مندوب مبيعات';/*Done*/
+$lang['sales_markating_transaction_document_item_detail']='تفاصيل العنصر';/*Done*/
+$lang['sales_markating_transaction_select_financial_period']='حدد فترة المالية';/*Done*/
+$lang['sales_markating_transaction_invoice_type_is_required']='نوع الفاتورة مطلوب';/*Done*/
+$lang['sales_markating_transaction_customer_date_is_required']='بيانات العميل مطلوبة إلزامي';/*Done*/
+$lang['sales_markating_transaction_invoice_due_date_is_required']='تاريخ استحقاق الفاتورة مطلوب';/*Done*/
+$lang['sales_markating_transaction_reference_no_is_required']='رقم المرجع المطلوب ';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_financial_year_is_required']='السنة المالية مطلوبة';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_financial_period_is_required']='الفترة المالية مطلوبة';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_warehouse_location_is_required']='موقع المستودع مطلوب';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_invoice_narration_is_required']='مطلوب سرد الفاتورة';/*Done*/
+$lang['sales_markating_transaction_add_new_customer_direct_invoice_for']='تصرف الفاتورة مباشرا ';/*Done*/
+$lang['sales_markating_transaction_add_new_gl_details']='تفاصيل دفتر الأستاذ العام';/*Done*/
+$lang['sales_markating_transaction_add_new_gl_description']='وصف سجل العام';/*Done*/
+$lang['sales_markating_transaction_transaction']='معاملة';/*Done*/
+$lang['sales_markating_transaction_income']='الإيرادات';/*Done*/
+$lang['sales_markating_transaction_quotation_base_invoice_for']='عرض تكلفة الفاتورة المعتمدة ';/*Done*/
+$lang['sales_markating_transaction_gl_code_description']='رمز وصف سجل العام';/*Done*/
+$lang['sales_markating_transaction_quotation_details']='تفاصيل عرض تكلفة';/*Done*/
+$lang['sales_markating_transaction_contract_base_Invoice_for']='فاتورة العقد المعتمد ل ';/*Done*/
+$lang['sales_markating_transaction_contract_details']='تفاصيل العقد';/*Done*/
+$lang['sales_markating_transaction_sales_order_base_invoice_for']='فاتورة المعتمدة طلب المبيعات ل';/*Done*/
+$lang['sales_markating_transaction_sales_order_details']='تفاصيل طلب المبيعات';/*Done*/
+$lang['sales_markating_transaction_sales_tax_tot']='إجمالي الضرائب';/*Done*/
+$lang['sales_markating_transaction_invoice_item']='فاتورة العنصر';/*Done*/
+$lang['sales_markating_transaction_sales_Item_tot']='مجموعه العناصر ';/*Done*/
+$lang['sales_markating_transaction_project']='المشروع';/*Done*/
+$lang['sales_markating_transaction_select_project']='حدد المشروع';/*Done*/
+$lang['sales_markating_transaction_edit_income_details']='تحرير تفاصيل الإيراد';/*Done*/
+$lang['sales_markating_transaction_add_income_details']='إضافة تفاصيل الإيراد';/*Done*/
+$lang['sales_markating_transaction_select_warehouse']='حدد المستودع';/*Done*/
+$lang['sales_markating_transaction_gl_account']='حساب سجل العام';/*Done*/
+$lang['sales_markating_transaction_apply_to_all']='تطبيق على الكل';/*Done*/
+
+$lang['sales_markating_transaction_sales_return']='مرتجع مبيعات ';/*Done*/
+$lang['sales_markating_transaction_create_sales_return']='إنشاء مرتجع مبيعات ';/*Done*/
+$lang['sales_markating_transaction_sales_return_header']='عنوان مرتجع مبيعات ';/*Done*/
+$lang['sales_markating_transaction_sales_return_detail']=' تفاصيل مرتجع مبيعات';/*Done*/
+$lang['sales_markating_transaction_sales_return_confirmation']='تأكيد مرتجع مبيعات ';/*Done*/
+$lang['sales_markating_transaction_sales_return_date']='تاريخ الأسترجاع';/*Done*/
+$lang['sales_markating_transaction_sales_reference_no']='رقم المرجع';/*Done*/
+$lang['sales_markating_transaction_sales_warehouse_location']='موقع المستودع ';/*Done*/
+$lang['sales_markating_transaction_sales_add_item_detail']='إضافه تفاصيل العنصر';/*Done*/
+$lang['sales_markating_transaction_return']='العائد';/*Done*/
+$lang['sales_markating_transaction_recived']='تم الاستلام';/*Done*/
+$lang['sales_markating_transaction_customer_id_required']='الرقم التعريفي للعميل *إلزامي';/*Done*/
+$lang['sales_markating_transaction_return_date_is_required']='تاريخ الأسترجاع *إلزامي';/*Done*/
+$lang['sales_markating_transaction_location_is_required']='الموقع *إلزامي';/*Done*/
+$lang['sales_markating_transaction_cutomer_currency_is_required']='عملة العميل *إلزامي';/*Done*/
+$lang['sales_markating_transaction_item_is_required']=' البند *إلزامي';/*Done*/
+$lang['sales_markating_transaction_uom_is_required']='وحدة القياس *إلزامي';/*Done*/
+$lang['sales_markating_transaction_return_qty_is_required']='الكمية العائدة أو المسترجعه *إلزامي';/*Done*/
+$lang['sales_markating_transaction_you_want_to_delete_attach_this_file']='تريد حذف ملف المرفق هذا!';/*Done*/
+$lang['sales_markating_transaction_return_qty']='كمية المسترجعه ';/*Done*/
+$lang['sales_markating_transaction_items']='العنصر';/*Done*/
+$lang['sales_markating_transaction_search_item']='بحث عن عنصر';/*Done*/
+$lang['sales_markating_transaction_header_info']='معلومات العنوان ';/*Done*/
+$lang['sales_markating_transaction_balance']='الباقي';/*Done*/
+$lang['sales_markating_transaction_qty_retutn_is_required']='الكمية المسترجعه *إلزامي';/*Done*/
+$lang['sales_markating_transaction_estimated_amount_is_required']='القيمة المقدرة  *إلزامي';/*Done*/
+$lang['sales_markating_transaction_estimated_you_want_to_delete']='هل تريد الحذف ';/*Done*/
+$lang['sales_markating_transaction_an_error_has_occurred_please_contact_your_system_support_team']='حدث خطأ، يرجى الاتصال بفريق دعم النظام';/*Done*/
+$lang['sales_markating_transaction_an_error_has_occurred_please_type_return_amount']='يرجى كتابة مبلغ المسترد';/*Done*/
+$lang['sales_markating_transaction_sales_commission']='عمولة المبيعات';/*Done*/
+$lang['sales_markating_transaction_sales_commission_generate_sales_commission']='إنشاء عمولة المبيعات ';/*Done*/
+$lang['sales_markating_transaction_sales_commission_as_of_date_required']='اعتبارا من تاريخ  *إلزامي';/*Done*/
+$lang['sales_markating_transaction_sales_commission_start_amount']='بدء في الحساب العمولة ';/*Done*/
+$lang['sales_markating_transaction_sales_commission_end_amount']='يبتدي من إلى العمولة';/*Done*/
+$lang['sales_markating_transaction_sales_commission_invoice_total']='إجمالي الفاتورة';/*Done*/
+$lang['sales_markating_transaction_sales_commission_commission_total']='مجموع العمولة';/*Done*/
+$lang['sales_markating_transaction_sales_commission_adjustment']='التعديلات';/*Done*/
+$lang['sales_markating_transaction_sales_net_commission']='صافي العمولة';/*Done*/
+$lang['sales_markating_net_totl']='مجموع الصافي ';/*Done*/
+$lang['sales_markating_tax_details']='تفاصيل الضرائب';/*Done*/
+$lang['sales_markating_quotation_Contract']='عرض التكلفة أو الأسعار  / عقد';/*Done*/
+$lang['sales_markating_invoice']='فاتورة';

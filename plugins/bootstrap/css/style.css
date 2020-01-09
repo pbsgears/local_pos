@@ -1,0 +1,543 @@
+table {
+    width: 100%;
+    font-family: arial;
+    margin-bottom: 0;
+}
+
+.table {
+    width: 100%;
+    font-family: arial;
+    margin-bottom: 0;
+}
+
+tfoot {
+    /*border-top: 1px solid rgba(0, 0, 0, 0.3);*/
+    border-top: 1px double #000;
+    border-bottom: 1px double #000;
+    font-weight: bold !important;
+    font-size: 12px !important;
+}
+
+tbody td {
+    font-size: 11px !important;
+}
+
+thead th {
+    font-size: 12px !important;
+    text-align: center;
+}
+
+thead tr {
+    background: #DEDEDE; /* Old browsers */
+}
+
+thead {
+    border-bottom: 1px double #000;
+}
+
+.total {
+    border-top: 1px double #FF0000 !important;
+    border-bottom: 3px double #FF0000 !important;
+    font-weight: bold;
+    font-size: 12px !important;
+}
+
+.reporttotal {
+    border-top: 1px double #D2D6DE !important;
+    border-bottom: 3px double #D2D6DE !important;
+    font-weight: bold;
+    font-size: 11px !important;
+}
+
+.reporttotalblack {
+    border-top: 1px double #000000 !important;
+    border-bottom: 3px double #000000 !important;
+    font-weight: bold;
+    font-size: 11px !important;
+    background-color: #DBDBDB;
+}
+
+.sub_total {
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    border-top: 1px double #000;
+    border-bottom: 3px double #000;
+    font-weight: bold !important;
+    font-size: 12px !important;
+}
+
+.form-control {
+    border-radius: 0px !important;
+}
+
+.tt-dropdown-menu {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    margin-top: 2px;
+    min-width: 100px;
+    padding: 1px 0;
+}
+
+.tt-suggestion {
+    border-bottom: 1px solid #cccccc;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 8px 20px;
+}
+
+.tt-suggestion:last-child {
+    border-bottom: 0 none;
+}
+
+.tt-suggestion > p {
+    cursor: pointer;
+    font-family: Open Sans;
+    font-size: 12px;
+    margin: 0;
+}
+
+.tt-suggestion:hover {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.04);
+    color: #03739c;
+}
+
+.number, .m_number, .numeric {
+    text-align: right;
+}
+
+.table-responsive {
+    padding: 0px 15px !important;
+}
+
+.datepicker {
+    z-index: 100000 !important;
+}
+
+/*hr {
+    margin-bottom :5px !important;
+    margin-top :5px !important;
+}*/
+
+.treeview-menu li {
+    cursor: pointer;
+}
+
+.fa:hover {
+    cursor: pointer;
+}
+
+.glyphicon:hover {
+    cursor: pointer;
+}
+
+/**** Added by mubashir ***/
+
+.mainCategoryHead {
+    color: #000080;
+    font-weight: bold;
+}
+
+.mainCategoryHead2 {
+    /*color: #000080;*/
+    font-weight: bold;
+}
+
+.subCategoryHead {
+    /* color: #00a65a;*/
+    font-weight: bold;
+}
+
+.subsubCategoryHead {
+    /* color: #00a65a;*/
+    font-weight: bold;
+}
+
+.endSubCategory { /* Every each sub total ending point */
+    border-bottom: 1px solid #D2D6DE !important;
+}
+
+/*export excel pdf css*/
+.btn-excel {
+    background-color: #207345;
+    color: #ffffff;
+}
+
+.btn-pdf {
+    background-color: #E22919;
+    color: #ffffff;
+}
+
+.btn-excel:hover, .btn-excel:active, .btn-excel.hover {
+    background-color: #207345;
+    color: #ffffff;
+}
+
+.btn-pdf:hover, .btn-pdf:active, .btn-pdf.hover {
+    background-color: #E22919;
+    color: #ffffff;
+}
+
+/* End export excel pdf css*/
+
+/*report table related css*/
+.reportTableHeader {
+    background-color: rgb(197, 215, 253);
+    border-top: 1px solid rgb(221, 221, 221);
+    border-bottom: 2px solid rgb(161, 191, 252);
+}
+
+.reportHeader {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.report-table-condensed > tbody > tr > td,
+.report-table-condensed > tbody > tr > th,
+.report-table-condensed > tfoot > tr > td,
+.report-table-condensed > tfoot > tr > th,
+.report-table-condensed > thead > tr > td,
+.report-table-condensed > thead > tr > th {
+    padding: 2px;
+}
+
+.borderSpace {
+    border-collapse: separate !important;
+    border-spacing: 3px 0 !important;
+}
+
+.hoverTable tbody tr:hover {
+    background-color: rgb(222, 232, 252);
+    /*color: #000000;*/
+    z-index: 2;
+}
+
+.hoverTr:hover {
+    background-color: rgb(222, 232, 252) !important;
+    /*color: #000000 !important;*/
+    z-index: 2;
+}
+
+.hoverTr:hover a {
+    /* color: #ffffff !important;*/
+}
+
+.report-header tr th {
+    background-color: rgb(197, 215, 253);
+    border-top: 1px solid rgb(221, 221, 221);
+    border-bottom: 2px solid rgb(161, 191, 252);
+    position: relative;
+    top: 0px;
+    padding: 0px !important;
+}
+
+.reportHeaderColor {
+    color: #000080;
+}
+
+.reportsubtotal { /* Report Sub total*/
+    border-top: 1px solid #D2D6DE !important;
+    border-bottom: 1px solid #D2D6DE !important;
+    font-weight: bold;
+    font-size: 11px !important;
+}
+
+/*end of report table related css*/
+
+/*radio button css*/
+.skin-square .skin-section .list li {
+    padding-left: 42px;
+}
+
+.skin-section .list li {
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.icheckbox_square, .icheckbox_square-red, .icheckbox_square-green, .icheckbox_square-blue, .icheckbox_square-aero, .icheckbox_square-grey, .icheckbox_square-orange, .icheckbox_square-yellow, .icheckbox_square-pink, .icheckbox_square-purple, .iradio_square, .iradio_square-red, .iradio_square-green, .iradio_square-blue, .iradio_square-aero, .iradio_square-grey, .iradio_square-orange, .iradio_square-yellow, .iradio_square-pink, .iradio_square-purple {
+    position: absolute;
+    top: -1px;
+    left: 0;
+}
+
+.icheckbox_square_relative, .icheckbox_square_relative-red, .icheckbox_square_relative-green, .icheckbox_square_relative-blue, .icheckbox_square_relative-aero, .icheckbox_square_relative-grey, .icheckbox_square_relative-orange, .icheckbox_square_relative-yellow, .icheckbox_square_relative-pink, .icheckbox_square_relative-purple, .iradio_square_relative, .iradio_square_relative-red, .iradio_square_relative-green, .iradio_square_relative-blue, .iradio_square_relative-aero, .iradio_square_relative-grey, .iradio_square_relative-orange, .iradio_square_relative-yellow, .iradio_square_relative-pink, .iradio_square_relative-purple {
+    position: relative;
+    top: -1px;
+    left: 0;
+}
+
+/* end radio button css*/
+
+.drill-down-cursor {
+    cursor: pointer;
+}
+
+#tbl_report tbody td:hover a {
+    /*color: white !important;*/
+}
+
+.drill-down-cursor:hover {
+    /*color: #FFFFFF !important;*/
+}
+
+/*.drill-down-cursor:focus, .drill-down-cursor:active, .drill-down-cursor:visited {
+    color: #000000;
+}*/
+
+/**** End mubashir ***/
+
+.bgWhite {
+    background-color: #ffffff;
+}
+
+/**** Added by Nazir ***/
+
+/* vertical tab style*/
+/*!
+  * bootstrap-vertical-tabs - v1.1.0
+  * https://dbtek.github.io/bootstrap-vertical-tabs
+  * 2014-06-06
+  * Copyright (c) 2014 Ä°smail Demirbilek
+  * License: MIT
+  */
+.zx-nav {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.zx-nav > li {
+    position: relative;
+    display: block;
+}
+
+.zx-nav > li > a {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+
+.zx-nav > li > a:hover,
+.zx-nav > li > a:focus {
+    text-decoration: none;
+    background-color: #eee;
+}
+
+.zx-nav > li.disabled > a {
+    color: #777;
+}
+
+.zx-nav > li.disabled > a:hover,
+.zx-nav > li.disabled > a:focus {
+    color: #777;
+    text-decoration: none;
+    cursor: not-allowed;
+    background-color: transparent;
+}
+
+.zx-nav .open > a,
+.zx-nav .open > a:hover,
+.zx-nav .open > a:focus {
+    background-color: #eee;
+    border-color: #337ab7;
+}
+
+.zx-nav .zx-nav-divider {
+    height: 1px;
+    margin: 9px 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+.zx-nav > li > a > img {
+    max-width: none;
+}
+
+.zx-nav-tabs {
+    border-bottom: 1px solid #ddd;
+}
+
+.zx-nav-tabs > li {
+    float: left;
+    margin-bottom: -1px;
+}
+
+.zx-nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+}
+
+.zx-nav-tabs > li > a:hover {
+    border-color: #eee #eee #ddd;
+}
+
+.zx-nav-tabs > li.active > a,
+.zx-nav-tabs > li.active > a:hover,
+.zx-nav-tabs > li.active > a:focus {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+
+.zx-tab-content > .zx-tab-pane {
+    display: none;
+}
+
+.zx-tab-content > .active {
+    display: block;
+}
+
+.zx-nav-tabs .zx-dropdown-menu {
+    margin-top: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.zx-navbar {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+}
+
+.zx-tabs-left, .zx-tabs-right {
+    border-bottom: none;
+    padding-top: 2px;
+}
+
+.zx-tabs-left {
+    border-right: 1px solid #ddd;
+}
+
+.zx-tabs-right {
+    border-left: 1px solid #ddd;
+}
+
+.zx-tabs-left > li, .zx-tabs-right > li {
+    float: none;
+    margin-bottom: 2px;
+}
+
+.zx-tabs-left > li {
+    margin-right: -1px;
+}
+
+.zx-tabs-right > li {
+    margin-left: -1px;
+}
+
+.zx-tabs-left > li.active > a,
+.zx-tabs-left > li.active > a:hover,
+.zx-tabs-left > li.active > a:focus {
+    border-bottom-color: #ddd;
+    border-right-color: transparent;
+}
+
+.zx-tabs-right > li.active > a,
+.zx-tabs-right > li.active > a:hover,
+.zx-tabs-right > li.active > a:focus {
+    border-bottom: 1px solid #ddd;
+    border-left-color: transparent;
+}
+
+.zx-tabs-left > li > a {
+    border-radius: 4px 0 0 4px;
+    margin-right: 0;
+    display: block;
+}
+
+.zx-tabs-right > li > a {
+    border-radius: 0 4px 4px 0;
+    margin-right: 0;
+}
+
+.zx-vertical-text {
+    margin-top: 50px;
+    border: none;
+    position: relative;
+}
+
+.zx-vertical-text > li {
+    height: 20px;
+    width: 120px;
+    margin-bottom: 100px;
+}
+
+.zx-vertical-text > li > a {
+    border-bottom: 1px solid #ddd;
+    border-right-color: transparent;
+    text-align: center;
+    border-radius: 4px 4px 0px 0px;
+}
+
+.zx-vertical-text > li.active > a,
+.zx-vertical-text > li.active > a:hover,
+.zx-vertical-text > li.active > a:focus {
+    border-bottom-color: transparent;
+    border-right-color: #ddd;
+    border-left-color: #ddd;
+    background-color: #E6E6FA;
+}
+
+.zx-vertical-text.zx-tabs-left {
+    left: -50px;
+}
+
+.zx-vertical-text.zx-tabs-right {
+    right: -50px;
+}
+
+.zx-vertical-text.zx-tabs-right > li {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.zx-vertical-text.zx-tabs-left > li {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+.min-padding > tbody > tr > td, .min-padding > tbody > tr > th, .min-padding > tfoot > tr > td, .min-padding > tfoot > tr > th, .min-padding > thead > tr > td, .min-padding > thead > tr > th {
+    padding: 2px 5px !important;
+}
+
+.no-color tfoot {
+    border-top: 1px double #ffffff !important;
+    border-bottom: 1px double #ffffff !important;
+}
+
+.cus1-input {
+    width: 130px !important;
+}
+
+/*
+.input-mini {
+    height: 24px !important;
+    padding: 3px 4px !important;
+    font-size: 11px !important;
+}
+
+.input-group-addon-mini {
+    padding: 4px 7px !important;
+    font-size: 11px !important;
+}*/
+
+/*Overwrite some of style by Shafri to reduce spacing in the text box in the form 2017-03-13 */
+.select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {
+    padding: 2px 5px !important;
+    padding-top: 2px !important;
+    padding-right: 5px !important;
+    padding-bottom: 2px !important;
+    padding-left: 5px !important;
+    height: 27px !important;
+}
+

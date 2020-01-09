@@ -1,0 +1,48 @@
+.p-disc-container {
+    background-color: #d6d9d0 !important;
+    padding: 4px 15px !important;
+}
+
+.p-disc-btn {
+    width: 120px;
+    height: 29px;
+    border-radius: 0px !important;
+}
+
+.modal-responsive-bill {
+    width: 400px;
+}
+
+.modal-responsive-lg {
+    width: 70%;
+}
+
+#table_kitchenStatus_wrapper, #voidListHist_wrapper, #voidListDT_wrapper {
+    box-shadow: none !important;
+}
+
+@media (max-width: 767px) {
+    .mrg-top5 {
+        margin-top: 5px !important;
+    }
+
+    .p-disc-btn {
+        width: 100% !important;
+    }
+
+    .modal-responsive-bill {
+        width: auto;
+    }
+
+    .modal-responsive-lg {
+        width: 100%;
+    }
+
+    .kitchen-status-container {
+        border: 1px dashed #b7b7b7;
+        margin: 0px 0px 13px;
+        padding-bottom: 9px;
+    }
+}
+
+

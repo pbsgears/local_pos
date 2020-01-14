@@ -565,7 +565,7 @@
             <?php //echo $this->lang->line('posr_fresh_natural_care_puff');?><!--fresh & natural care puff--> <?php echo $outletInfo['pos_footNote'] ?>
         </div>
         <div class="pad-top" style="font-size:11px;">
-            Cashier : <?php echo get_employeeShortName() ?>
+            Cashier | أمين الصندوق <!--Cashier--> : <?php echo get_employeeShortName() ?>
         </div>
         <?php
         if (isset($wifi) && $wifi) {

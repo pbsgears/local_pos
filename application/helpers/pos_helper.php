@@ -3959,3 +3959,19 @@ if (!function_exists('get_pos_paymentConfigID_cash')) {
 
     }
 }
+
+
+if (!function_exists('get_pos_combos')) {
+    function get_pos_combos($menuSalesID,$menuSalesItemID,$warehouseMenuID)
+    {
+        $CI =& get_instance();
+        $CI->db->select('srp_erp_pos_valuepackdetail.valuePackDetailID,srp_erp_pos_valuepackdetail.qty,menuMaster.menuMasterDescription');
+        $CI->db->from('srp_erp_pos_valuepackdetail');
+        $CI->db->join('srp_erp_pos_menumaster menuMaster', 'menuMaster.menuMasterID = srp_erp_pos_valuepackdetail.menuID','left');
+        $CI->db->WHERE('srp_erp_pos_valuepackdetail.menuSalesID', $menuSalesID);
+        $CI->db->WHERE('srp_erp_pos_valuepackdetail.menuSalesItemID', $menuSalesItemID);
+        $CI->db->WHERE('srp_erp_pos_valuepackdetail.warehouseMenuID', $warehouseMenuID);
+        $data = $CI->db->get()->result_array();
+        return $data;
+    }
+}

@@ -1,64 +1,5 @@
 <style type="text/css">
-    .headerTxt {
-        font-size: 11px !important;
-        margin: 0px;
-        text-align: center;
-    }
-
-    .fWidth {
-        width: 100% !important;;
-    }
-
-    .fSize {
-        font-size: 12px !important;
-    }
-
-    .f {
-        /*font-family: monospace, sans-serif, Verdana, Geneva !important;*/
-        font-family: 'Raleway', Arial, sans-serif !important;
-    }
-
-    .pad-top {
-        padding-top: 1px;
-    }
-
-    .ac {
-        text-align: center !important;
-    }
-
-    .ar {
-        text-align: right !important;
-    }
-
-    .al {
-        text-align: left !important;
-    }
-
-    #tblListItems tr td {
-        padding: 0px 1px !important;
-
-    }
-
-    .vLine {
-        border-top: 1px dashed #000;
-        margin: 4px 0px;
-        height: 2px;
-    }
-
-    .printAdvance {
-        margin-bottom: 7px !important;
-        height: 38px !important;
-        border-radius: 0px !important;
-    }
-
-    @page
-    {
-        size: auto;   /* auto is the initial value */
-        margin-left: 10mm;  /* this affects the margin in the printer settings */
-        margin-top: 0mm;  /* this affects the margin in the printer settings */
-        margin-bottom: 0mm;  /* this affects the margin in the printer settings */
-    }
-
+    .headerTxt{font-size:11px!important;margin:0;text-align:center}.fWidth{width:100%!important}.fSize{font-size:12px!important}.f{font-family:Raleway,Arial,sans-serif!important}.pad-top{padding-top:1px}.ac{text-align:center!important}.ar{text-align:right!important}.al{text-align:left!important}#tblListItems tr td{padding:0 1px!important}.vLine{border-top:1px dashed #000;margin:4px 0;height:2px}.printAdvance{margin-bottom:7px!important;height:38px!important;border-radius:0!important}
 </style>
 <div id="wrapper">
 
@@ -77,37 +18,129 @@
     $data['paymentTypes'] = '';
 
     $companyInfo = get_companyInfo();
-    $outletInfo = get_warehouseInfo($masters['menuSalesID']);
+    $outletInfo = get_warehouseInfo($masters['menuSalesID'], $masters['wareHouseAutoID']);
     $primaryLanguage = getPrimaryLanguage();
     $this->lang->load('pos_restaurent', $primaryLanguage);
     $this->lang->load('common', $primaryLanguage);
     $this->lang->load('calendar', $primaryLanguage);
     $uniqueID = time();
     $isConfirmedDelivery = isDeliveryConfirmedOrder($masters['menuSalesID']);
-
+    $deliveryInfo = get_deliveryConfirmedOrder($masters['menuSalesID']);
     ?>
-    <div id="print_content<?php echo $uniqueID; ?>">
+
+    <style>
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .myCustomPrint * {
+                visibility: visible;
+            }
+
+            .myCustomPrint {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+        }
+
+        @page
+        {
+            size: auto;   /* auto is the initial value */
+            margin-left: 10mm;  /* this affects the margin in the printer settings */
+            margin-top: 0mm;  /* this affects the margin in the printer settings */
+            margin-bottom: 0mm;  /* this affects the margin in the printer settings */
+        }
+
+    </style>
+    <script src="<?php echo base_url('plugins/printJS/jQuery.print.js') ?>" type="text/javascript"></script>
+    <script>
+        function printElement(elem, append, delimiter) {
+            var domClone = elem.cloneNode(true);
+
+            var $printSection = document.getElementById("printSection");
+
+            if (!$printSection) {
+                var $printSection = document.createElement("div");
+                $printSection.id = "printSection";
+                document.body.appendChild($printSection);
+            }
+
+            if (append !== true) {
+                $printSection.innerHTML = "";
+            }
+
+            else if (append === true) {
+                if (typeof(delimiter) === "string") {
+                    $printSection.innerHTML += delimiter;
+                }
+                else if (typeof(delimiter) === "object") {
+                    $printSection.appendChlid(delimiter);
+                }
+            }
+
+            $printSection.appendChild(domClone);
+        }
+
+        function print_paymentReceipt(parameter = null) {
+            var screenWidth = $(window).width();
+
+            if(screenWidth < 768){
+                if(parameter !== null){
+                    window.print();
+                } else{
+                    window.print();
+
+                }
+            }else{
+                if(parameter == null){
+                    parameter = <?php echo $uniqueID ?>;
+                }
+                $.print("#print_content" + parameter);
+            }
+            $("#pos_sampleBill").modal('hide');
+            setTimeout(function () {
+                $("#rpos_print_template").modal('hide');
+            }, 5000);
+        }
+    </script>
+
+    <?php if (isset($from_up_coming)) { echo '<div style="width: 570px; margin-left: 20%;">'; }?>
+
+    <div id="print_content<?php echo $uniqueID; ?>" >
+        <div class="myCustomPrint" style="margin: 0 auto;width: 80%;">
         <table border="0" style="width:100%" class="f fSize fWidth">
             <tbody>
             <tr>
                 <td width="100%" class="ac">
                     <?php
-                    if (!empty($outletInfo['warehouseImage'])) {
-                        $LogImage = 'uploads/warehouses/' . $outletInfo['warehouseImage'];
-                        ?>
-                        <div>
-                            <img
+                    if (!isset($from_up_coming)) {
+                        if (!empty($outletInfo['warehouseImage'])) {
+                            $LogImage = 'uploads/warehouses/' . $outletInfo['warehouseImage'];
+                            ?>
+                            <div>
+                                <img
                                 src="<?php echo base_url($LogImage) ?>"
                                 alt="Restaurant Logo" style="max-height: 80px;">
-                        </div>
-                        <?php
+                            </div>
+                            <?php
+                        }
                     }
                     ?>
 
+                    <?php if (!isset($from_up_coming)) { ?>
                     <div style=" padding: 0px; font-size:11px;">WELCOME TO</div>
+                    <?php } ?>
                     <div class="headerTxt" style="font-size:17px !important; text-align: center;">
                         <?php echo $outletInfo['wareHouseDescription']; ?>
                     </div>
+                    <?php if (isset($from_up_coming)) {
+                        echo '<div class="" style="font-size:11px; text-align: left;">Customer Name : '.$masters['customerName'].'</div>';
+                    } ?>
+                    <?php if (!isset($from_up_coming)) { ?>
                     <div class="headerTxt" style="text-align: center;">
                         <?php echo $outletInfo['warehouseAddress']; ?>
                     </div>
@@ -117,37 +150,79 @@
                     <div class="headerTxt" style="text-align: center;">
                         <?php echo $companyInfo['companyPrintOther'] ?>
                     </div>
+                    <?php } ?>
                 </td>
             </tr>
+            </tbody>
+        </table>
+<br>
+        <table border="0" style="width:100%" class="f fSize fWidth">
+            <tbody>
+                <tr>
+                    <td style="width:18%; text-align: left;">
+                        <?php echo $this->lang->line('posr_ord_type'); ?> <!--Ord.Type-->:    نوع الطلب
+                    </td>
+                    <td style="width:30%"> <?php echo $masters['customerDescription'] ?>   </td>
+                    <td style="width:20%; "><?php echo $this->lang->line('posr_inv_no'); ?>   <!--Inv. No-->: رقم الفاتورة
+                    </td>
+                    <td style="width:25%;"
+                        class="ar"><?php echo get_pos_invoice_code($masters['menuSalesID'], $masters['wareHouseAutoID']) ?> </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;"><?php echo $this->lang->line('common_date'); ?>  : <!--Date--> التاريخ
 
-            <tr>
-                <td>
-                    <div class="headerTxt" style="margin-top:5px;">
-                        <table style="width: 100%" class="f">
-                            <tr>
-                                <td style="width:25%; text-align: left;">
-                                    <?php echo $this->lang->line('posr_ord_type'); ?><!--Ord.Type-->
-                                    :
-                                </td>
-                                <td style="width:30%"> <?php echo $masters['customerDescription'] ?>   </td>
-                                <td style="width:20%; "><?php echo $this->lang->line('posr_inv_no'); ?><!--Inv. No-->:
-                                </td>
-                                <td style="width:25%;"
-                                    class="ar"><?php echo get_pos_invoice_code($masters['menuSalesID']) ?> </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;"><?php echo $this->lang->line('common_date'); ?><!--Date-->
-                                    :
-                                </td>
-                                <td> <?php echo date('d/m/Y', strtotime($masters['createdDateTime'])) ?></td>
-                                <td><?php echo $this->lang->line('common_time'); ?><!--Time-->:</td>
-                                <td class="ar"><?php echo date('g:i A', strtotime($masters['createdDateTime'])) ?></td>
-                            </tr>
-                        </table>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                    <td> <?php echo date('d/m/Y', strtotime($masters['createdDateTime'])) ?></td>
+                    <td><?php echo $this->lang->line('common_time'); ?>  <!--Time-->: الوقت </td>
+                    <td class="ar"><?php echo date('g:i A', strtotime($masters['createdDateTime'])) ?></td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">Name :  الإسم</td>
+                    <?php
+                    $menusalescust='';
+                    if($masters['isCreditSales']==1){
+                        $menusalescust=get_credit_salesCustomers($masters['menuSalesID']);
+                    }
 
+                    if(!empty($deliveryInfo)){
+                        ?>
+                        <td style="width:30%"><?php echo !empty($deliveryInfo) ? $deliveryInfo['CustomerName'] : '-'; ?></td>
+                        <?php
+                    }elseif(!empty($masters['cusname'])){
+                        ?>
+                        <td style="width:30%"><?php echo $masters['cusname'] ?></td>
+                        <?php
+                    }elseif(!empty($menusalescust)){
+                        ?>
+                        <td style="width:30%"><?php echo $menusalescust['CustomerName'] ?></td>
+                        <?php
+                    }else{
+                        ?>
+                        <td style="width:30%">-</td>
+                        <?php
+                    }
+                    ?>
+                    <td style="text-align: left;">Mobile : </td>
+                    <?php
+                    if(!empty($deliveryInfo)){
+                        ?>
+                        <td style="width:30%"><?php echo !empty($deliveryInfo) ? $deliveryInfo['phoneNo'] : '-'; ?></td>
+                        <?php
+                    }elseif(!empty($masters['custel'])){
+                        ?>
+                        <td style="width:30%"><?php echo $masters['custel']; ?></td>
+                        <?php
+                    }elseif(!empty($menusalescust)){
+                        ?>
+                        <td style="width:30%"><?php echo $menusalescust['customerTelephone'] ?></td>
+                        <?php
+                    }else{
+                        ?>
+                        <td style="width:30%">-</td>
+                        <?php
+                    }
+                    ?>
+                </tr>
             </tbody>
         </table>
 
@@ -176,9 +251,14 @@
                 $i = 1;
                 foreach ($invoiceList as $item) {
                     //print_r($item);
-                    $totalTax += ($item['totalTaxAmount'] * $item['qty']);
-                    $totalServiceCharge += ($item['totalServiceCharge'] * $item['qty']);
+                    $totalTax += ($item['totalTaxAmount'] * $item['qty']) - (($item['totalTaxAmount'] * $item['qty']) * $item['discountPer'] / 100);
+                    $totalServiceCharge += ($item['totalServiceCharge'] * $item['qty']) - (($item['totalServiceCharge'] * $item['qty']) * $item['discountPer'] / 100);
+                    //$item['pricewithoutTax'] = $item['pricewithoutTax'] - round(($item['pricewithoutTax'] * $item['discountPer'] / 100),2);
+                    $item['pricewithoutTax'] = $item['pricewithoutTax'] - ($item['discountAmount']/$item['qty']);
+                    $item['totalTaxAmount'] = $item['totalTaxAmount'] - ($item['totalTaxAmount'] * $item['discountPer'] / 100);
+                    $item['totalServiceCharge'] = $item['totalServiceCharge'] - ($item['totalServiceCharge'] * $item['discountPer'] / 100);
                     $sellingPrice = getSellingPricePolicy($templateID, $item['pricewithoutTax'], $item['totalTaxAmount'], $item['totalServiceCharge'], $item['qty']);
+                    $comboSub=get_pos_combos($item['menuSalesID'],$item['menuSalesItemID'],$item['warehouseMenuID']);
                     ?>
                     <tr>
                         <!--<td width="5%">
@@ -187,6 +267,7 @@
                         </td>-->
                         <td width="20%" align="left">
                             <?php echo $item['menuMasterDescription'] ?>
+                            <?php echo isset($item['discountPer']) && $item['discountPer'] > 0 ? '(' . $item['discountPer'] . '% Dis.)' : ''; ?>
                         </td>
                         <td width="5%">
                             <?php
@@ -203,8 +284,20 @@
                             echo number_format($sellingPrice, $d)
                             ?>
                         </td>
-
                     </tr>
+                    <?php
+                    if(!empty($comboSub)){
+                        foreach($comboSub as $cmbo){
+                            ?>
+                            <tr>
+                                <td width="20%" align="left" style="padding-left: 10px !important;">* <?php echo $cmbo['menuMasterDescription'] ?></td>
+                                <td width="5%"> <?php echo $cmbo['qty'] ?></td>
+                                <td width="15%" align="right">&nbsp;</td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    ?>
                     <?php
                 }
             }
@@ -285,7 +378,7 @@
                     </tr>
                     <tr class="<?php echo $hide ?>">
                         <td colspan="2" style="text-align:left; font-weight:bold;">
-                            Total Service Charge | إجمالي رسوم الخدمة
+                            Municipality Tax | ضريبة البلدية
                         </td>
                         <td colspan="2" style="text-align:right; font-weight:bold;">
                             <?php echo number_format($totalServiceCharge, $d) ?>
@@ -332,7 +425,7 @@
                     ?>
                     <tr class="<?php echo $hide ?>">
                         <td colspan="2" style="text-align:left; font-weight:bold;">
-                            Total Service Charge | إجمالي رسوم الخدمة
+                            Municipality Tax | ضريبة البلدية
                         </td>
                         <td colspan="2" style="text-align:right; font-weight:bold;">
                             <?php echo number_format($totalServiceCharge, $d) ?>
@@ -524,7 +617,7 @@
         <div class="vLine">&nbsp;</div>
 
         <div class="pad-top">
-            Cashier | أمين الصندوق <!--Cashier--> : <?php echo get_employeeShortName() ?>
+           Cashier | أمين الصندوق <!--Cashier--> : <?php echo get_employeeShortName($masters['createdUserID']) ?>
         </div>
 
         <?php
@@ -544,9 +637,12 @@
             }
         }
         ?>
+
+        <?php if(!isset($from_up_coming)){ ?>
         <div class="f pad-top ac">
             <?php //echo $this->lang->line('posr_fresh_natural_care_puff');?><!--fresh & natural care puff--> <?php echo $outletInfo['pos_footNote'] ?>
         </div>
+        <?php } ?>
 
         <?php
         if (isset($void) && $void) {
@@ -563,12 +659,19 @@
             <div class="f pad-top ac" style="min-height: 40px;">
             </div>
         <?php } ?>
-
+        </div>
 
     </div>
 
     <?php
     if (isset($email) && $email) {
+        $reprint=reprint_salesdetail_print($masters['wareHouseAutoID']);
+       if($reprint==1){ ?>
+            <button type="button" onclick="print_paymentReceipt()"
+                    style="width:101%; cursor:pointer; font-size:12px; background-color:#FFA93C; color:#000; text-align: center; border:1px solid #FFA93C; padding: 10px 0px; font-weight:bold;">
+                <i class="fa fa-print"></i> <?php echo $this->lang->line('common_print'); ?><!--Print-->
+            </button>
+        <?php }
     } else {
         ?>
         <div class="vLine">&nbsp;</div>
@@ -599,7 +702,7 @@
 
                 <?php $result = isPos_invoiceSessionExist(); ?>
 
-                <button type="button" onclick=" $.print('#print_content<?php echo $uniqueID ?>')"
+                <button type="button" onclick="print_paymentReceipt()"
                         style="width:101%; cursor:pointer; font-size:12px; background-color:#FFA93C; color:#000; text-align: center; border:1px solid #FFA93C; padding: 10px 0px; font-weight:bold;">
                     <i class="fa fa-print"></i> <?php echo $this->lang->line('common_print'); ?><!--Print-->
                 </button>

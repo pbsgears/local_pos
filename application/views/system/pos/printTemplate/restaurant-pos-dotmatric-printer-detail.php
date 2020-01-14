@@ -544,7 +544,7 @@
         <div class="vLine">&nbsp;</div>
 
         <div class="pad-top">
-            Cashier : <?php echo get_employeeShortName() ?>
+            Cashier | أمين الصندوق <!--Cashier--> : <?php echo get_employeeShortName() ?>
         </div>
 
         <?php

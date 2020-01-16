@@ -1592,7 +1592,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     stopLoad();
                     clearSalesInvoiceUpdate();
                     $("#pos_submitted_payments_modal").modal('hide');
-                    restaurant_doubleEntry_for_billUpdate(data['invoiceID'])
+                    //restaurant_doubleEntry_for_billUpdate(data['invoiceID'])
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     stopLoad();

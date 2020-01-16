@@ -199,6 +199,83 @@ $this->lang->load('calendar', $primaryLanguage);
         });
     }
 
+    function open_submitted_invoice(id, outletID) {
+
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: "<?php echo site_url('Pos_restaurant/openHold_sales'); ?>",
+            data: {id: id, outletID: outletID},
+            cache: false,
+            beforeSend: function () {
+                $("#pos_open_hold_receipt").modal("hide");
+                startLoad();
+            },
+            success: function (data) {
+                stopLoad();
+
+                if (data['error'] == 0) {
+
+                    $("#pos_salesInvoiceID_btn").html(data['code']);
+                    $("#delivery_invoiceCode").html(data['code']);
+                    if (data['advancePayment'] > 0) {
+                        $("#delivery_advancePaymentAmount").val(data['advancePayment']);
+                        var advancePayment = parseFloat(data['advancePayment']);
+                        $("#delivery_advancePaymentAmountShow").html(advancePayment.toFixed(<?php echo $d ?>));
+                    }
+                    if (data['isDeliveryOrder'] == 1) {
+                        $("#deliveryPersonID").val('-1').change();
+                        $("#isDelivery").val(1);
+                        $("#deliveryOrderID").val(data['deliveryOrderID'])
+                    }
+                    checkPosSessionSubmitted(id);
+                    $("#pos_open_void_receipt").modal("hide");
+                    $is_credit_sale = is_credit_sale(id);
+                    if($is_credit_sale==false){
+                        open_pos_submitted_payments_modal();
+                    }else{
+                        myAlert('w', 'You cannot edit payment type for a credit sale.');
+                    }
+
+                } else {
+                    myAlert('e', data['message']);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                stopLoad();
+                if (jqXHR.status == false) {
+                    myAlert('w', 'No Internet, Please try again');
+                } else {
+                    myAlert('e', '<br>Message: ' + errorThrown);
+                }
+
+            }
+        });
+    }
+
+    function is_credit_sale(menuSalesID){
+        var is_credit_sale=null;
+        $.ajax({
+            async:false,
+            type: 'POST',
+            dataType: 'json',
+            url: "<?php echo site_url('Pos_restaurant/is_credit_sale'); ?>",
+            data: {menuSalesID: menuSalesID},
+            cache: false,
+            success: function (data) {
+                is_credit_sale = data.status;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                stopLoad();
+                if (jqXHR.status == false) {
+                    myAlert('w', 'No Internet, Please try again');
+                } else {
+                    myAlert('e', '<br>Message: ' + errorThrown);
+                }
+            }
+        });
+        return is_credit_sale;
+    }
 
     function openHold_sales(id) {
         $.ajax({

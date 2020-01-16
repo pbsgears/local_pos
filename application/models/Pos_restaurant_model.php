@@ -4425,4 +4425,205 @@ class Pos_restaurant_model extends ERP_Model
         }
     }
 
+    function update_pos_submitted_payments()
+    {
+        $invoiceID = isPos_invoiceSessionExist();
+        $outletID = get_outletID();
+//var_dump($invoiceID);exit;
+//var_dump($this->input->post());exit;
+        if ($invoiceID) {
+            $totalPaid = 0;
+            $isConfirmedDeliveryOrder = pos_isConfirmedDeliveryOrder($invoiceID);
+            $createdUserGroup = user_group();
+            $createdPCID = current_pc();
+            $createdUserID = current_userID();
+            $createdUserName = current_user();
+            $createdDateTime = format_date_mysql_datetime();
+            $timestamp = format_date_mysql_datetime();
+            $companyID = current_companyID();
+            $companyCode = current_company_code();
+            $masterData = get_pos_invoice_id($invoiceID);
+            $reference = $this->input->post('referenceUpdate');
+            $customerAutoIDs = $this->input->post('customerAutoIDUpdate');
+            $paymentTypes = $this->input->post('paymentTypesUpdate');
+            $cardTotalAmount = $this->input->post('cardTotalAmountUpdate');
+            $netTotalAmount = $this->input->post('netTotalAmountUpdate');
+            $isDelivery = $this->input->post('isDeliveryUpdate');
+            $isOnTimePayment = $this->input->post('isOnTimePaymentUpdate');
+            $payableDeliveryAmount = $this->input->post('totalPayableAmountDelivery_idUpdate');
+            $returnChange = $this->input->post('returned_changeUpdate');
+            $grossTotal = $this->input->post('total_payable_amtUpdate');
+            if (!empty($paymentTypes)) {
+                $i = 0;
+                // print_r($paymentTypes);exit;
+                foreach ($paymentTypes as $key => $amount) {
+
+                    if ($amount > 0) {
+
+
+
+                        $totalPaid += $amount;
+                        $this->db->select('configDetail.GLCode,configMaster.autoID, configMaster.glAccountType');
+                        $this->db->from('srp_erp_pos_paymentglconfigdetail configDetail');
+                        $this->db->join('srp_erp_pos_paymentglconfigmaster configMaster', 'configDetail.paymentConfigMasterID = configMaster.autoID', 'left');
+                        $this->db->where('configDetail.ID', $key);
+                        $r = $this->db->get()->row_array();
+                        if ($r['glAccountType'] == 1) {
+
+                            /** Cash Payment */
+                            if ($isDelivery == 1 && $isOnTimePayment == 1) {
+                                $cashPaidAmount = $payableDeliveryAmount - $cardTotalAmount;
+                            } else {
+                                $cashPaidAmount = $netTotalAmount - $cardTotalAmount;
+                                if ($isConfirmedDeliveryOrder) {
+                                    $advancePayment = get_paidAmount($invoiceID);
+                                    //$payable = $netTotalAmount - ($advancePayment + $cardTotalAmount); bug because of this.
+                                    $payable = $grossTotal - ($advancePayment + $cardTotalAmount);
+                                    if ($amount == $payable) {
+                                        $cashPaidAmount = $amount;
+                                        $returnChange = 0;
+                                    } else if ($amount > $payable) {
+                                        $cashPaidAmount = $payable;
+                                        $returnChange = $amount - $payable;
+                                    } else {
+                                        /** Advance payment */
+                                        $cashPaidAmount = $amount;
+                                        $returnChange = 0;
+                                    }
+                                }
+                            }
+
+                            $amount = $cashPaidAmount;
+
+
+                        }
+
+                        /** Credit Customer's GL Code should be picked from Customer */
+                        $GLCode = null;
+                        if ($r['autoID'] == 7) {
+                            if (isset($customerAutoIDs[$key]) && $customerAutoIDs[$key]) {
+                                $receivableAutoID = $this->db->select('receivableAutoID')
+                                    ->from('srp_erp_customermaster')
+                                    ->where('customerAutoID', $customerAutoIDs[$key])
+                                    ->get()->row('receivableAutoID');
+                                $GLCode = $receivableAutoID;
+                            }
+                        }
+
+                        $paymentData[$i]['menuSalesID'] = $invoiceID;
+                        $paymentData[$i]['wareHouseAutoID'] = $outletID;
+                        $paymentData[$i]['paymentConfigMasterID'] = $r['autoID'];
+                        $paymentData[$i]['paymentConfigDetailID'] = $key;
+                        $paymentData[$i]['GLCode'] = $r['autoID'] == 7 ? $GLCode : $r['GLCode'];
+                        $paymentData[$i]['glAccountType'] = $r['glAccountType'];
+                        $paymentData[$i]['amount'] = $amount;
+                        $paymentData[$i]['reference'] = isset($reference[$key]) ? $reference[$key] : null;
+                        $paymentData[$i]['customerAutoID'] = isset($customerAutoIDs[$key]) ? $customerAutoIDs[$key] : null;
+                        /*Common Data*/
+                        $paymentData[$i]['createdUserGroup'] = $createdUserGroup;
+                        $paymentData[$i]['createdPCID'] = $createdPCID;
+                        $paymentData[$i]['createdUserID'] = $createdUserID;
+                        $paymentData[$i]['createdUserName'] = $createdUserName;
+                        $paymentData[$i]['createdDateTime'] = $createdDateTime;
+                        $paymentData[$i]['timestamp'] = $timestamp;
+                        if ($r['autoID'] == 25) {
+                            $data_JA['menuSalesID'] = $invoiceID;
+                            $data_JA['outletID'] = $outletID;
+                            $data_JA['appPIN'] = isset($reference[$key]) ? $reference[$key] : null;;
+                            $data_JA['amount'] = $amount;
+                            $data_JA['companyID'] = $companyID;
+                            $data_JA['companyCode'] = $companyCode;
+                            $data_JA['createdUserGroup'] = $createdUserGroup;
+                            $data_JA['createdPCID'] = $createdPCID;
+                            $data_JA['createdUserID'] = $createdUserID;
+                            $data_JA['createdDateTime'] = $createdDateTime;
+                            $data_JA['createdUserName'] = $createdUserName;
+                            $data_JA['timestamp'] = $createdDateTime;
+                            $this->db->insert('srp_erp_pos_javaappredeemhistory', $data_JA);
+                        }
+                        if ($r['autoID'] == 5) {
+                            $barCode = isset($reference[$key]) ? $reference[$key] : null;
+                            $cardInfo = get_giftCardInfo($barCode);
+                            $dta_GC['wareHouseAutoID'] = $outletID;
+                            $dta_GC['cardMasterID'] = !empty($cardInfo) ? $cardInfo['cardMasterID'] : null;
+                            $dta_GC['barCode'] = isset($reference[$key]) ? $reference[$key] : null;
+                            $dta_GC['posCustomerAutoID'] = !empty($cardInfo) ? $cardInfo['posCustomerAutoID'] : null;
+                            $dta_GC['topUpAmount'] = abs($amount) * -1;
+                            $dta_GC['points'] = 0;
+                            $dta_GC['glConfigMasterID'] = $r['autoID'];
+                            $dta_GC['glConfigDetailID'] = $key;
+                            $dta_GC['menuSalesID'] = $invoiceID;
+                            $dta_GC['giftCardGLAutoID'] = $r['autoID'] == 7 ? null : $r['GLCode'];
+                            $dta_GC['outletID'] = $outletID;
+                            $dta_GC['reference'] = 'redeem barcode ' . $barCode;
+                            $dta_GC['companyID'] = $companyID;
+                            $dta_GC['companyCode'] = $companyCode;
+                            $dta_GC['createdPCID'] = $createdPCID;
+                            $dta_GC['createdUserID'] = $createdUserID;
+                            $dta_GC['createdDateTime'] = $createdDateTime;
+                            $dta_GC['createdUserName'] = $createdUserName;
+                            $dta_GC['createdUserGroup'] = $createdUserGroup;
+                            $dta_GC['timestamp'] = $createdDateTime;
+                            $this->db->insert('srp_erp_pos_cardtopup', $dta_GC);
+                        }
+                        $i++;
+                    }else{
+                        if ($amount!=null && $amount==0) {
+                            //echo $key;
+                            $this->db->select('configDetail.GLCode,configMaster.autoID, configMaster.glAccountType');
+                            $this->db->from('srp_erp_pos_paymentglconfigdetail configDetail');
+                            $this->db->join('srp_erp_pos_paymentglconfigmaster configMaster', 'configDetail.paymentConfigMasterID = configMaster.autoID', 'left');
+                            $this->db->where('configDetail.ID', $key);
+                            $rh = $this->db->get()->row_array();
+                            $GLCode = null;
+                            if ($rh['autoID'] == 7) {
+                                if (isset($customerAutoIDs[$key]) && $customerAutoIDs[$key]) {
+                                    $receivableAutoID = $this->db->select('receivableAutoID')
+                                        ->from('srp_erp_customermaster')
+                                        ->where('customerAutoID', $customerAutoIDs[$key])
+                                        ->get()->row('receivableAutoID');
+                                    $GLCode = $receivableAutoID;
+                                }
+                            }
+                            //echo $amount;exit;
+                            $paymentData[$i]['menuSalesID'] = $invoiceID;
+                            $paymentData[$i]['wareHouseAutoID'] = $outletID;
+                            $paymentData[$i]['paymentConfigMasterID'] = $rh['autoID'];
+                            $paymentData[$i]['paymentConfigDetailID'] = $key;
+                            $paymentData[$i]['GLCode'] = $rh['autoID'] == 7 ? $GLCode : $rh['GLCode'];
+                            $paymentData[$i]['glAccountType'] = $rh['glAccountType'];
+                            $paymentData[$i]['amount'] = 0;
+                            $paymentData[$i]['reference'] = isset($reference[$key]) ? $reference[$key] : null;
+                            $paymentData[$i]['customerAutoID'] = isset($customerAutoIDs[$key]) ? $customerAutoIDs[$key] : null;
+                            /*Common Data*/
+                            $paymentData[$i]['createdUserGroup'] = $createdUserGroup;
+                            $paymentData[$i]['createdPCID'] = $createdPCID;
+                            $paymentData[$i]['createdUserID'] = $createdUserID;
+                            $paymentData[$i]['createdUserName'] = $createdUserName;
+                            $paymentData[$i]['createdDateTime'] = $createdDateTime;
+                            $paymentData[$i]['timestamp'] = $timestamp;
+                        }
+                    } // end if
+                } //end foreach
+
+                if (isset($paymentData) && !empty($paymentData)) {
+                    $this->db->delete('srp_erp_pos_menusalespayments', array('menuSalesID' => $invoiceID));
+                    $this->db->insert_batch('srp_erp_pos_menusalespayments', $paymentData);
+                }
+                if ($totalPaid > 0) {
+                    $payable = $this->input->post('total_payable_amt');
+                    //$balancePayable = $totalPaid - ($payable > 0 ? $payable : 0);
+                    $this->db->update('srp_erp_pos_menusalesmaster', array('cashReceivedAmount' => $totalPaid, 'balanceAmount' => $returnChange, 'is_sync' => 0), array('menuSalesID' => $invoiceID));
+                }
+            }
+            $data['status']=true;
+            $data['invoice_id']=$invoiceID;
+            return $data;
+        } else {
+            $data['status']=false;
+            $data['invoice_id']=$invoiceID;
+            return $data;
+        }
+    }
+
 }

@@ -70,6 +70,600 @@ $this->lang->load('pos_restaurent', $primaryLanguage);
 $this->lang->load('common', $primaryLanguage);
 $this->lang->load('calendar', $primaryLanguage);
 ?>
+
+<div aria-hidden="true" role="dialog" tabindex="-1" id="pos_submitted_payments_modal" class="modal" data-keyboard="true"
+     data-backdrop="static">
+    <div class="modal-dialog modal-lg"
+         style="width: <?php //echo !isset($modal_width) && !empty($modal_width) ? $modal_width . '%' : '70%'; ?>">
+        <div class="modal-content">
+
+            <div class="modal-header posModalHeader">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                            class="fa fa-close text-red"></i></button>
+                <h3 class="modal-title"><?php echo $this->lang->line('common_payment'); ?><!--Payment--></h3>
+            </div>
+            <div class="modal-body" style="overflow: visible; background-color: #FFF;">
+                <form method="post" id="frm_pos_invoice_submitUpdate" class="form_pos_receipt_update">
+                    <input type="hidden" name="isCreditSaleUpdate" id="isCreditSaleUpdate" value="0">
+                    <input type="hidden" name="customerTelephoneUpdate" id="customerTelephoneUpdate">
+                    <input type="hidden" name="customerNameUpdate" id="customerNameUpdate">
+                    <input type="hidden" name="customerAddressUpdate" id="customerAddressUpdate">
+                    <input type="hidden" name="customerCountry_oUpdate" id="customerCountry_oUpdate">
+                    <input type="hidden" name="customerCountryCode_oUpdate" id="customerCountryCode_oUpdate">
+                    <input type="hidden" name="customerCountryId_oUpdate" id="customerCountryId_oUpdate">
+                    <input type="hidden" name="customerEmailUpdate" id="customerEmailUpdate">
+                    <input type="hidden" name="customerIDUpdate" id="customerIDUpdate">
+                    <input type="hidden" name="cardTotalAmountUpdate" id="cardTotalAmountUpdate" value="0"/>
+                    <input type="hidden" name="netTotalAmountUpdate" id="netTotalAmountUpdate" value="0"/>
+                    <input type="hidden" name="isDeliveryUpdate" id="isDeliveryUpdate" value="0"/>
+                    <input type="hidden" name="isOnTimePaymentUpdate" id="frm_isOnTimePaymentUpdate" value=""/>
+                    <input type="hidden" name="is_delivery_info_existUpdate" id="is_delivery_info_existUpdate" value=""/>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+
+                            <div class="row formRowPad" style="padding: 1px;">
+                                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 payment-textLg">
+                                    <?php echo $this->lang->line('posr_gross_total'); ?><!--Gross Total -->
+
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6">
+                                    <div id="final_payable_amtUpdate" class="ar payment-textLg"
+                                         style="padding: 5px 0px;">0.00
+                                    </div>
+                                    <input type="hidden" name="total_payable_amtUpdate" id="total_payable_amtUpdate" value="0">
+                                </div>
+                            </div>
+
+
+                            <!--promotion Row-->
+                            <div class="row formRowPad" id="deliveryPersonContainer"> <!--promotionRow-->
+                                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 payment-font"
+                                     style="">
+                                    <button class="pos2-btn-default p-disc-btn" type="button"
+                                            onclick="openPromotionModal()">
+                                        <?php echo $this->lang->line('posr_promotion'); ?> </button>
+                                </div>
+                                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                                    <div>
+                                        <input type="text" id="tmp_promotionUpdate" readonly value="" class="form-control">
+                                        <?php
+                                        $deliveryPersonArray = get_specialCustomers(array(2, 3));
+                                        ?>
+                                        <select name="promotionIDUpdate" style="display: none;" id="promotionIDUpdate"
+                                                class="form-control"
+                                                onchange="calculateReturn(this)">
+                                            <option value="">
+                                                <?php echo $this->lang->line('common_non'); ?><!--None--></option>
+                                            <?php if (!empty($deliveryPersonArray)) {
+                                                foreach ($deliveryPersonArray as $val) {
+                                                    ?>
+                                                    <option value="<?php echo $val['customerID'] ?>"
+                                                            data-cp="<?php echo $val['commissionPercentage'] ?>">
+                                                        <?php echo $val['customerName'] . ' - ' . $val['commissionPercentage'] . ' %'; ?>
+
+                                                    </option>
+                                                    <?php
+                                                }
+                                            } ?>
+
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 payment-font">
+                                    <div class="p-disc-container mrg-top5">
+                                        <?php echo $this->lang->line('posr_discount'); ?><!--Promotional Discount-->
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="mrg-top5">
+                                        <input type="text" readonly name="promotional_discountUpdate"
+                                               id="promotional_discountUpdate"
+                                               class="form-control input-sm ar payment-inputTextMedium" value="0">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row formRowPad" style="padding: 1px;" id="advancePaidDiv">
+                                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 payment-textLg">
+                                    Advance Paid
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6">
+                                    <div id="delivery_advancePaymentAmountShowUpdate" class="ar payment-textLg"
+                                         style="padding: 5px 0px;">
+                                        <?php echo $d == 3 ? '0.000' : '0.00'; ?>
+                                    </div>
+                                    <input type="hidden" name="delivery_advancePaymentAmountUpdate"
+                                           id="delivery_advancePaymentAmountUpdate" value="0">
+                                </div>
+                            </div>
+
+                            <!-- Net Total -->
+                            <div class="row formRowPad" style="padding: 1px;">
+                                <div class="col-xs-6 col-sm-8 col-md-6 col-lg-6"
+                                     style="font-weight: 800; font-size: 20px;"><b>
+                                        <?php echo $this->lang->line('posr_net_total'); ?><!--Net Total --></b>
+                                </div>
+                                <div class="col-xs-6 col-sm-4 col-md-6 col-lg-6">
+                                    <div id="final_payableNet_amtUpdate" class="ar text-red"
+                                         style="padding: 5px 0px; font-weight: 800; font-size: 20px;">0.00
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="<?php echo table_class_pos() ?>">
+                                <?php
+                                $payments = get_paymentMethods_GLConfig();
+                                foreach ($payments as $payment) {
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                                                    <!---->
+                                                    <div style="padding:  4px;"
+                                                         class="tbl-payment-font">
+                                                        <input type="hidden"
+                                                               name="customerAutoIDUpdate[<?php echo $payment['ID'] ?>]"
+                                                               id="customerAutoIDUpdate<?php echo $payment['ID'] ?>">
+                                                        <?php echo $payment['description']; ?>
+                                                        <?php //echo $payment['autoID']; ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                                    <?php //print_r($payment)
+                                                    /** GIFT CARD */
+                                                    if ($payment['autoID'] == 5) {
+                                                        ?>
+                                                        <input type="text" value=""
+                                                               class="form-control cardRef ar gitCardRefNo"
+                                                               id="reference_Update<?php echo $payment['ID']; ?>"
+                                                               name="referenceUpdate[<?php echo $payment['ID'] ?>]" readonly
+                                                               placeholder="Gift Card"/>
+                                                        <?php
+                                                        /** CREDIT SALES */
+                                                    } else if ($payment['autoID'] == 7) {
+                                                        ?>
+                                                        <input type="text" value=""
+                                                               class="form-control cardRef ar CreditSalesRefNo"
+                                                               id="reference_Update<?php echo $payment['ID']; ?>"
+                                                               name="referenceUpdate[<?php echo $payment['ID'] ?>]"
+                                                               placeholder="Reference"/>
+                                                        <?php
+                                                        /** JAVA APP */
+                                                    } else if ($payment['autoID'] == 25) {
+                                                        ?>
+                                                        <input type="text" value=""
+                                                               class="form-control cardRef ar javaAppRefNo"
+                                                               id="reference_Update<?php echo $payment['ID']; ?>"
+                                                               name="referenceUpdate[<?php echo $payment['ID'] ?>]" readonly
+                                                               placeholder="App PIN"/>
+                                                        <?php
+                                                        /** OTHER */
+                                                    } else {
+                                                        if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
+                                                            if ($payment['autoID'] != 32) {
+                                                                ?>
+                                                                <input type="text" value=""
+                                                                       class="form-control cardRef ar numpad"
+                                                                       id="reference_Update<?php echo $payment['ID']; ?>"
+                                                                       name="referenceUpdate[<?php echo $payment['ID'] ?>]"
+                                                                       placeholder="Ref#"/>
+                                                                <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td> <!--style="width:50px;"-->
+                                            <?php
+                                            if ($payment['autoID'] == 5) {
+                                                /** Gift Card  */
+                                                $onclick = ' onclick="openGiftCardRedeemModal()" ';
+                                            } else if ($payment['autoID'] == 7) {
+                                                /** Credit Sales */
+                                                //$onclick = ' onclick="openCreditSalesModal(' . $payment['ID'] . ')" ';
+                                                $onclick = ' onclick="checkPosAuthentication(11,' . $payment['ID'] . ')" ';
+                                            } else if ($payment['autoID'] == 1) {
+                                                /** Cash */
+                                                $onclick = ' onclick="updateExactCard(1)" ';
+                                            } else if ($payment['autoID'] == 3 || $payment['autoID'] == 4 || $payment['autoID'] == 6 || $payment['autoID'] == 1 || $payment['autoID'] == 27 || $payment['autoID'] == 28 || $payment['autoID'] == 29 || $payment['autoID'] == 30 || $payment['autoID'] == 31) {
+                                                /** 3 Master Card | 4 Visa Card | 6 AMEX | 27 FriMi  | 28 Ali Pay*/
+                                                $onclick = ' onclick="updateExactCard(' . $payment['ID'] . ')" ';
+                                            } else if ($payment['autoID'] == 25) {
+                                                /** java App */
+                                                $onclick = ' onclick="openJavaAppModal(' . $payment['ID'] . ')" ';
+                                            } else {
+                                                $onclick = '';
+                                            }
+                                            ?>
+                                            <?php
+                                            if ($payment['autoID'] != 32) { ?>
+                                                <button class="btn btn-default btn-block" <?php echo $onclick ?>
+                                                        type="button"
+                                                        style="padding: 0px;">
+                                                    <img src="<?php echo base_url($payment['image']); ?>"
+                                                         style="max-height: 27px;">
+                                                </button>
+                                            <?php } ?>
+
+                                        </td>
+                                        <td class="payment-tblSize">
+                                            <?php
+                                            if ($payment['autoID'] == 5) {
+                                                /** GIFT CARD */
+                                                ?>
+                                                <input type="text" id="paymentType_Update<?php echo $payment['ID'] ?>"
+                                                       style="cursor: hand"
+                                                       name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
+                                                       onchange="calculatePaidAmountUpdate(this)"
+                                                       onclick="openGiftCardRedeemModal()"
+                                                       class="form-control al payment-inputTextMedium giftCardPayment paymentInput <?php
+                                                       if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
+                                                           echo 'paymentOther';
+                                                       }
+                                                       ?>" readonly
+                                                       placeholder="0.00">
+                                                <?php
+                                            } else if ($payment['autoID'] == 7) {
+                                                /** CREDIT SALE  */
+                                                ?>
+                                                <input type="text" id="paymentType_Update<?php echo $payment['ID'] ?>"
+                                                       style="cursor: hand"
+                                                       name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
+                                                       onchange="calculatePaidAmountUpdate(this)"
+                                                       onclick="checkPosAuthentication(11,<?php echo $payment['ID'] ?>)"
+                                                       class="form-control al payment-inputTextMedium creditSalesPayment paymentInput <?php
+                                                       if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
+                                                           echo 'paymentOther';
+                                                       }
+                                                       ?>" readonly
+                                                       placeholder="0.00">
+                                                <?php
+                                            } else if ($payment['autoID'] == 25) {
+                                                /** JAVA APP */
+                                                ?>
+                                                <input type="text" id="paymentType_Update<?php echo $tmpID; ?>"
+                                                       style="cursor: hand"
+                                                       name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
+                                                       onchange="calculatePaidAmountUpdate(this)"
+                                                       onclick="openJavaAppModal(<?php echo $payment['ID'] ?>)"
+                                                       class="form-control al payment-inputTextMedium javaAppPayment paymentInput <?php
+                                                       if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
+                                                           echo 'paymentOther';
+                                                       }
+                                                       ?>" readonly
+                                                       placeholder="0.00">
+                                                <?php
+                                            } else if ($payment['autoID'] == 32) {
+                                                $tmpID = $payment['autoID'] == 1 ? 1 : $payment['ID'];
+                                                /** Round OFF */
+                                                ?>
+                                                <input type="text" id="paymentType_Update<?php echo $tmpID; ?>"
+                                                       name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
+                                                       onchange="calculatePaidAmountUpdate(this)"
+                                                       class="form-control al payment-inputTextMedium paymentInput rundoff <?php
+                                                       if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
+                                                           echo 'paymentOther';
+                                                       }
+                                                       ?> "
+                                                       placeholder="0.00" readonly>
+                                                <?php
+                                            } else {
+                                                $tmpID = $payment['autoID'] == 1 ? 1 : $payment['ID'];
+                                                if ($payment["isAuthRequired"]) {
+                                                    ?>
+                                                    <input type="text" id="paymentType_Update<?php echo $tmpID; ?>"
+                                                           name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
+                                                           onchange="checkPosAuthentication(10,this)"
+                                                           class="form-control al payment-inputTextMedium paymentInput numpad <?php
+                                                           if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
+                                                               echo 'paymentOther';
+                                                           }
+                                                           ?>"
+                                                           placeholder="0.00">
+                                                <?php } else {
+                                                    ?>
+                                                    <input type="text" id="paymentType_Update<?php echo $tmpID; ?>"
+                                                           name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
+                                                           onchange="calculatePaidAmountUpdate(this)"
+                                                           class="form-control al payment-inputTextMedium paymentInput numpad <?php
+                                                           if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
+                                                               echo 'paymentOther';
+                                                           }
+                                                           ?>"
+                                                           placeholder="0.00">
+
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </td>
+                                    </tr>
+
+
+                                    <?php
+                                }
+                                ?>
+                                <tr>
+                                    <td>
+                                        <div style="padding:  8px; "
+                                             class="tbl-payment-font">
+                                            <?php echo $this->lang->line('posr_paid_amount'); ?><!--Paid Amount--></div>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td class="payment-tblSize">
+                                        <input readonly type="number"
+                                               onkeyup="calculateReturn()" name="paidUpdate"
+                                               id="paidUpdate"
+                                               class="form-control payment-inputTextLg paymentTypeTextRed al"
+                                               placeholder="0.00"
+                                               autocomplete="off">
+                                        <span id="paid_tempUpdate" class="hide"></span></td>
+                                </tr>
+                            </table>
+
+
+                            <div class="row formRowPad hide">
+                                <div class="col-md-4 lbl-delivery"></div>
+
+
+                                <div class="col-md-8">
+                                    <?php
+                                    $paymentType = get_paymentMethods();
+                                    if (!empty($paymentType) && false) {
+                                        foreach ($paymentType as $key => $payType) {
+                                            //id="paid_by"
+                                            ?>
+                                            <label class="radio-inline" for="<?php echo $key ?>">
+                                                <input onclick="checkChequePayment(this.value)" <?php if ($key == 1) {
+                                                    echo 'checked';
+                                                } ?> type="radio" name="payment_methodUpdate" id="Update_<?php echo $key ?>"
+                                                       value="<?php echo $key ?>">
+                                                <img title="<?php echo $payType ?>"
+                                                     src="<?php echo base_url('images/payment_type') . '/' . $key . '.png' ?>"/> <?php// echo $key.$payType ?>
+                                            </label>
+
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+
+
+                                    <?php
+                                    $paymentType = get_paymentMethods();
+                                    if (!empty($paymentType) && false) {
+                                        echo '<div class="btn-group pull-right">';
+                                        foreach ($paymentType as $key => $payType) {
+                                            ?>
+                                            <button id="payTypeBtnIDUpdate<?php echo $key ?>"
+                                                    onclick="checkChequePayment(<?php echo $key ?>)" type="button"
+                                                    class="btn payType <?php if ($key == 1) {
+                                                        echo 'paymentTypeCustom';
+                                                    } else {
+                                                        echo 'btn-default';
+                                                    } ?>">
+                                                <img title="<?php echo $payType ?>"
+                                                     src="<?php echo base_url('images/payment_type') . '/' . $key . '-32.png' ?>"/>
+                                                <br/>
+                                                <?php echo $payType ?>
+                                            </button>
+
+                                            <?php
+                                        }
+                                        echo '</div>';
+                                    }
+                                    ?>
+                                    <input type="hidden" name="payment_methodUpdate" id="payment_methodUpdate" value="1">
+
+
+                                </div>
+                            </div>
+
+                            <div class="row formRowPad" id="cheque_wrpUpdate"
+                                 style="display: none;">
+                                <div class="col-md-6">
+                                    <b>
+                                        <?php echo $this->lang->line('posr_cheque_number'); ?><!--Cheque Number-->
+                                    </b>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" name="chequeUpdate" class="form-control" id="chequeUpdate"
+                                           placeholder="<?php echo $this->lang->line('posr_cheque_number'); ?>"
+                                           style="border: 1px solid #3a3a3a; color: #010101;"><!--Cheque Number-->
+                                </div>
+                            </div>
+
+                            <div class="row formRowPad" id="cardRefNo_wrpUpdate"
+                                 style=" display: none;">
+                                <div class="col-md-6"><b>
+                                        <?php echo $this->lang->line('posr_card_ref_no'); ?><!--Card Ref. No-->. </b>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" name="cardRefNoUpdate" class="form-control" id="cardRefNoUpdate"
+                                           placeholder="<?php echo $this->lang->line('posr_card_ref_no'); ?>."
+                                           style="border: 1px solid #3a3a3a; color: #010101;"><!--Card Ref. No-->
+                                </div>
+                            </div>
+
+
+                            <div class="row formRowPad" id="card_wrpUpdate"
+                                 style="display: none;">
+                                <div class="col-md-6"><b>
+                                        <?php echo $this->lang->line('posr_gift_card_number'); ?><!--Gift Card Number--> </b>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" name="gift_card_numbUpdate" class="form-control" id="card_numbUpdate"
+                                           placeholder="<?php echo $this->lang->line('posr_gift_card_number'); ?>"
+
+                                           style="border: 1px solid #3a3a3a; color: #010101;">
+                                </div>
+                            </div>
+
+
+                            <div class="row formRowPad">
+                                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 payment-textLg">
+                                    <?php echo $this->lang->line('posr_eeturn_change'); ?><!--Return Change-->
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6">
+                                    <div id="return_changeUpdate" class="ar"
+                                         style=" padding:0px; font-size: 20px; font-weight: 700"></div>
+                                    <input type="hidden" id="returned_changeUpdate" name="returned_changeUpdate" value="0">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 ">
+                            <div
+                                    style="padding: 10px 24px 10px 10px; border: 1px dashed grey;  border-radius: 14px;"
+                                    class="hidden-xs">
+                                <?php
+                                $result = get_companyInfo();
+                                $currencyID = $result['company_default_currencyID'];
+                                $currencyCode = $result['company_default_currency'];
+                                $currencies = getCurrencyNotes($currencyID);
+                                ?>
+                                <?php echo $this->lang->line('posr_currency_code'); ?><!--Currency Code-->:
+                                <strong><?php echo $currencyCode ?></strong>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div class="btn-toolbar" role="toolbar">
+
+                                            <input type="hidden" id="tmpQtyValueUpdate" value="0">
+                                            <div class="row">
+
+
+                                                <?php
+                                                /*echo '<pre>';
+                                                print_r($currencies);
+                                                echo '</pre>';*/
+                                                if (!empty($currencies)) {
+                                                    foreach ($currencies as $currency) {
+                                                        if ($currency['currencyCode'] == 'LKR') {
+                                                            if ($currency['value'] > 90) {
+                                                                echo ' <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"> ';
+                                                                echo '<button type="button" onclick="updateNoteValueUpdate(this)" class="currencyNoteBtn pos2-btn-default">' . $currency['value'] . '</button>';
+                                                                echo '</div>';
+                                                            }
+                                                        } else {
+                                                            echo ' <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"> ';
+                                                            echo '<button type="button" onclick="updateNoteValueUpdate(this)" class="currencyNoteBtn pos2-btn-default">' . $currency['value'] . '</button>';
+                                                            echo '</div>';
+                                                        }
+                                                    }
+                                                }
+                                                ?>
+                                                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                                                    <button class="currencyNoteBtn pos2-btn-default"
+                                                            type="button" onclick="updateExactCashUpdate();">
+                                                        <?php echo $this->lang->line('posr_exact_cash'); ?><!--Exact Cash-->
+                                                    </button>
+                                                </div>
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <button type="button" onclick="updatePaidAmount(this);"
+                                                            class="currencyNoteBtn pos2-btn-default">C
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container-fluid" style="padding: 10px;">
+                                <button class="btn btn-lg btn-default btn-strong btn-xl" type="button"
+                                        onclick="openCustomerModal()"><i
+                                            class="fa fa-users"></i> Customer
+                                </button>
+                            </div>
+                            <div class="container-fluid" style="padding: 10px;" id="deliveryCommissionDivUpdate">
+                                <div class="row formRowPad deliveryRow" style="display: none;"
+                                     id="deliveryPersonContainerUpdate">
+                                    <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6 lbl-delivery">
+                                        <?php echo $this->lang->line('posr_delivery_person'); ?><!--Delivery Person-->
+                                    </div>
+                                    <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6">
+                                        <div>
+                                            <?php
+                                            $deliveryPersonArray = get_specialCustomers();
+                                            ?>
+                                            <select name="deliveryPersonIDUpdateUpdate" id="deliveryPersonIDUpdateUpdate" class="form-control"
+                                                    onchange="calculateReturn(this)">
+                                                <option value="" selected>Select Delivery Person</option>
+                                                <!--<option value="-1" data-cp="0" data-otp="1">Normal Delivery -
+                                                    0%
+                                                </option>-->
+
+                                                <?php echo $this->lang->line('common_please_select'); ?><!--Please select--></option>
+                                                <?php if (!empty($deliveryPersonArray)) {
+                                                    foreach ($deliveryPersonArray as $val) {
+                                                        ?>
+                                                        <option value="<?php echo $val['customerID'] ?>"
+                                                                data-cp="<?php echo $val['commissionPercentage'] ?>"
+                                                                data-otp="<?php echo $val['isOnTimePayment'] ?>">
+                                                            <?php echo $val['customerName'] ?>
+                                                            - <?php echo $val['commissionPercentage'] ?>%
+                                                        </option>
+                                                        <?php
+                                                    }
+                                                } ?>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row formRowPad deliveryPromotionRow" style="display: none;">
+                                    <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 lbl-delivery">
+                                        <?php echo $this->lang->line('posr_amount'); ?><!--Net Total Payable Amount-->
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6">
+                                        <input type="text" class="form-control payment-inputTextRedLg"
+                                               readonly="readonly"
+                                               style="font-weight: 800;"
+                                               id="totalPayableAmountDelivery_idUpdate" name="totalPayableAmountDelivery_idUpdate"
+                                               value="0">
+                                    </div>
+                                </div>
+
+                                <div class="row formRowPad deliveryPromotionRow" style="display: none;">
+                                    <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 lbl-delivery">
+                                        <?php echo $this->lang->line('posr_eeturn_change'); ?><!--Net Return Change-->
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6">
+                                        <input type="text" class="form-control payment-inputTextRedLg"
+                                               readonly="readonly"
+                                               style="font-weight: 800;"
+                                               id="returned_change_toDeliveryUpdate" name="returned_change_toDeliveryUpdate"
+                                               value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer" style="margin-top: 0px;">
+                <button type="button" class="btn btn-lg btn-default" data-dismiss="modal" style="height: 57px;">
+                    <?php echo $this->lang->line('common_Close'); ?><!--Close--></button>
+
+                <button id="" type="button" onclick="update_pos_submitted_payments()" class="btn btn-lg btn-primary" style="height: 57px;">
+                    <span id="">Update</span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <div aria-hidden="true" role="dialog" tabindex="-1" id="pos_payments_modal" class="modal" data-keyboard="true"
      data-backdrop="static">
     <div class="modal-dialog modal-lg"
@@ -722,6 +1316,15 @@ $this->lang->load('calendar', $primaryLanguage);
     var globalVar = '';
     var defaultDineinButtonID = 0;
 
+    function updateNoteValueUpdate(tmpValue) {
+        var noteValue = $(tmpValue).text();
+        $("#paid_tempUpdate").html(noteValue);
+        $("#paidUpdate").val(parseFloat(noteValue));
+        $("#paymentType_Update1").val(parseFloat(noteValue));
+        // calculateReturn();
+        // calculatePaidAmount();
+    }
+
     function updateNoteValue(tmpValue) {
 
         var noteValue = $(tmpValue).text();
@@ -762,6 +1365,13 @@ $this->lang->load('calendar', $primaryLanguage);
         //$("#paid").focus();
     }
 
+    function updateExactCashUpdate() {
+        $(".paymentInputUpdate").val('');
+        var totalAmount = $("#final_payableNet_amtUpdate").text();
+        $("#paidUpdate").val(parseFloat(totalAmount));
+        $("#paymentType_Update1").val(parseFloat(totalAmount));
+        calculateReturn();
+    }
 
     function updateExactCash() {
         var totalAmount = $("#final_payableNet_amt").text();
@@ -791,6 +1401,29 @@ $this->lang->load('calendar', $primaryLanguage);
         updateCustomerTypeBtn(defaultDineinButtonID);
     }
 
+    function open_pos_submitted_payments_modal() {
+        <?php
+        if (isset($template) && $template == 'general') {
+            echo ' $("#customerType").val(1); ';
+        }
+        ?>
+        /*handling exception*/
+        // handleItemMisMatchException();
+        var gross_total = parseFloat($("#gross_total").html());
+        var customerType = $("#customerType").val();
+        if (customerType > 0) {
+            $("#pos_submitted_payments_modal").modal('show');
+            //$("#paid_by").select2("val", "");
+            setTimeout(function () {
+                calculateReturn();
+                $("#paid").focus();
+            }, 500);
+        } else {
+            $("#order_mode_modal").modal("show");
+        }
+
+    }
+
     function open_pos_payments_modal() {
 
         <?php
@@ -811,7 +1444,7 @@ $this->lang->load('calendar', $primaryLanguage);
                     $("#paid").focus();
                 }, 500);
             } else {
-                bootbox.alert('<div class="alert alert-info"><strong>Please select order mode.</strong></div>');
+                $("#order_mode_modal").modal("show");
             }
 
         } else {
@@ -887,6 +1520,7 @@ $this->lang->load('calendar', $primaryLanguage);
 
 
     function updateCustomerTypeBtn(id, isDelivery, isDineIn) {
+        $("#order_mode_modal").modal("hide");
         $("#is_dine_in").val(isDineIn);
         $("#customerType").val(id);
         var customerType = id;
@@ -1133,6 +1767,74 @@ $this->lang->load('calendar', $primaryLanguage);
     </div>
 </div>
 
+<div aria-hidden="true" role="dialog" tabindex="1" style="z-index: 9999;" id="order_mode_modal" class="modal fade"
+     data-keyboard="true"
+     data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header posModalHeader">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                            class="fa fa-close text-red"></i></button>
+                <h4 class="modal-title">Please select order mode</h4>
+            </div>
+            <div class="modal-body" id="" style="">
+                <div style="text-align: center;margin: 35px;">
+                    <?php
+                    $customerType = getCustomerType();
+                    if (!empty($customerType)) {
+                        ?>
+                        <input type="hidden" id="customerType" name="customerType" value="">
+                        <input type="hidden" id="is_dine_in" name="is_dine_in" value="0">
+                        <div class="order-type-btn-group">
+                            <div class="btn-group btn-group-lg">
+                                <?php
+                                $defaultID = 0;
+                                $isDelivery = 0;
+                                $isDineIn = 0;
+                                foreach ($customerType as $val) {
+                                    ?>
+                                    <button type="button" data-val="<?php echo $val['customerDescription'] ?>"
+                                            onclick="updateCustomerTypeBtn(<?php echo $val['customerTypeID']; ?>,<?php echo $val['isThirdPartyDelivery'] ?>,<?php echo $val['isDineIn'] ?>)"
+                                            class="btn buttonCustomerType buttonDefaultSize <?php if ($val['isDefault'] == 1) {
+                                                $defaultID = $val['customerTypeID'];
+                                                $isDelivery = $val['isThirdPartyDelivery'];
+                                                $isDineIn = $val['isDineIn'];
+                                                //echo 'btn-primary';
+                                                echo 'btn-default';
+                                            } else {
+                                                echo 'btn-default';
+                                            }
+                                            ?>  customerType"
+                                            id="customerTypeID_<?php echo $val['customerTypeID']; ?>">
+                                        <?php echo $val['displayDescription']; ?>
+                                    </button>
+                                <?php }
+                                ?>
+                            </div>
+                            <script>
+                                function defaultDelivaryButton() {
+                                    <?php
+                                    if($defaultID){
+                                    ?>
+                                    updateCustomerTypeBtn(<?php echo $defaultID ?>, <?php echo $isDelivery ?>,<?php echo $isDineIn ?>);
+                                    <?php
+                                    }
+                                    ?>
+                                }
+                                $(document).ready(function (e) {
+                                    defaultDineinButtonID = '<?php echo $defaultID; ?>';
+                                });
+                            </script>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     function openPromotionModal() {
         $("#pos_payments_promotion_modal").modal('show');
@@ -1166,6 +1868,76 @@ $this->lang->load('calendar', $primaryLanguage);
         }, 50);
     }
 
+
+    function calculatePaidAmountUpdate(tmpThis){
+        if ($("#isDeliveryUpdate").val() == 1) {
+            if ($("#deliveryPersonIDUpdate").val() == "") {
+                //$(".paymentOther").val(0);
+            } else {
+                if ($("#deliveryPersonIDUpdate").val() > 0) {
+                    if ($("#deliveryPersonID option:selected").data('otp') == 1) { // on time payment
+                        var cardTotal = 0;
+                        $(".paymentOther").each(function (e) {
+                            var valueThis = $.trim($(this).val());
+                            cardTotal += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
+                        });
+                        var deliveryAmount = $("#totalPayableAmountDelivery_id").val();
+                        if (cardTotal > deliveryAmount) {
+                            $(".paymentOther").val(0);
+                            myAlert('e', 'You can not enter card amount more than delivery amount!')
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        var total = 0
+        $(".paymentInput").each(function (e) {
+            var valueThis = $.trim($(this).val());
+            total += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
+        });
+        $("#paid").val(total);
+        var payable = $("#total_payable_amtUpdate").val();
+        var returnAmount = total - payable;
+        if (returnAmount > 0) {
+            $("#returned_changeUpdate").val(returnAmount);
+            $("#return_changeUpdate").html(returnAmount.toFixed(<?php echo $d ?>))
+        }
+        setTimeout(function () {
+            var discount = parseFloat($("#promotional_discountUpdate").val());
+            var subTotal = $("#total_payable_amtUpdate").val();
+            var netTotal = subTotal - discount;
+            var paidAmountTmp = parseFloat($("#paid").val());
+            var advancePaymets = $("#delivery_advancePaymentAmountUpdate").val();
+            netTotal = netTotal - advancePaymets;
+            var returnChange = paidAmountTmp - netTotal;
+            $("#final_payableNet_amtUpdate").html(netTotal.toFixed(<?php echo $d ?>));
+            if (returnChange > 0 || true) {
+                $("#return_changeUpdate").html(returnChange.toFixed(<?php echo $d ?>))
+            }
+            /** Total card amount should not be more than the NET Total */
+
+            if (typeof tmpThis !== "undefined") {
+                var cardTotal = 0;
+                $(".paymentOther").each(function (e) {
+                    var valueThis = $.trim($(this).val());
+                    cardTotal += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
+                });
+                netTotal = netTotal.toFixed(<?php echo $d ?>);
+                if (cardTotal > netTotal) {
+                    $(".paymentOther ").val(0);
+                    calculateReturn();
+                    $("#cardTotalAmount").val(0);
+                    myAlert('e', 'You can not pay more than the net total using cards!');
+
+                } else {
+                    $("#cardTotalAmountUpdate").val(cardTotal);
+
+                }
+                $("#netTotalAmountUpdate").val(netTotal);
+            }
+        }, 50);
+    }
 
     function calculatePaidAmount(tmpThis) {
 

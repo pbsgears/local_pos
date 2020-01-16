@@ -1440,6 +1440,190 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
             return grossAmount;
         }
 
+        function checkPosSessionSubmitted(id) {
+            $.ajax({
+                async: false,
+                type: 'POST',
+                dataType: 'JSON',
+                url: "<?php echo site_url('Pos_restaurant/checkPosSession'); ?>",
+                data: {id: id},
+                cache: false,
+                beforeSend: function () {
+                    startLoadPos();
+                },
+                success: function (data) {
+                    stopLoad();
+                    if (data['error'] == 1) {
+                    }
+                    if (data['error'] == 0) {
+
+
+                        var menusalesmaster=load_menusalesmaster_data(id);
+                        // console.log(menusalesmaster.grossAmount);
+                        $("#netTotalAmountUpdate").val(menusalesmaster.netTotal);
+                        $("#isDeliveryUpdate").val(menusalesmaster.isDelivery);
+
+                        $("#final_payable_amtUpdate").text(menusalesmaster.grossAmount);
+                        $("#total_payable_amtUpdate").val(menusalesmaster.grossAmount);
+
+                        $("#promotional_discountUpdate").val(menusalesmaster.discountAmount);
+
+                        $("#final_payableNet_amtUpdate").text(menusalesmaster.grossAmount);
+
+                        load_payments_list(id);
+
+
+
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'No Internet, Please try again');
+                    } else {
+                        myAlert('e', '<br>Message: ' + errorThrown);
+                    }
+                }
+            });
+            return false;
+        }
+
+        function load_payments_list(menusalesID){
+            $.ajax({
+                async: false,
+                type: 'POST',
+                dataType: 'JSON',
+                url: "<?php echo site_url('Pos_restaurant/load_payments_list'); ?>",
+                data: {menusalesID: menusalesID},
+                cache: false,
+                success: function (data) {
+                    data.forEach(function(currentValue, index, arr){
+                        var paymentConfigDetailID= currentValue.paymentConfigDetailID;
+                        var amount= currentValue.amount;
+                        var input_field_name = "paymentTypesUpdate["+paymentConfigDetailID+"]";
+                        var input_selector = "input[name='"+input_field_name+"']";
+                        $(input_selector).val(amount);
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'No Internet, Please try again');
+                    } else {
+                        myAlert('e', '<br>Message: ' + errorThrown);
+                    }
+                }
+            });
+        }
+        function load_menusalesmaster_data(id){
+            app.data=null;
+            $.ajax({
+                async: false,
+                type: 'POST',
+                dataType: 'JSON',
+                url: "<?php echo site_url('Pos_restaurant/load_menusalesmaster_data'); ?>",
+                data: {id: id},
+                cache: false,
+                success: function (data) {
+                    app.data=data;
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'No Internet, Please try again');
+                    } else {
+                        myAlert('e', '<br>Message: ' + errorThrown);
+                    }
+                }
+            });
+            return app.data;
+        }
+
+        function clearSalesInvoiceUpdate() {
+            setTimeout(function () {
+                clearInvoice();
+                clearPosInvoiceSession();
+                $("#pos_salesInvoiceID_btnUpdate").html('<span class="label label-danger"><?php echo $this->lang->line('common_new');?></span>');
+                $("#pos_orderNoUpdate").val('New');
+                <!--New-->
+                $("#holdInvoiceID_inputUpdate").val('0');
+                $("#holdInvoiceIDUpdate").val('0');
+                calculateFooter();
+                $("#paidUpdate").val(0);
+                $("#promotionIDUpdate").val('');
+                $("#dis_amtUpdate").val(0);
+                $(".paymentInput ").val('');
+                resetPaymentForm();
+                resetPayTypeBtn();
+            }, 500);
+        }
+
+        function update_pos_submitted_payments(){
+            updateBill();
+        }
+
+        function updateBill() {
+            var formData = $(".form_pos_receipt_update").serializeArray();
+            var date = new Date,
+                hour = date.getHours(),
+                minute = date.getMinutes(),
+                seconds = date.getSeconds(),
+                minute = minute > 9 ? minute : "0" + minute;
+            seconds = seconds > 9 ? seconds : "0" + seconds;
+            hour = hour > 9 ? hour : "0" + hour;
+            date = hour + ":" + minute + ":" + seconds;
+            var dates = new Date();
+            var hours = dates.getHours();
+            var dts = dates.getFullYear() + '-' + dates.getMonth() + '-' + dates.getDate();
+            var minutes = dates.getMinutes();
+            var strTime = dts + " " + hours + ':' + minutes + ':' + dates.getSeconds();
+            formData.push({'name': 'currentTime', 'value': date});
+            formData.push({'name': 'KOTStartDateTime', 'value': strTime});
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: "<?php echo site_url('Pos_restaurant/update_pos_submitted_payments'); ?>",
+                data: formData,
+                cache: false,
+                beforeSend: function () {
+                    startLoad();
+                    // $("#submit_btn_pos_receipt").html('<i class="fa fa-refresh fa-spin"> </i> <?php echo $this->lang->line('common_submit');?>');
+
+                    // $("#submit_btn").prop('disabled', true);
+                },
+                success: function (data) {
+                    stopLoad();
+                    clearSalesInvoiceUpdate();
+                    $("#pos_submitted_payments_modal").modal('hide');
+                    restaurant_doubleEntry_for_billUpdate(data['invoiceID'])
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    stopLoad();
+                    $("#submit_btn_pos_receipt").html('Submit and Print');
+                    $("#submit_btn").prop('disabled', false);
+                    if (jqXHR.status == false) {
+                        myAlert('w', 'No Internet, Please try again');
+                    } else {
+                        myAlert('e', '<br>Message: ' + errorThrown);
+                    }
+                }
+            });
+        }
+
+        function restaurant_doubleEntry_for_billUpdate(invoiceID) {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: "<?php echo site_url('Pos_restaurant/restaurant_doubleEntry_for_billUpdate'); ?>",
+                data: {invoiceID: invoiceID},
+                cache: false,
+                beforeSend: function () {
+                },
+                success: function (data) {
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                }
+            })
+        }
+
+
         function checkPosSession(id) {
             $.ajax({
                 type: 'POST',

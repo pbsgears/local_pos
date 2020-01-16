@@ -4334,5 +4334,67 @@ class Pos_restaurant extends ERP_Controller
         }
     }
 
+    function update_pos_submitted_payments(){
+        /** update payments */
+        $res=$this->Pos_restaurant_model->update_pos_submitted_payments(); // Sync DONE
+
+        if($res['status']==true){
+            echo json_encode(array('error' => 0, 'message' => 'payment submitted', 'invoiceID' => $res['invoice_id'], 'outletID' => ''));
+        }else{
+            echo json_encode(array('error' => 1, 'message' => 'Error', 'invoiceID' => '', 'outletID' => ''));
+        }
+
+    }
+
+    function restaurant_doubleEntry_for_billUpdate()
+    {
+        $invoiceID = $_POST['invoiceID'];
+        $menusalesID =  $_POST['invoiceID'];//menu sales id is similar to invoice id pass by frontend.
+        //deleting previous record before insert new records
+        $this->db->where('pos_menusalesID', $menusalesID);
+        $this->db->delete('srp_erp_generalledger_review');
+        $this->db->where('pos_menusalesID', $menusalesID);
+        $this->db->delete('srp_erp_generalledger_review');
+        /**
+         * New GL Entries Review
+         */
+        /** 1. REVENUE */
+        $this->Pos_restaurant_accounts->update_revenue_generalLedger_review($invoiceID);
+        /** 2. BANK OR CASH */
+        $this->Pos_restaurant_accounts->update_bank_cash_generalLedger_review($invoiceID);
+        /** 3. COGS */
+        $this->Pos_restaurant_accounts->update_cogs_generalLedger_review($invoiceID);
+        /** 4. INVENTORY */
+        $this->Pos_restaurant_accounts->update_inventory_generalLedger_review($invoiceID);
+        /** 5. TAX */
+        $this->Pos_restaurant_accounts->update_tax_generalLedger_review($invoiceID);
+        /** 6. COMMISSION EXPENSE  */
+        $this->Pos_restaurant_accounts->update_commissionExpense_generalLedger_review($invoiceID);
+        /** 7. COMMISSION PAYABLE */
+        $this->Pos_restaurant_accounts->update_commissionPayable_generalLedger_review($invoiceID);
+        /** 8. ROYALTY PAYABLE */
+        $this->Pos_restaurant_accounts->update_royaltyPayable_generalLedger_review($invoiceID);
+        /** 9. ROYALTY EXPENSES */
+        $this->Pos_restaurant_accounts->update_royaltyExpenses_generalLedger_review($invoiceID);
+        /** 10. SERVICE CHARGE */
+        $this->Pos_restaurant_accounts->update_serviceCharge_generalLedger_review($invoiceID);
+        /** BANK LEDGER UPDATE  */
+        $this->Pos_restaurant_accounts->update_bankLedger_review($invoiceID);
+    }
+
+    function load_menusalesmaster_data(){
+        $id = $this->input->post('id');
+        //srp_erp_pos_menusalesmaster
+        $query=$this->db->query("SELECT * FROM `srp_erp_pos_menusalesmaster` WHERE menuSalesID='$id'");
+        echo json_encode($query->row());
+    }
+
+    public function load_payments_list(){
+        $menusalesID=$this->input->post('menusalesID',true);
+        $query=$this->db->query("SELECT * FROM `srp_erp_pos_menusalespayments` WHERE menuSalesID=$menusalesID");
+        echo json_encode($query->result());
+    }
+
+
 }
 

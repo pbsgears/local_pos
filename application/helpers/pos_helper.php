@@ -1657,7 +1657,7 @@ if (!function_exists('btn_voidBill')) {
     {
         $output = '<div style="text-align: center;">';
 
-        $output .= '<button class="btn btn-default btn-xs" onclick="loadPrintTemplateVoid(\'' . $id . '\')" rel="tooltip" title="' . $desc . '" ><i class="fa fa-eye" aria-hidden="true"></i> ' . $desc . '</button>';
+        $output .= '<button class="btn btn-default btn-xs" onclick="loadPrintTemplateVoid(\'' . $id . '\',\'' . $outletID . '\')" rel="tooltip" title="' . $desc . '" ><i class="fa fa-eye" aria-hidden="true"></i> ' . $desc . '</button><button class="btn btn-default btn-xs" onclick="open_submitted_invoice(\'' . $id . '\',\'' . $outletID . '\')" rel="tooltip" title="" ><i class="fa fa-eye" aria-hidden="true"></i></button>';
 
         $output .= '</div>';
 

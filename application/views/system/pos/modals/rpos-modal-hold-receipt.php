@@ -253,6 +253,30 @@ $this->lang->load('calendar', $primaryLanguage);
         });
     }
 
+    function is_credit_sale(menuSalesID){
+        var is_credit_sale=null;
+        $.ajax({
+            async:false,
+            type: 'POST',
+            dataType: 'json',
+            url: "<?php echo site_url('Pos_restaurant/is_credit_sale'); ?>",
+            data: {menuSalesID: menuSalesID},
+            cache: false,
+            success: function (data) {
+                is_credit_sale = data.status;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                stopLoad();
+                if (jqXHR.status == false) {
+                    myAlert('w', 'No Internet, Please try again');
+                } else {
+                    myAlert('e', '<br>Message: ' + errorThrown);
+                }
+            }
+        });
+        return is_credit_sale;
+    }
+
     function openHold_sales(id) {
         $.ajax({
             type: 'POST',

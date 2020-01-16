@@ -4346,6 +4346,17 @@ class Pos_restaurant extends ERP_Controller
 
     }
 
+    public function is_credit_sale(){
+        $menusalesID=$this->input->post('menusalesID',true);
+        $query=$this->db->query("SELECT * from srp_erp_pos_menusalespayments WHERE menuSalesID='$menusalesID' AND paymentConfigMasterID=7");
+        if($query->num_rows()>0){
+            $data['status']=true;
+        }else{
+            $data['status']=false;
+        }
+        echo json_encode($data);
+    }
+
     function restaurant_doubleEntry_for_billUpdate()
     {
         $invoiceID = $_POST['invoiceID'];
@@ -4354,7 +4365,7 @@ class Pos_restaurant extends ERP_Controller
         $this->db->where('pos_menusalesID', $menusalesID);
         $this->db->delete('srp_erp_generalledger_review');
         $this->db->where('pos_menusalesID', $menusalesID);
-        $this->db->delete('srp_erp_generalledger_review');
+        $this->db->delete('srp_erp_bankledger_review');
         /**
          * New GL Entries Review
          */

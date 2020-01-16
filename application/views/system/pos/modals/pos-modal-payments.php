@@ -1419,7 +1419,7 @@ $this->lang->load('calendar', $primaryLanguage);
                 $("#paid").focus();
             }, 500);
         } else {
-            bootbox.alert('<div class="alert alert-info"><strong>Please select order mode.</strong></div>');
+            $("#order_mode_modal").modal("show");
         }
 
     }
@@ -1444,7 +1444,7 @@ $this->lang->load('calendar', $primaryLanguage);
                     $("#paid").focus();
                 }, 500);
             } else {
-                bootbox.alert('<div class="alert alert-info"><strong>Please select order mode.</strong></div>');
+                $("#order_mode_modal").modal("show");
             }
 
         } else {
@@ -1520,6 +1520,7 @@ $this->lang->load('calendar', $primaryLanguage);
 
 
     function updateCustomerTypeBtn(id, isDelivery, isDineIn) {
+        $("#order_mode_modal").modal("hide");
         $("#is_dine_in").val(isDineIn);
         $("#customerType").val(id);
         var customerType = id;
@@ -1765,6 +1766,74 @@ $this->lang->load('calendar', $primaryLanguage);
         </div>
     </div>
 </div>
+
+<div aria-hidden="true" role="dialog" tabindex="1" style="z-index: 9999;" id="order_mode_modal" class="modal fade"
+     data-keyboard="true"
+     data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header posModalHeader">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                            class="fa fa-close text-red"></i></button>
+                <h4 class="modal-title">Please select order mode</h4>
+            </div>
+            <div class="modal-body" id="" style="">
+                <div style="text-align: center;margin: 35px;">
+                    <?php
+                    $customerType = getCustomerType();
+                    if (!empty($customerType)) {
+                        ?>
+                        <input type="hidden" id="customerType" name="customerType" value="">
+                        <input type="hidden" id="is_dine_in" name="is_dine_in" value="0">
+                        <div class="order-type-btn-group">
+                            <div class="btn-group btn-group-lg">
+                                <?php
+                                $defaultID = 0;
+                                $isDelivery = 0;
+                                $isDineIn = 0;
+                                foreach ($customerType as $val) {
+                                    ?>
+                                    <button type="button" data-val="<?php echo $val['customerDescription'] ?>"
+                                            onclick="updateCustomerTypeBtn(<?php echo $val['customerTypeID']; ?>,<?php echo $val['isThirdPartyDelivery'] ?>,<?php echo $val['isDineIn'] ?>)"
+                                            class="btn buttonCustomerType buttonDefaultSize <?php if ($val['isDefault'] == 1) {
+                                                $defaultID = $val['customerTypeID'];
+                                                $isDelivery = $val['isThirdPartyDelivery'];
+                                                $isDineIn = $val['isDineIn'];
+                                                //echo 'btn-primary';
+                                                echo 'btn-default';
+                                            } else {
+                                                echo 'btn-default';
+                                            }
+                                            ?>  customerType"
+                                            id="customerTypeID_<?php echo $val['customerTypeID']; ?>">
+                                        <?php echo $val['displayDescription']; ?>
+                                    </button>
+                                <?php }
+                                ?>
+                            </div>
+                            <script>
+                                function defaultDelivaryButton() {
+                                    <?php
+                                    if($defaultID){
+                                    ?>
+                                    updateCustomerTypeBtn(<?php echo $defaultID ?>, <?php echo $isDelivery ?>,<?php echo $isDineIn ?>);
+                                    <?php
+                                    }
+                                    ?>
+                                }
+                                $(document).ready(function (e) {
+                                    defaultDineinButtonID = '<?php echo $defaultID; ?>';
+                                });
+                            </script>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
     function openPromotionModal() {

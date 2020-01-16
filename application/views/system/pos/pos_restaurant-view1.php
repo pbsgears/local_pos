@@ -2038,6 +2038,8 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                         if (app.submit_mode == 'submit_and_send_to_printer') {
                             loadPrintTemplate(data['invoiceID']);
                             print_paymentReceipt();
+							$("#pos_sampleBill").hide();
+                            $("#rpos_print_template").hide();
                         }
 
                         $("#email_invoiceID").val(data['invoiceID']);

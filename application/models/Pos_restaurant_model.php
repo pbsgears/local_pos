@@ -1491,9 +1491,10 @@ class Pos_restaurant_model extends ERP_Model
         if ($outletID == 0) {
             $outletID = get_outletID();
         }
-        $this->db->select("menuSales.*, cType.customerDescription");
+        $this->db->select("menuSales.*, cType.customerDescription,promo.customerName as promotn");
         $this->db->from("srp_erp_pos_menusalesmaster menuSales");
         $this->db->join('srp_erp_customertypemaster cType', 'cType.customerTypeID = menuSales.customerTypeID', 'left'); /*customerTypeID*/
+        $this->db->join('srp_erp_pos_customers promo', 'promo.customerID = menuSales.promotionID', 'left');
         $this->db->where('menuSales.menuSalesID', $id);
         $this->db->where('menuSales.wareHouseAutoID', $outletID);
         //$this->db->where('menuSales.wareHouseAutoID', current_warehouseID());

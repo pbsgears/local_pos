@@ -1460,16 +1460,16 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
 
                         var menusalesmaster=load_menusalesmaster_data(id);
                         // console.log(menusalesmaster.grossAmount);
+                        $("#customerType").val(menusalesmaster.customerTypeID);
                         $("#netTotalAmountUpdate").val(menusalesmaster.netTotal);
                         $("#isDeliveryUpdate").val(menusalesmaster.isDelivery);
 
-                        $("#final_payable_amtUpdate").text(menusalesmaster.grossAmount);
+                        $("#final_payable_amtUpdate").text(menusalesmaster.grossAmount-menusalesmaster.discountAmount);
                         $("#total_payable_amtUpdate").val(menusalesmaster.grossAmount);
 
-                        $("#promotional_discountUpdate").val(menusalesmaster.discountAmount);
-
-                        $("#final_payableNet_amtUpdate").text(menusalesmaster.grossAmount);
-
+                        $("#promotional_discountUpdate").val(menusalesmaster.promotionDiscountAmount);
+                        $("#final_payableNet_amtUpdate").text(menusalesmaster.grossTotal);
+                        addPromotion_update(menusalesmaster.promotionID);
                         load_payments_list(id);
 
 
@@ -1593,6 +1593,9 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     clearSalesInvoiceUpdate();
                     $("#pos_submitted_payments_modal").modal('hide');
                     //restaurant_doubleEntry_for_billUpdate(data['invoiceID'])
+                    if(data['error']==0){
+                        myAlert('s',data['message'])
+                    }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     stopLoad();

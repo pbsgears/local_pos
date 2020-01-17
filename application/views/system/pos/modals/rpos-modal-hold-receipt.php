@@ -85,13 +85,13 @@ $this->lang->load('calendar', $primaryLanguage);
 
                 </form>
                 <div class="modal-footer" style="margin-top: 10px;">
-                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                    <button type="button" style="padding: 15px 25px;" class="btn btn-sm btn-default" data-dismiss="modal">
                         <?php echo $this->lang->line('common_Close'); ?><!--Close--></button>
                     &nbsp; <input type="button" name="hold_bill_submit" id="hold_bill_submit"
                                   value="<?php echo $this->lang->line('common_submit'); ?>"
                                   onclick="submitHoldReceipt()"
                                   class="btn btn-primary "
-                                  style="background-color: #3fb618; color: #FFF; border: 0px; padding: 5px 25px; float: right;">
+                                  style="background-color: #3fb618; color: #FFF; border: 0px; padding: 15px 25px; float: right;">
                     <!--Submit-->
                 </div>
             </div>
@@ -200,7 +200,7 @@ $this->lang->load('calendar', $primaryLanguage);
     }
 
     function open_submitted_invoice(id, outletID) {
-
+        $('.paymentInput').val('');
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -232,7 +232,8 @@ $this->lang->load('calendar', $primaryLanguage);
                     $("#pos_open_void_receipt").modal("hide");
                     $is_credit_sale = is_credit_sale(id);
                     if($is_credit_sale==false){
-                        open_pos_submitted_payments_modal();
+                        //open_pos_submitted_payments_modal();
+                        open_pos_submitted_payments_modal_update();
                     }else{
                         myAlert('w', 'You cannot edit payment type for a credit sale.');
                     }
@@ -260,7 +261,7 @@ $this->lang->load('calendar', $primaryLanguage);
             type: 'POST',
             dataType: 'json',
             url: "<?php echo site_url('Pos_restaurant/is_credit_sale'); ?>",
-            data: {menuSalesID: menuSalesID},
+            data: {menusalesID: menuSalesID},
             cache: false,
             success: function (data) {
                 is_credit_sale = data.status;

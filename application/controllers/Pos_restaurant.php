@@ -4339,7 +4339,7 @@ class Pos_restaurant extends ERP_Controller
         $res=$this->Pos_restaurant_model->update_pos_submitted_payments(); // Sync DONE
 
         if($res['status']==true){
-            echo json_encode(array('error' => 0, 'message' => 'payment submitted', 'invoiceID' => $res['invoice_id'], 'outletID' => ''));
+            echo json_encode(array('error' => 0, 'message' => 'Payment Updated Successfully', 'invoiceID' => $res['invoice_id'], 'outletID' => ''));
         }else{
             echo json_encode(array('error' => 1, 'message' => 'Error', 'invoiceID' => '', 'outletID' => ''));
         }

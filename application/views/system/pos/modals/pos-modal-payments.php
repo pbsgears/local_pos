@@ -78,7 +78,7 @@ $this->lang->load('calendar', $primaryLanguage);
         <div class="modal-content">
 
             <div class="modal-header posModalHeader">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                <button type="button" class="close" onclick="close_update_pos_submitted()" aria-hidden="true"><i
                             class="fa fa-close text-red"></i></button>
                 <h3 class="modal-title"><?php echo $this->lang->line('common_payment'); ?><!--Payment--></h3>
             </div>
@@ -119,7 +119,7 @@ $this->lang->load('calendar', $primaryLanguage);
                             <div class="row formRowPad" id="deliveryPersonContainer"> <!--promotionRow-->
                                 <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 payment-font"
                                      style="">
-                                    <button class="pos2-btn-default p-disc-btn" type="button"
+                                    <button class="pos2-btn-default p-disc-btn" disabled type="button"
                                             onclick="openPromotionModal()">
                                         <?php echo $this->lang->line('posr_promotion'); ?> </button>
                                 </div>
@@ -270,10 +270,10 @@ $this->lang->load('calendar', $primaryLanguage);
                                                 $onclick = ' onclick="checkPosAuthentication(11,' . $payment['ID'] . ')" ';
                                             } else if ($payment['autoID'] == 1) {
                                                 /** Cash */
-                                                $onclick = ' onclick="updateExactCard(1)" ';
+                                                $onclick = ' onclick="updateExactCard_update(1)" ';
                                             } else if ($payment['autoID'] == 3 || $payment['autoID'] == 4 || $payment['autoID'] == 6 || $payment['autoID'] == 1 || $payment['autoID'] == 27 || $payment['autoID'] == 28 || $payment['autoID'] == 29 || $payment['autoID'] == 30 || $payment['autoID'] == 31) {
                                                 /** 3 Master Card | 4 Visa Card | 6 AMEX | 27 FriMi  | 28 Ali Pay*/
-                                                $onclick = ' onclick="updateExactCard(' . $payment['ID'] . ')" ';
+                                                $onclick = ' onclick="updateExactCard_update(' . $payment['ID'] . ')" ';
                                             } else if ($payment['autoID'] == 25) {
                                                 /** java App */
                                                 $onclick = ' onclick="openJavaAppModal(' . $payment['ID'] . ')" ';
@@ -652,7 +652,7 @@ $this->lang->load('calendar', $primaryLanguage);
             </div>
 
             <div class="modal-footer" style="margin-top: 0px;">
-                <button type="button" class="btn btn-lg btn-default" data-dismiss="modal" style="height: 57px;">
+                <button type="button" class="btn btn-lg btn-default" onclick="close_update_pos_submitted()" style="height: 57px;">
                     <?php echo $this->lang->line('common_Close'); ?><!--Close--></button>
 
                 <button id="" type="button" onclick="update_pos_submitted_payments()" class="btn btn-lg btn-primary" style="height: 57px;">
@@ -1519,7 +1519,7 @@ $this->lang->load('calendar', $primaryLanguage);
     }
 
 
-    function updateCustomerTypeBtn(id, isDelivery, isDineIn) {
+    function updateCustomerTypeBtn(id, isDelivery, isDineIn,ordermd=0) {
         $("#order_mode_modal").modal("hide");
         $("#is_dine_in").val(isDineIn);
         $("#customerType").val(id);
@@ -1575,6 +1575,10 @@ $this->lang->load('calendar', $primaryLanguage);
                 stopLoad();
                 if (data['error'] == 0) {
                     calculateFooter();
+
+                    if(ordermd==1){
+                        open_pos_payments_modal();
+                    }
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -1795,7 +1799,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                 foreach ($customerType as $val) {
                                     ?>
                                     <button type="button" data-val="<?php echo $val['customerDescription'] ?>"
-                                            onclick="updateCustomerTypeBtn(<?php echo $val['customerTypeID']; ?>,<?php echo $val['isThirdPartyDelivery'] ?>,<?php echo $val['isDineIn'] ?>)"
+                                            onclick="updateCustomerTypeBtn(<?php echo $val['customerTypeID']; ?>,<?php echo $val['isThirdPartyDelivery'] ?>,<?php echo $val['isDineIn'] ?>,1)"
                                             class="btn buttonCustomerType buttonDefaultSize <?php if ($val['isDefault'] == 1) {
                                                 $defaultID = $val['customerTypeID'];
                                                 $isDelivery = $val['isThirdPartyDelivery'];
@@ -1817,7 +1821,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                     <?php
                                     if($defaultID){
                                     ?>
-                                    updateCustomerTypeBtn(<?php echo $defaultID ?>, <?php echo $isDelivery ?>,<?php echo $isDineIn ?>);
+                                    updateCustomerTypeBtn(<?php echo $defaultID ?>, <?php echo $isDelivery ?>,<?php echo $isDineIn ?>,1);
                                     <?php
                                     }
                                     ?>
@@ -1852,8 +1856,20 @@ $this->lang->load('calendar', $primaryLanguage);
             var netTotal = parseFloat(netTotalTmp);
             $("#gross_total_input").val(netTotal);
         }, 50);
+    }
 
-
+    function addPromotion_update(id) {
+        $("#promotionIDUpdate").val(id).change();
+        setTimeout(function () {
+            $("#deliveryPersonID").val('').change();
+        }, 50);
+        //$("#pos_payments_promotion_modal").modal('hide');
+        $("#tmp_promotionUpdate").val($("#promotionIDUpdate option:selected").text().trim());
+        setTimeout(function () {
+            var netTotalTmp = $("#final_payableNet_amtUpdate").text();
+            var netTotal = parseFloat(netTotalTmp);
+            $("#gross_total_input").val(netTotal);
+        }, 50);
     }
 
     function clearPromotion() {
@@ -2136,7 +2152,8 @@ $this->lang->load('calendar', $primaryLanguage);
     }
 
     $('#pos_sampleBill').on('hidden.bs.modal', function (e) {
-        confirmation_to_hold_bill();
+        //confirmation_to_hold_bill();
+        holdReceipt();
     });
 
     function confirmation_to_hold_bill() {
@@ -2160,4 +2177,46 @@ $this->lang->load('calendar', $primaryLanguage);
         });
     }
 
+
+    function updateExactCard_update(paymentTypeID) {
+        $("#paid").val(0);
+        $("#paid_temp").html(0);
+        $(".paymentInput").val('');
+        $('.cardRef').val('');
+        var totalAmount = $("#final_payableNet_amtUpdate").text();
+        $("#paymentType_Update" + paymentTypeID).val(parseFloat(totalAmount));
+        calculateReturn();
+    }
+
+
+    function open_pos_submitted_payments_modal_update() {
+        <?php
+        if (isset($template) && $template == 'general') {
+            echo ' $("#customerType").val(1); ';
+        }
+        ?>
+        /*handling exception*/
+        // handleItemMisMatchException();
+
+        var gross_total = parseFloat($("#gross_total").html());
+        var customerType = $("#customerType").val();
+        if (customerType > 0) {
+            $("#pos_submitted_payments_modal").modal('show');
+            //$("#paid_by").select2("val", "");
+
+            setTimeout(function () {
+                calculateReturn();
+                $("#paid").focus();
+            }, 500);
+        } else {
+            //bootbox.alert('<div class="alert alert-info"><strong>Please select order mode.</strong></div>');
+            //$("#order_mode_modal").modal("show");
+        }
+
+    }
+
+    function close_update_pos_submitted() {
+        $("#pos_submitted_payments_modal").modal('hide');
+        clearPosInvoiceSession();
+    }
 </script>

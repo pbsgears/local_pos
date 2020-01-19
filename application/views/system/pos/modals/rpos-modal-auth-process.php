@@ -305,6 +305,9 @@ $this->lang->load('calendar', $primaryLanguage);
                     deleteDiv(parameter);
                 }
                 break;
+            case 17:
+                open_submitted_invoice(parameter,parameter2);
+                break;
         }
     }
 

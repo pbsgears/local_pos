@@ -1658,7 +1658,8 @@ if (!function_exists('btn_voidBill')) {
         $outletID = get_outletID();
         $output = '<div style="text-align: center;">';
 
-        $output .= '<button class="btn btn-default btn-xs" onclick="loadPrintTemplateVoid(\'' . $id . '\',\'' . $outletID . '\')" rel="tooltip" title="' . $desc . '" ><i class="fa fa-eye" aria-hidden="true"></i> ' . $desc . '</button> <button class="btn btn-default btn-xs" onclick="checkPosAuthentication(\'17\',\'' . $id . '\',\'' . $outletID . '\')" rel="tooltip" title="" ><i class="fa fa-edit" aria-hidden="true"></i> Update</button>';
+      //  $output .= '<button class="btn btn-default btn-xs" onclick="loadPrintTemplateVoid(\'' . $id . '\',\'' . $outletID . '\')" rel="tooltip" title="' . $desc . '" ><i class="fa fa-eye" aria-hidden="true"></i> ' . $desc . '</button> <button class="btn btn-default btn-xs" onclick="checkPosAuthentication(\'17\',\'' . $id . '\',\'' . $outletID . '\')" rel="tooltip" title="" ><i class="fa fa-edit" aria-hidden="true"></i> Update</button>';
+        $output .= '<button class="btn btn-default btn-xs" onclick="loadPrintTemplateVoid(\'' . $id . '\',\'' . $outletID . '\')" rel="tooltip" title="' . $desc . '" ><i class="fa fa-eye" aria-hidden="true"></i> ' . $desc . '';
 
         $output .= '</div>';
 

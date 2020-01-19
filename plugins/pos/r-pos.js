@@ -332,7 +332,7 @@ function calculatePromo() {
     //console.log(promotion);
     if (!isNaN(promotion) && promotion > 0) {
         var promotionAmount = (promotion / 100) * payableAmount;
-        $("#promotional_discount").val((promotionAmount).toFixed(2))
+        $("#promotional_discount").val((promotionAmount).toFixed(3))
     } else {
         $("#promotional_discount").val(0)
 

@@ -364,6 +364,8 @@
                         <?php
                         //print_r($masters);
                         if (!empty($masters['discountPer']) && $masters['discountPer'] > 0 || true) {
+                        $discount = $total * ($masters['discountPer'] / 100);
+                        if($discount>0){
                             ?>
                             <tr>
                                 <td colspan="2" style="text-align:left; font-weight:bold; padding-top:1px;">
@@ -373,7 +375,6 @@
                                 </td>
                                 <td colspan="2" style="text-align:right; font-weight:bold;">
                                     <?php
-                                    $discount = $total * ($masters['discountPer'] / 100);
                                     echo '(' . number_format($discount, $d) . ')';
                                     $totalDiscount += $discount;
 
@@ -384,7 +385,7 @@
 
 
                             <?php
-                        }
+                        }}
                         ?>
 
                         <?php
@@ -393,7 +394,7 @@
                             ?>
                             <tr>
                                 <td colspan="2" style="text-align:left; font-weight:bold; padding-top:1px;">
-                                    <?php echo $this->lang->line('posr_promotional_discount'); ?> | (خصم ترويجي)
+                                    prmt.Discount | (خصم ترويجي)(<?php echo $masters['promotn'].'%' ?>)
                                     <?php //echo $masters['promotionDiscount'].'%' ?>
                                 </td>
                                 <td colspan="2" style="text-align:right; font-weight:bold;">

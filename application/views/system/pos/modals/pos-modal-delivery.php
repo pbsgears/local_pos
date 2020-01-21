@@ -701,7 +701,7 @@ $this->lang->load('calendar', $primaryLanguage);
         $("#delivery_addItems_btn").hide();
         $("#pos_delivery_date").html('<?php echo date('d-m-Y') ?>' + curTime);
         $("#delivery_advancePaymentAmount").val(0);
-        $("#delivery_advancePaymentAmountShow").html('0.00');
+        $("#delivery_advancePaymentAmountShow").html((0).toFixed(<?php echo $d?>));
         resetTime();
         $("#delivery_order :input").attr("disabled", false);
     }

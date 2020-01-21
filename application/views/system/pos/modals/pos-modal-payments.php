@@ -694,7 +694,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6">
                                     <div id="final_payable_amt" class="ar payment-textLg"
-                                         style="padding: 5px 0px;">0.00
+                                         style="padding: 5px 0px;">0
                                     </div>
                                     <input type="hidden" name="total_payable_amt" id="total_payable_amt" value="0">
                                 </div>
@@ -896,7 +896,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                            echo 'paymentOther';
                                                        }
                                                        ?>" readonly
-                                                       placeholder="0.00">
+                                                       placeholder="<?php echo number_format(0,$d)?>">
                                                 <?php
 
                                             } else if ($payment['autoID'] == 7) {
@@ -912,7 +912,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                            echo 'paymentOther';
                                                        }
                                                        ?>" readonly
-                                                       placeholder="0.00">
+                                                       placeholder="<?php echo number_format(0,$d)?>">
                                                 <?php
 
                                             } else if ($payment['autoID'] == 25) {
@@ -928,7 +928,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                            echo 'paymentOther';
                                                        }
                                                        ?>" readonly
-                                                       placeholder="0.00">
+                                                       placeholder="<?php echo number_format(0,$d)?>">
                                                 <?php
 
                                             } else {
@@ -943,7 +943,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                                echo 'paymentOther';
                                                            }
                                                            ?>"
-                                                           placeholder="0.00">
+                                                           placeholder="<?php echo number_format(0,$d)?>">
                                                 <?php } else {
                                                     ?>
                                                     <input type="text" id="paymentType_<?php echo $tmpID; ?>"
@@ -954,7 +954,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                                echo 'paymentOther';
                                                            }
                                                            ?>"
-                                                           placeholder="0.00">
+                                                           placeholder="<?php echo number_format(0,$d)?>">
 
                                                     <?php
                                                 }
@@ -978,7 +978,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                                        onkeyup="calculateReturn()" name="paid"
                                                                        id="paid"
                                                                        class="form-control payment-inputTextLg paymentTypeTextRed al"
-                                                                       placeholder="0.00"
+                                                                       placeholder="<?php echo number_format(0,$d)?>"
                                                                        autocomplete="off">
                                         <span id="paid_temp" class="hide"></span></td>
                                 </tr>
@@ -1369,14 +1369,14 @@ $this->lang->load('calendar', $primaryLanguage);
         $(".paymentInputUpdate").val('');
         var totalAmount = $("#final_payableNet_amtUpdate").text();
         $("#paidUpdate").val(parseFloat(totalAmount));
-        $("#paymentType_Update1").val(parseFloat(totalAmount));
+        $("#paymentType_Update1").val(parseFloat(totalAmount).toFixed(<?php echo $d?>));
         calculateReturn();
     }
 
     function updateExactCash() {
         var totalAmount = $("#final_payableNet_amt").text();
         $("#paid").val(parseFloat(totalAmount));
-        $("#paymentType_1").val(parseFloat(totalAmount));
+        $("#paymentType_1").val(parseFloat(totalAmount).toFixed(<?php echo $d?>));
         calculateReturn();
     }
 
@@ -1394,7 +1394,7 @@ $this->lang->load('calendar', $primaryLanguage);
         $("#cardTotalAmount").html(0);
         $(".cardRef").val('');
         $("#delivery_advancePaymentAmount").val(0);
-        $("#delivery_advancePaymentAmountShow").html('0.00');
+        $("#delivery_advancePaymentAmountShow").html((0).toFixed(<?php echo $d?>));
         $("#current_table_description").text('Table');
         resetKotButton();
         reset_paymentMode();
@@ -1992,7 +1992,7 @@ $this->lang->load('calendar', $primaryLanguage);
             total += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
 
         });
-        $("#paid").val(total);
+        $("#paid").val((total).toFixed(<?php echo $d ?>));
         var payable = $("#total_payable_amt").val();
         var returnAmount = total - payable;
         if (returnAmount > 0) {
@@ -2079,7 +2079,7 @@ $this->lang->load('calendar', $primaryLanguage);
         $(".paymentInput").val('');
         $('.cardRef').val('');
         var totalAmount = $("#final_payableNet_amt").text();
-        $("#paymentType_" + paymentTypeID).val(parseFloat(totalAmount));
+        $("#paymentType_" + paymentTypeID).val(parseFloat(totalAmount).toFixed(<?php echo $d ?>));
         calculateReturn();
     }
 

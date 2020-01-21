@@ -575,8 +575,12 @@ $discountPolicy = show_item_level_discount();
                                 foreach ($customerType as $val) {
                                     if (trim(strtolower($val['customerDescription'])) == 'delivery orders' || trim(strtolower($val['customerDescription'])) == 'delivery' || trim(strtolower($val['customerDescription'])) == 'delivery order') {
                                         $isDelivery = 1;
-                                    } else if (trim(strtolower($val['customerDescription'])) == 'dine-in' || trim(strtolower($val['customerDescription'])) == 'eat-in') {
+                                    } else if (trim(strtolower($val['customerDescription'])) == 'dine-in' || trim(strtolower($val['customerDescription'])) == 'eat-in' || trim(strtolower($val['customerDescription'])) == 'Eat-in') {
                                         $isDineIn = 1;
+
+                                    }else
+                                    {
+                                        $isDineIn = 0;
                                     }
                                     ?>
                                     <button type="button"
@@ -1405,6 +1409,8 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
             }
 
             $("#display_totalServiceCharge").html(serviceChargeDiscountount.toFixed(<?php echo $d ?>));
+
+
             var netTotal = totalTax + serviceCharge + totalPriceWithoutTax;
             $("#total_item_qty").html(totalQty);
             $("#total_item_qty_input").val(totalQty);
@@ -1642,7 +1648,6 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     if (data['error'] == 1) {
                     }
                     if (data['error'] == 0) {
-
                         $("#is_dine_in").val(data['dine_in']);
                         $("#dis_amt").val(data['discountPer']);
                         $("#serviceCharge").val(data['serviceCharge']);
@@ -1788,6 +1793,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     stopLoad();
                     if (data['error'] == 0) {
                         resetKotButton();
+                        $('#is_dine_in').val(1);
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {

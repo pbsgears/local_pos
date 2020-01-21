@@ -85,7 +85,7 @@ $this->lang->load('calendar', $primaryLanguage);
 
                 </form>
                 <div class="modal-footer" style="margin-top: 10px;">
-                    <button type="button" style="padding: 15px 25px;" class="btn btn-sm btn-default" data-dismiss="modal">
+                    <button type="button" style="padding: 15px 25px;" class="btn  btn-default" data-dismiss="modal">
                         <?php echo $this->lang->line('common_Close'); ?><!--Close--></button>
                     &nbsp; <input type="button" name="hold_bill_submit" id="hold_bill_submit"
                                   value="<?php echo $this->lang->line('common_submit'); ?>"

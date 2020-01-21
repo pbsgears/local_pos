@@ -454,7 +454,7 @@
                     <td colspan="2" style="text-align:right; font-weight:bold;">
                         <?php
                         echo '(' . number_format($discount, $d) . ')';
-                        $totalDiscount += $sdiscount;
+                        $totalDiscount += $discount;
 
                         $total -= $totalDiscount;
                         ?>

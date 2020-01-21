@@ -241,7 +241,6 @@ function calculateDelivery() {
 
 
 function calculateReturn() {
-
     if ($("#isDelivery").val() == 1) {
         if ($("#deliveryPersonID").val() == "") {
             $(".paymentOther").val(0);

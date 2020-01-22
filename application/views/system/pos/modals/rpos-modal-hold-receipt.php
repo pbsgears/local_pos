@@ -228,6 +228,7 @@ $this->lang->load('calendar', $primaryLanguage);
                         $("#isDelivery").val(1);
                         $("#deliveryOrderID").val(data['deliveryOrderID'])
                     }
+
                     checkPosSessionSubmitted(id);
                     $("#pos_open_void_receipt").modal("hide");
                     $is_credit_sale = is_credit_sale(id);

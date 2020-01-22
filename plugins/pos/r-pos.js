@@ -39,14 +39,11 @@ function getClock() {
     if (nHour == 0) {
         ap = " AM";
         nHour = 12;
-    }
-    else if (nHour < 12) {
+    } else if (nHour < 12) {
         ap = " AM";
-    }
-    else if (nHour == 12) {
+    } else if (nHour == 12) {
         ap = "PM";
-    }
-    else if (nHour > 12) {
+    } else if (nHour > 12) {
         ap = "PM";
         nHour -= 12;
     }
@@ -89,8 +86,7 @@ function getNumberAndValidate(thisVal) {
 
     if ($.isNumeric(thisVal)) {
         return parseFloat(thisVal);
-    }
-    else {
+    } else {
         return parseFloat(0);
     }
 }
@@ -211,7 +207,7 @@ function calculateDelivery() {
     var return_amount = 0;
     // var elementid = $(element).attr('id')
     var delivery = $("#deliveryPersonID option:selected").data('cp');
-    if (typeof(delivery) != "undefined") {
+    if (typeof (delivery) != "undefined") {
 
         var commission = total * (delivery / 100);
         /*console.log('commission:'+commission);*/
@@ -239,8 +235,8 @@ function calculateDelivery() {
     }
 }
 
-
 function calculateReturn() {
+
     if ($("#isDelivery").val() == 1) {
         if ($("#deliveryPersonID").val() == "") {
             $(".paymentOther").val(0);
@@ -320,9 +316,151 @@ function calculateReturn() {
     }
     calculatePaidAmount();
     calculatePromo();
-    calculateDelivery()
-    calculate_net_card_total()
+    calculateDelivery();
+    calculate_net_card_total();
 
+}
+
+function calculateDeliveryUpdate() {
+    var total = parseFloat($("#final_payableNet_amtUpdate").text());
+    var paidAmount = parseFloat($("#paidUpdate").val());
+    var return_amount = 0;
+    // var elementid = $(element).attr('id')
+    var delivery = $("#deliveryPersonIDUpdate option:selected").data('cp');
+    if (typeof (delivery) != "undefined") {
+
+        var commission = total * (delivery / 100);
+        /*console.log('commission:'+commission);*/
+        var deliveryPayable = total - commission;
+        /*console.log('deliveryPayable: '+deliveryPayable);*/
+
+        $("#totalPayableAmountDelivery_idUpdate").val(deliveryPayable.toFixed(2));
+        if (total < paidAmount || true) {
+            return_amount = paidAmount - deliveryPayable;
+            if (return_amount < 0) {
+                //return_amount = 0;
+            }
+            if (!isNaN(return_amount)) {
+                $("#returned_change_toDeliveryUpdate").val(return_amount.toFixed(2));
+            } else {
+                $("#returned_change_toDeliveryUpdate").val(0);
+            }
+        } else {
+            $("#returned_change_toDelivery").val('0.00');
+        }
+
+    } else {
+        $("#totalPayableAmountDelivery_idUpdate").val(0);
+        $("#returned_change_toDeliveryUpdate").val(0);
+    }
+
+    if ($("#deliveryPersonIDUpdate option:selected").data('otp') == 0) {
+        return_amount = paidAmount - total;
+
+        $("#returned_change_toDeliveryUpdate").text(return_amount.toFixed(2));
+        /**/
+        $("#returned_change_toDeliveryUpdate").val(return_amount.toFixed(2));
+    }
+}
+
+function calculatePromoUpdate() {
+    var payableAmount = $("#total_payable_amtUpdate").val();
+    var promotion = $("#promotionIDUpdate option:selected").data('cp');
+    //console.log(promotion);
+    if (!isNaN(promotion) && promotion > 0) {
+        var promotionAmount = (promotion / 100) * payableAmount;
+        $("#promotional_discountUpdate").val((promotionAmount).toFixed(2))
+    } else {
+        $("#promotional_discountUpdate").val(0)
+
+    }
+}
+
+function calculateReturnUpdate() {
+
+    if ($("#isDeliveryUpdate").val() == 1) {
+        if ($("#deliveryPersonIDUpdate").val() == "") {
+            //$(".paymentOther").val(0);
+            //$("#frm_isOnTimePayment").val('');
+        } else {
+
+            if ($("#deliveryPersonIDUpdate").val() > 0) {
+
+                if ($("#deliveryPersonIDUpdate option:selected").data('otp') == 1) { // on time payment
+
+                    $("#frm_isOnTimePaymentUpdate").val(1);
+                    var cardTotal = 0;
+                    $(".paymentOtherUpdate").each(function (e) {
+                        var valueThis = $.trim($(this).val());
+                        cardTotal += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
+                    });
+
+                    var deliveryAmount = $("#totalPayableAmountDelivery_idUpdate").val();
+                    if (cardTotal > deliveryAmount) {
+                        $(".paymentOtherUpdate").val(0);
+                        myAlert('e', 'You can not enter card amount more than delivery amount!')
+
+                        return false;
+                    }
+
+                } else if ($("#deliveryPersonIDUpdate option:selected").data('otp') == 0) {
+                    $("#frm_isOnTimePaymentUpdate").val(0);
+                } else {
+                    $("#frm_isOnTimePaymentUpdate").val('');
+
+                }
+            }
+        }
+    }
+
+    /*var totalTmp = $("#totalPayableAmountDelivery_id").val();
+     var customerType = $('#customerTypeBtnString').val();*/
+    var total = parseFloat($("#final_payable_amtUpdate").text())
+    /*if (customerType == 'Delivery Orders' || customerType == 'Promotion') {
+     total = totalTmp;
+     }*/
+
+    var paidAmount = parseFloat($("#paidUpdate").val());
+    if (paidAmount > 0) {
+        // $("#paymentType_1").val(paidAmount);
+    }
+
+    var return_amount = 0;
+
+
+    if (total < paidAmount || true) {
+        return_amount = paidAmount - total;
+        if (return_amount < 0) {
+            $("#return_changeUpdate").text('0.00')
+            $("#returned_changeUpdate").val('0.00')
+        } else {
+            if (isNaN(return_amount)) {
+                var return_amount = 0;
+            }
+
+            $("#return_changeUpdate").text(return_amount.toFixed(2));
+            /**/
+            $("#returned_changeUpdate").val(return_amount.toFixed(2));
+        }
+
+    } else {
+
+        $("#return_changeUpdate").text('0.00');
+        $("#return_changeUpdate").val('0.00');
+    }
+
+    //console.log(total + ' _ ' + (paidAmount - return_amount))
+    if ((total <= paidAmount || true) && !isNaN(total)) { /*&& total != 0 */
+        document.getElementById("submit_btn").style.display = "block"
+        $("#total_payable_amtUpdate").val(total);
+    } else {
+        document.getElementById("submit_btn").style.display = "block" //none
+    }
+
+    calculatePaidAmountUpdate();
+    calculatePromoUpdate();
+    calculateDeliveryUpdate();
+    calculate_net_card_totalUpdate();
 }
 
 function calculatePromo() {
@@ -382,13 +520,14 @@ function enable_POS_btnSet() {
 }
 
 
-function hideBtnText(tmpThis){
+function hideBtnText(tmpThis) {
     $(".image_text").addClass('hide');
     $(".btn-show-hide-text").removeClass('btn-primary btn-default');
     $(tmpThis).removeClass('btn-primary');
     $(tmpThis).addClass('btn-primary');
 }
-function showBtnText(tmpThis){
+
+function showBtnText(tmpThis) {
     $(".image_text").removeClass('hide');
     $(".btn-show-hide-text").removeClass('btn-primary btn-default');
     $(tmpThis).removeClass('btn-primary');

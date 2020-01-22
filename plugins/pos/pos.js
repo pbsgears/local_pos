@@ -373,8 +373,8 @@ function calculateReturn() {
 
     calculatePaidAmount();
     calculatePromo();
-    calculateDelivery()
-    calculate_net_card_total()
+    calculateDelivery();
+    calculate_net_card_total();
 
 }
 

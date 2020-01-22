@@ -1,5 +1,5 @@
 <style>
-    .touchSizeButton{
+    .touchSizeButton {
         width: 50px;
         height: 33px;
         font-weight: 700;
@@ -97,7 +97,8 @@ $this->lang->load('calendar', $primaryLanguage);
                     <input type="hidden" name="netTotalAmountUpdate" id="netTotalAmountUpdate" value="0"/>
                     <input type="hidden" name="isDeliveryUpdate" id="isDeliveryUpdate" value="0"/>
                     <input type="hidden" name="isOnTimePaymentUpdate" id="frm_isOnTimePaymentUpdate" value=""/>
-                    <input type="hidden" name="is_delivery_info_existUpdate" id="is_delivery_info_existUpdate" value=""/>
+                    <input type="hidden" name="is_delivery_info_existUpdate" id="is_delivery_info_existUpdate"
+                           value=""/>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
 
@@ -110,7 +111,8 @@ $this->lang->load('calendar', $primaryLanguage);
                                     <div id="final_payable_amtUpdate" class="ar payment-textLg"
                                          style="padding: 5px 0px;">0.00
                                     </div>
-                                    <input type="hidden" name="total_payable_amtUpdate" id="total_payable_amtUpdate" value="0">
+                                    <input type="hidden" name="total_payable_amtUpdate" id="total_payable_amtUpdate"
+                                           value="0">
                                 </div>
                             </div>
 
@@ -125,7 +127,8 @@ $this->lang->load('calendar', $primaryLanguage);
                                 </div>
                                 <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                                     <div>
-                                        <input type="text" id="tmp_promotionUpdate" readonly value="" class="form-control">
+                                        <input type="text" id="tmp_promotionUpdate" readonly value=""
+                                               class="form-control">
                                         <?php
                                         $deliveryPersonArray = get_specialCustomers(array(2, 3));
                                         ?>
@@ -220,7 +223,8 @@ $this->lang->load('calendar', $primaryLanguage);
                                                         <input type="text" value=""
                                                                class="form-control cardRef ar gitCardRefNo"
                                                                id="reference_Update<?php echo $payment['ID']; ?>"
-                                                               name="referenceUpdate[<?php echo $payment['ID'] ?>]" readonly
+                                                               name="referenceUpdate[<?php echo $payment['ID'] ?>]"
+                                                               readonly
                                                                placeholder="Gift Card"/>
                                                         <?php
                                                         /** CREDIT SALES */
@@ -238,7 +242,8 @@ $this->lang->load('calendar', $primaryLanguage);
                                                         <input type="text" value=""
                                                                class="form-control cardRef ar javaAppRefNo"
                                                                id="reference_Update<?php echo $payment['ID']; ?>"
-                                                               name="referenceUpdate[<?php echo $payment['ID'] ?>]" readonly
+                                                               name="referenceUpdate[<?php echo $payment['ID'] ?>]"
+                                                               readonly
                                                                placeholder="App PIN"/>
                                                         <?php
                                                         /** OTHER */
@@ -302,9 +307,9 @@ $this->lang->load('calendar', $primaryLanguage);
                                                        name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
                                                        onchange="calculatePaidAmountUpdate(this)"
                                                        onclick="openGiftCardRedeemModal()"
-                                                       class="form-control al payment-inputTextMedium giftCardPayment paymentInput <?php
+                                                       class="form-control al payment-inputTextMedium giftCardPayment paymentInputupdate <?php
                                                        if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
-                                                           echo 'paymentOther';
+                                                           echo 'paymentOtherUpdate';
                                                        }
                                                        ?>" readonly
                                                        placeholder="0.00">
@@ -317,9 +322,9 @@ $this->lang->load('calendar', $primaryLanguage);
                                                        name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
                                                        onchange="calculatePaidAmountUpdate(this)"
                                                        onclick="checkPosAuthentication(11,<?php echo $payment['ID'] ?>)"
-                                                       class="form-control al payment-inputTextMedium creditSalesPayment paymentInput <?php
+                                                       class="form-control al payment-inputTextMedium creditSalesPayment paymentInputupdate <?php
                                                        if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
-                                                           echo 'paymentOther';
+                                                           echo 'paymentOtherUpdate';
                                                        }
                                                        ?>" readonly
                                                        placeholder="0.00">
@@ -332,9 +337,9 @@ $this->lang->load('calendar', $primaryLanguage);
                                                        name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
                                                        onchange="calculatePaidAmountUpdate(this)"
                                                        onclick="openJavaAppModal(<?php echo $payment['ID'] ?>)"
-                                                       class="form-control al payment-inputTextMedium javaAppPayment paymentInput <?php
+                                                       class="form-control al payment-inputTextMedium javaAppPayment paymentInputupdate <?php
                                                        if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
-                                                           echo 'paymentOther';
+                                                           echo 'paymentOtherUpdate';
                                                        }
                                                        ?>" readonly
                                                        placeholder="0.00">
@@ -346,9 +351,9 @@ $this->lang->load('calendar', $primaryLanguage);
                                                 <input type="text" id="paymentType_Update<?php echo $tmpID; ?>"
                                                        name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
                                                        onchange="calculatePaidAmountUpdate(this)"
-                                                       class="form-control al payment-inputTextMedium paymentInput rundoff <?php
+                                                       class="form-control al payment-inputTextMedium paymentInputupdate rundoff <?php
                                                        if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
-                                                           echo 'paymentOther';
+                                                           echo 'paymentOtherUpdate';
                                                        }
                                                        ?> "
                                                        placeholder="0.00" readonly>
@@ -360,9 +365,9 @@ $this->lang->load('calendar', $primaryLanguage);
                                                     <input type="text" id="paymentType_Update<?php echo $tmpID; ?>"
                                                            name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
                                                            onchange="checkPosAuthentication(10,this)"
-                                                           class="form-control al payment-inputTextMedium paymentInput numpad <?php
+                                                           class="form-control al payment-inputTextMedium paymentInputupdate numpad <?php
                                                            if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
-                                                               echo 'paymentOther';
+                                                               echo 'paymentOtherUpdate';
                                                            }
                                                            ?>"
                                                            placeholder="0.00">
@@ -371,9 +376,9 @@ $this->lang->load('calendar', $primaryLanguage);
                                                     <input type="text" id="paymentType_Update<?php echo $tmpID; ?>"
                                                            name="paymentTypesUpdate[<?php echo $payment['ID'] ?>]"
                                                            onchange="calculatePaidAmountUpdate(this)"
-                                                           class="form-control al payment-inputTextMedium paymentInput numpad <?php
+                                                           class="form-control al payment-inputTextMedium paymentInputupdate numpad <?php
                                                            if ($payment['glAccountType'] == 2 || $payment['glAccountType'] == 3) {
-                                                               echo 'paymentOther';
+                                                               echo 'paymentOtherUpdate';
                                                            }
                                                            ?>"
                                                            placeholder="0.00">
@@ -398,7 +403,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                     <td>&nbsp;</td>
                                     <td class="payment-tblSize">
                                         <input readonly type="number"
-                                               onkeyup="calculateReturn()" name="paidUpdate"
+                                               onkeyup="calculateReturnUpdate()" name="paidUpdate"
                                                id="paidUpdate"
                                                class="form-control payment-inputTextLg paymentTypeTextRed al"
                                                placeholder="0.00"
@@ -422,7 +427,8 @@ $this->lang->load('calendar', $primaryLanguage);
                                             <label class="radio-inline" for="<?php echo $key ?>">
                                                 <input onclick="checkChequePayment(this.value)" <?php if ($key == 1) {
                                                     echo 'checked';
-                                                } ?> type="radio" name="payment_methodUpdate" id="Update_<?php echo $key ?>"
+                                                } ?> type="radio" name="payment_methodUpdate"
+                                                       id="Update_<?php echo $key ?>"
                                                        value="<?php echo $key ?>">
                                                 <img title="<?php echo $payType ?>"
                                                      src="<?php echo base_url('images/payment_type') . '/' . $key . '.png' ?>"/> <?php// echo $key.$payType ?>
@@ -458,7 +464,8 @@ $this->lang->load('calendar', $primaryLanguage);
                                         echo '</div>';
                                     }
                                     ?>
-                                    <input type="hidden" name="payment_methodUpdate" id="payment_methodUpdate" value="1">
+                                    <input type="hidden" name="payment_methodUpdate" id="payment_methodUpdate"
+                                           value="1">
 
 
                                 </div>
@@ -497,7 +504,8 @@ $this->lang->load('calendar', $primaryLanguage);
                                         <?php echo $this->lang->line('posr_gift_card_number'); ?><!--Gift Card Number--> </b>
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="text" name="gift_card_numbUpdate" class="form-control" id="card_numbUpdate"
+                                    <input type="text" name="gift_card_numbUpdate" class="form-control"
+                                           id="card_numbUpdate"
                                            placeholder="<?php echo $this->lang->line('posr_gift_card_number'); ?>"
 
                                            style="border: 1px solid #3a3a3a; color: #010101;">
@@ -512,7 +520,8 @@ $this->lang->load('calendar', $primaryLanguage);
                                 <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6">
                                     <div id="return_changeUpdate" class="ar"
                                          style=" padding:0px; font-size: 20px; font-weight: 700"></div>
-                                    <input type="hidden" id="returned_changeUpdate" name="returned_changeUpdate" value="0">
+                                    <input type="hidden" id="returned_changeUpdate" name="returned_changeUpdate"
+                                           value="0">
                                 </div>
                             </div>
 
@@ -565,7 +574,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                     </button>
                                                 </div>
                                                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                    <button type="button" onclick="updatePaidAmount(this);"
+                                                    <button type="button" onclick="updatePaidAmountUpdate(this);"
                                                             class="currencyNoteBtn pos2-btn-default">C
                                                     </button>
                                                 </div>
@@ -591,7 +600,8 @@ $this->lang->load('calendar', $primaryLanguage);
                                             <?php
                                             $deliveryPersonArray = get_specialCustomers();
                                             ?>
-                                            <select name="deliveryPersonIDUpdateUpdate" id="deliveryPersonIDUpdateUpdate" class="form-control"
+                                            <select name="deliveryPersonIDUpdate" id="deliveryPersonIDUpdate"
+                                                    class="form-control"
                                                     onchange="calculateReturn(this)">
                                                 <option value="" selected>Select Delivery Person</option>
                                                 <!--<option value="-1" data-cp="0" data-otp="1">Normal Delivery -
@@ -626,7 +636,8 @@ $this->lang->load('calendar', $primaryLanguage);
                                         <input type="text" class="form-control payment-inputTextRedLg"
                                                readonly="readonly"
                                                style="font-weight: 800;"
-                                               id="totalPayableAmountDelivery_idUpdate" name="totalPayableAmountDelivery_idUpdate"
+                                               id="totalPayableAmountDelivery_idUpdate"
+                                               name="totalPayableAmountDelivery_idUpdate"
                                                value="0">
                                     </div>
                                 </div>
@@ -639,7 +650,8 @@ $this->lang->load('calendar', $primaryLanguage);
                                         <input type="text" class="form-control payment-inputTextRedLg"
                                                readonly="readonly"
                                                style="font-weight: 800;"
-                                               id="returned_change_toDeliveryUpdate" name="returned_change_toDeliveryUpdate"
+                                               id="returned_change_toDeliveryUpdate"
+                                               name="returned_change_toDeliveryUpdate"
                                                value="0">
                                     </div>
                                 </div>
@@ -652,10 +664,12 @@ $this->lang->load('calendar', $primaryLanguage);
             </div>
 
             <div class="modal-footer" style="margin-top: 0px;">
-                <button type="button" class="btn btn-lg btn-default" onclick="close_update_pos_submitted()" style="height: 57px;">
+                <button type="button" class="btn btn-lg btn-default" onclick="close_update_pos_submitted()"
+                        style="height: 57px;">
                     <?php echo $this->lang->line('common_Close'); ?><!--Close--></button>
 
-                <button id="" type="button" onclick="update_pos_submitted_payments()" class="btn btn-lg btn-primary" style="height: 57px;">
+                <button id="" type="button" onclick="update_pos_submitted_payments()" class="btn btn-lg btn-primary"
+                        style="height: 57px;">
                     <span id="">Update</span>
                 </button>
 
@@ -896,7 +910,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                            echo 'paymentOther';
                                                        }
                                                        ?>" readonly
-                                                       placeholder="<?php echo number_format(0,$d)?>">
+                                                       placeholder="<?php echo number_format(0, $d) ?>">
                                                 <?php
 
                                             } else if ($payment['autoID'] == 7) {
@@ -912,7 +926,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                            echo 'paymentOther';
                                                        }
                                                        ?>" readonly
-                                                       placeholder="<?php echo number_format(0,$d)?>">
+                                                       placeholder="<?php echo number_format(0, $d) ?>">
                                                 <?php
 
                                             } else if ($payment['autoID'] == 25) {
@@ -928,7 +942,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                            echo 'paymentOther';
                                                        }
                                                        ?>" readonly
-                                                       placeholder="<?php echo number_format(0,$d)?>">
+                                                       placeholder="<?php echo number_format(0, $d) ?>">
                                                 <?php
 
                                             } else {
@@ -943,7 +957,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                                echo 'paymentOther';
                                                            }
                                                            ?>"
-                                                           placeholder="<?php echo number_format(0,$d)?>">
+                                                           placeholder="<?php echo number_format(0, $d) ?>">
                                                 <?php } else {
                                                     ?>
                                                     <input type="text" id="paymentType_<?php echo $tmpID; ?>"
@@ -954,7 +968,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                                echo 'paymentOther';
                                                            }
                                                            ?>"
-                                                           placeholder="<?php echo number_format(0,$d)?>">
+                                                           placeholder="<?php echo number_format(0, $d) ?>">
 
                                                     <?php
                                                 }
@@ -978,7 +992,7 @@ $this->lang->load('calendar', $primaryLanguage);
                                                                        onkeyup="calculateReturn()" name="paid"
                                                                        id="paid"
                                                                        class="form-control payment-inputTextLg paymentTypeTextRed al"
-                                                                       placeholder="<?php echo number_format(0,$d)?>"
+                                                                       placeholder="<?php echo number_format(0, $d) ?>"
                                                                        autocomplete="off">
                                         <span id="paid_temp" class="hide"></span></td>
                                 </tr>
@@ -1256,13 +1270,15 @@ $this->lang->load('calendar', $primaryLanguage);
                 <?php
                 if (isset($sampleBillPolicy) && $sampleBillPolicy) {
                     ?>
-                    <button type="button" onclick="print_sample_bill()" class="btn btn-lg btn-default" style="height: 57px;">
+                    <button type="button" onclick="print_sample_bill()" class="btn btn-lg btn-default"
+                            style="height: 57px;">
                         <i class="fa fa-print"></i>Print Sample
                     </button>
                     <?php
                 }
                 ?>
-                <button id="submit_and_close_btn" type="button" onclick="submit_and_close_pos_payments()" class="btn btn-lg btn-default" style="height: 57px;">
+                <button id="submit_and_close_btn" type="button" onclick="submit_and_close_pos_payments()"
+                        class="btn btn-lg btn-default" style="height: 57px;">
                     <span><?php echo $this->lang->line('common_submit_and_close'); ?><!--Submit--></span>
                 </button>
 
@@ -1321,8 +1337,8 @@ $this->lang->load('calendar', $primaryLanguage);
         $("#paid_tempUpdate").html(noteValue);
         $("#paidUpdate").val(parseFloat(noteValue));
         $("#paymentType_Update1").val(parseFloat(noteValue));
-        // calculateReturn();
-        // calculatePaidAmount();
+        calculateReturnUpdate();
+        calculatePaidAmountUpdate();
     }
 
     function updateNoteValue(tmpValue) {
@@ -1336,6 +1352,30 @@ $this->lang->load('calendar', $primaryLanguage);
         calculateReturn();
         calculatePaidAmount();
 
+    }
+
+    function updatePaidAmountUpdate(tmpValue) {
+        var cPaidAmount = $("#paidUpdate").val();
+        var tmpAmount = $(tmpValue).text();
+        var tmpAmount_txt = $("#paid_tempUpdate").text();
+        if (parseFloat(tmpAmount) >= 0 || $.trim(tmpAmount) == '.') {
+            var updateVal = cPaidAmount + tmpAmount;
+            var tmpAmount_output = $.trim(tmpAmount_txt) + $.trim(tmpAmount);
+            if ($.trim(tmpAmount) == '.') {
+            }
+
+            $("#paid_tempUpdate").html(tmpAmount_output);
+            //$("#paid").val(parseFloat(updateVal));
+            $("#paidUpdate").val(parseFloat(tmpAmount_output));
+
+        } else if ($.trim(tmpAmount) == 'C') {
+            $("#isCreditSaleUpdate").val(0);
+            $("#paidUpdate").val(0);
+            $("#paid_tempUpdate").html(0);
+            $(".paymentInputupdate").val(0);
+            $('.cardRef').val('');
+        }
+        calculateReturnUpdate();
     }
 
     function updatePaidAmount(tmpValue) {
@@ -1370,7 +1410,7 @@ $this->lang->load('calendar', $primaryLanguage);
         var totalAmount = $("#final_payableNet_amtUpdate").text();
         $("#paidUpdate").val(parseFloat(totalAmount));
         $("#paymentType_Update1").val(parseFloat(totalAmount).toFixed(<?php echo $d?>));
-        calculateReturn();
+        calculateReturnUpdate();
     }
 
     function updateExactCash() {
@@ -1519,7 +1559,7 @@ $this->lang->load('calendar', $primaryLanguage);
     }
 
 
-    function updateCustomerTypeBtn(id, isDelivery, isDineIn,ordermd=0) {
+    function updateCustomerTypeBtn(id, isDelivery, isDineIn, ordermd = 0) {
         $("#order_mode_modal").modal("hide");
         $("#is_dine_in").val(isDineIn);
         $("#customerType").val(id);
@@ -1576,7 +1616,7 @@ $this->lang->load('calendar', $primaryLanguage);
                 if (data['error'] == 0) {
                     calculateFooter();
 
-                    if(ordermd==1){
+                    if (ordermd == 1) {
                         open_pos_payments_modal();
                     }
                 }
@@ -1821,11 +1861,12 @@ $this->lang->load('calendar', $primaryLanguage);
                                     <?php
                                     if($defaultID){
                                     ?>
-                                    updateCustomerTypeBtn(<?php echo $defaultID ?>, <?php echo $isDelivery ?>,<?php echo $isDineIn ?>,1);
+                                    updateCustomerTypeBtn(<?php echo $defaultID ?>, <?php echo $isDelivery ?>,<?php echo $isDineIn ?>, 1);
                                     <?php
                                     }
                                     ?>
                                 }
+
                                 $(document).ready(function (e) {
                                     defaultDineinButtonID = '<?php echo $defaultID; ?>';
                                 });
@@ -1861,14 +1902,14 @@ $this->lang->load('calendar', $primaryLanguage);
     function addPromotion_update(id) {
         $("#promotionIDUpdate").val(id).change();
         setTimeout(function () {
-            $("#deliveryPersonID").val('').change();
+            $("#deliveryPersonIDUpdate").val('').change();
         }, 50);
         //$("#pos_payments_promotion_modal").modal('hide');
         $("#tmp_promotionUpdate").val($("#promotionIDUpdate option:selected").text().trim());
         setTimeout(function () {
             var netTotalTmp = $("#final_payableNet_amtUpdate").text();
             var netTotal = parseFloat(netTotalTmp);
-            $("#gross_total_input").val(netTotal);
+            $("#gross_total_inputUpdate").val(netTotal);
         }, 50);
     }
 
@@ -1885,21 +1926,21 @@ $this->lang->load('calendar', $primaryLanguage);
     }
 
 
-    function calculatePaidAmountUpdate(tmpThis){
+    function calculatePaidAmountUpdate(tmpThis) {
         if ($("#isDeliveryUpdate").val() == 1) {
             if ($("#deliveryPersonIDUpdate").val() == "") {
                 //$(".paymentOther").val(0);
             } else {
                 if ($("#deliveryPersonIDUpdate").val() > 0) {
-                    if ($("#deliveryPersonID option:selected").data('otp') == 1) { // on time payment
+                    if ($("#deliveryPersonIDUpdate option:selected").data('otp') == 1) { // on time payment
                         var cardTotal = 0;
-                        $(".paymentOther").each(function (e) {
+                        $(".paymentOtherUpdate").each(function (e) {
                             var valueThis = $.trim($(this).val());
                             cardTotal += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
                         });
-                        var deliveryAmount = $("#totalPayableAmountDelivery_id").val();
+                        var deliveryAmount = $("#totalPayableAmountDelivery_idUpdate").val();
                         if (cardTotal > deliveryAmount) {
-                            $(".paymentOther").val(0);
+                            $(".paymentOtherUpdate").val(0);
                             myAlert('e', 'You can not enter card amount more than delivery amount!')
                             return false;
                         }
@@ -1908,11 +1949,11 @@ $this->lang->load('calendar', $primaryLanguage);
             }
         }
         var total = 0
-        $(".paymentInput").each(function (e) {
+        $(".paymentInputupdate").each(function (e) {
             var valueThis = $.trim($(this).val());
             total += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
         });
-        $("#paid").val(total);
+        $("#paidUpdate").val(total);
         var payable = $("#total_payable_amtUpdate").val();
         var returnAmount = total - payable;
         if (returnAmount > 0) {
@@ -1923,7 +1964,7 @@ $this->lang->load('calendar', $primaryLanguage);
             var discount = parseFloat($("#promotional_discountUpdate").val());
             var subTotal = $("#total_payable_amtUpdate").val();
             var netTotal = subTotal - discount;
-            var paidAmountTmp = parseFloat($("#paid").val());
+            var paidAmountTmp = parseFloat($("#paidUpdate").val());
             var advancePaymets = $("#delivery_advancePaymentAmountUpdate").val();
             netTotal = netTotal - advancePaymets;
             var returnChange = paidAmountTmp - netTotal;
@@ -1935,24 +1976,53 @@ $this->lang->load('calendar', $primaryLanguage);
 
             if (typeof tmpThis !== "undefined") {
                 var cardTotal = 0;
-                $(".paymentOther").each(function (e) {
+                $(".paymentOtherUpdate").each(function (e) {
                     var valueThis = $.trim($(this).val());
                     cardTotal += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
                 });
                 netTotal = netTotal.toFixed(<?php echo $d ?>);
                 if (cardTotal > netTotal) {
-                    $(".paymentOther ").val(0);
-                    calculateReturn();
-                    $("#cardTotalAmount").val(0);
+                    $(".paymentOtherUpdate ").val(0);
+                    calculateReturnUpdate();
+                    $("#cardTotalAmountUpdate").val(0);
                     myAlert('e', 'You can not pay more than the net total using cards!');
 
                 } else {
                     $("#cardTotalAmountUpdate").val(cardTotal);
 
                 }
-                $("#netTotalAmountUpdate").val(netTotal);
+
             }
+            $("#netTotalAmountUpdate").val(netTotal);
         }, 50);
+    }
+
+    function calculate_net_card_totalUpdate() {
+        setTimeout(function () {
+            var discount = parseFloat($("#promotional_discountUpdate").val());
+            var subTotal = $("#total_payable_amtUpdate").val();
+            var netTotal = subTotal - discount;
+            var cardTotal = 0;
+            var isGiftCardModal = true;
+            $(".paymentOtherUpdate").each(function (e) {
+                var valueThis = $.trim($(this).val());
+                cardTotal += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
+                if ($(this).attr('p-type') == 'gift_card') {
+                    isGiftCardModal = false;
+                }
+            });
+
+            netTotal = netTotal.toFixed(<?php echo $d ?>);
+            if (cardTotal > netTotal && isGiftCardModal) {
+                $(".paymentOtherUpdate ").val(0);
+                calculateReturnUpdate();
+                $("#cardTotalAmountUpdate").val(0);
+                myAlert('e', 'You can not pay more than the net total using cards!');
+            } else {
+                $("#cardTotalAmountUpdate").val(cardTotal);
+            }
+            $("#netTotalAmountUpdate").val(netTotal);
+        }, 60);
     }
 
     function calculatePaidAmount(tmpThis) {
@@ -2043,6 +2113,7 @@ $this->lang->load('calendar', $primaryLanguage);
 
 
     function calculate_net_card_total() {
+
         setTimeout(function () {
             var discount = parseFloat($("#promotional_discount").val());
             var subTotal = $("#total_payable_amt").val();
@@ -2133,7 +2204,7 @@ $this->lang->load('calendar', $primaryLanguage);
                 success: function (data) {
                     stopLoad();
                     $("#pos_modalBody_sampleBill").html(data);
-                    if(app.submit_mode == 'submit_and_send_to_printer'){
+                    if (app.submit_mode == 'submit_and_send_to_printer') {
                         print_paymentReceipt()
                     }
                 },
@@ -2179,13 +2250,13 @@ $this->lang->load('calendar', $primaryLanguage);
 
 
     function updateExactCard_update(paymentTypeID) {
-        $("#paid").val(0);
-        $("#paid_temp").html(0);
-        $(".paymentInput").val('');
+        $("#paidUpdate").val(0);
+        $("#paid_tempUpdate").html(0);
+        $(".paymentInputupdate").val('');
         $('.cardRef').val('');
         var totalAmount = $("#final_payableNet_amtUpdate").text();
         $("#paymentType_Update" + paymentTypeID).val(parseFloat(totalAmount));
-        calculateReturn();
+        calculateReturnUpdate();
     }
 
 
@@ -2198,15 +2269,15 @@ $this->lang->load('calendar', $primaryLanguage);
         /*handling exception*/
         // handleItemMisMatchException();
 
-        var gross_total = parseFloat($("#gross_total").html());
+        var gross_total = parseFloat($("#gross_totalUpdate").html());
         var customerType = $("#customerType").val();
         if (customerType > 0) {
             $("#pos_submitted_payments_modal").modal('show');
             //$("#paid_by").select2("val", "");
-
+            $("#paymentType_Update5").parent().parent().hide();
             setTimeout(function () {
-                calculateReturn();
-                $("#paid").focus();
+                calculateReturnUpdate();
+                $("#paidUpdate").focus();
             }, 500);
         } else {
             //bootbox.alert('<div class="alert alert-info"><strong>Please select order mode.</strong></div>');

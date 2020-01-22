@@ -1477,9 +1477,6 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                         $("#final_payableNet_amtUpdate").text(menusalesmaster.grossTotal);
                         addPromotion_update(menusalesmaster.promotionID);
                         load_payments_list(id);
-
-
-
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -1555,7 +1552,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                 $("#paidUpdate").val(0);
                 $("#promotionIDUpdate").val('');
                 $("#dis_amtUpdate").val(0);
-                $(".paymentInput ").val('');
+                $(".paymentInputupdate ").val('');
                 resetPaymentForm();
                 resetPayTypeBtn();
             }, 500);

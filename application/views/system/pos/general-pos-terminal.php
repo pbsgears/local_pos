@@ -3766,7 +3766,6 @@ $this->load->view('system/pos-general/js/gpos-js', $data);
                     $("#cardTotalAmount").val(0);
                     myAlert('e', 'You can not pay more than the net total using cards!');
 
-
                 } else {
                     $("#cardTotalAmount").val(cardTotal);
                 }

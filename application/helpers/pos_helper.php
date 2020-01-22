@@ -1651,6 +1651,22 @@ if (!function_exists('col_sortOrderMenu')) {
     }
 }
 
+if (!function_exists('get_credit_salesCustomers')) {
+    function get_credit_salesCustomers($menuSalesID)
+    {
+        $CI =& get_instance();
+        $CI->db->select('cusm.customerName as CustomerName,cusm.customerAddress1 as CustomerAddress1,cusm.customerTelephone');
+        $CI->db->from('srp_erp_pos_menusalespayments');
+        $CI->db->join('srp_erp_customermaster cusm', 'cusm.customerAutoID = srp_erp_pos_menusalespayments.customerAutoID', 'left');
+        $CI->db->where('srp_erp_pos_menusalespayments.menuSalesID', $menuSalesID);
+        $CI->db->where('srp_erp_pos_menusalespayments.wareHouseAutoID', get_outletID());
+        $CI->db->limit(1);
+        $customers = $CI->db->get()->row_array();
+
+        return $customers;
+    }
+}
+
 
 if (!function_exists('btn_voidBill')) {
     function btn_voidBill($id, $desc = 'View')

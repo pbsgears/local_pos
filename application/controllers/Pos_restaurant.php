@@ -1096,6 +1096,21 @@ class Pos_restaurant extends ERP_Controller
         }
     }
 
+    function SaveKitchenNote(){
+        $current_menusalesitem_id = $this->input->post('current_menusales_id');
+        $kitchen_note = $this->input->post('kitchen_note');
+
+        $menusales_item = array("kitchenNote"=>$kitchen_note);
+        $this->db->where("menuSalesItemID",$current_menusalesitem_id);
+        $res = $this->db->update('srp_erp_pos_menusalesitems',$menusales_item);
+        if($res==true){
+            $data['status']="success";
+        }else{
+            $data['status']="failed";
+        }
+        echo json_encode($data);
+    }
+
     function checkPosSession()
     {
         $sql = 'select count(menuSalesID) as syncCount from srp_erp_pos_menusalesmaster where is_sync = 0';
@@ -1298,6 +1313,7 @@ class Pos_restaurant extends ERP_Controller
 
 
             foreach ($getMenuInvoice as $data) {
+
                 $data['warehouseMenuID'] = str_pad($data['warehouseMenuID'], 4, "0", STR_PAD_LEFT);
 
                 $output .= '<div class="row itemList" id="item_row_' . $data['menuSalesItemID'] . '" style="margin: 0px; border-bottom: 1px solid #dddddd; padding-top: 5px; padding-bottom: 5px;" onclick="selectMenuItem(this)">';
@@ -1310,7 +1326,13 @@ class Pos_restaurant extends ERP_Controller
                     $col = 3;
                 }
 
+                $warehouseMenuForKitchenNote=get_warehouseMenuForKitchenNote($data['warehouseMenuID']);
+                //var_dump($warehouseMenuForKitchenNote);exit;
                 $output .= '<div class="col-md-1 hidden-xs hidden-sm menuItem_pos_col_1 hide"><img src="' . $data['menuImage'] . '" style="max-height: 40px;" alt=""></div>';
+
+                if((int)$warehouseMenuForKitchenNote['kotID']>0){
+                    $output.='<div class="col-md-1" style="padding-left: 0px;"><button type="button" value="KN" type="button" class="btn btn-primary" onclick="open_kitchen_note('.$warehouseMenuForKitchenNote['warehouseMenuID'].','.$warehouseMenuForKitchenNote['kotID'].','.$data['menuSalesItemID'].')"><i class="fa fa-file-text"></i></button></div>';
+                }
 
                 if ($template == 2) {
                     $output .= '<div class="col-md-' . $col . ' menuItem_pos_col_5">' . $data['menuMasterDescription'] . '</div> ';
@@ -1324,7 +1346,7 @@ class Pos_restaurant extends ERP_Controller
                 $discountPolicy = show_item_level_discount();
                 $discountPolicyClass = $discountPolicy ? '' : 'hide';
 
-                $output .= '<div class="col-md-9">
+                $output .= '<div class="col-md-8">
                             <div class="receiptPadding">
                                 <input type="text" onkeyup="calculateFooter()" onchange="updateQty(' . $data['menuSalesItemID'] . ')" value="' . $data['qty'] . '" class="display_qty menuItem_input numberFloat" id="qty_' . $data['menuSalesItemID'] . '" name="qty[' . $data['menuSalesItemID'] . ']"  />
                             </div>

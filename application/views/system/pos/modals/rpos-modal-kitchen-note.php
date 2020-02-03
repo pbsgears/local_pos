@@ -117,6 +117,31 @@ $this->lang->load('calendar', $primaryLanguage);
         $('#kot_add_on_id_' + id).iCheck('toggle');
     }
 
+    function SaveKitchenNote(current_menusales_id,kitchen_note){
+        $.ajax({
+            type: 'POST',
+            dataType: 'JSON',
+            url: "<?php echo site_url('Pos_restaurant/SaveKitchenNote'); ?>",
+            data: {current_menusales_id: current_menusales_id,kitchen_note:kitchen_note},
+            cache: false,
+            beforeSend: function () {
+                startLoad();
+            },
+            success: function (data) {
+                stopLoad();
+                console.log(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                stopLoad();
+                if (jqXHR.status == false) {
+                    myAlert('w', 'Local Server is Offline,  Please try again');
+                } else {
+                    myAlert('e', 'Message: ' + errorThrown);
+                }
+            }
+        });
+    }
+
     $(document).ready(function (e) {
         $(".kot-add-on").click(function (e) {
             selectMe(this);
@@ -130,7 +155,9 @@ $this->lang->load('calendar', $primaryLanguage);
                     kotAddOnList.push(val.value);
                 }
             });
-            LoadToInvoice(id);
+            var kitchen_note = $("#kitchenNote").val();
+            SaveKitchenNote(app.current_menusales_id,kitchen_note);
+            //LoadToInvoice(id);
         });
 
 

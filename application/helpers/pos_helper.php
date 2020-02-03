@@ -609,6 +609,34 @@ if (!function_exists('get_warehouseMenuShortcuts')) {
     }
 }
 
+if (!function_exists('get_warehouseMenuForKitchenNote')) {
+    function get_warehouseMenuForKitchenNote($warehouseMenuID)
+    {
+
+        $CI =& get_instance();
+        $path = base_url();
+        $CI->db->select("category.autoID, menu.warehouseMenuID , menu.warehouseID, menuMaster.menuMasterDescription, concat('" . $path . "',menuMaster.menuImage) as menuImage, menuMaster.sellingPrice, menuMaster.isPack  , categoryMaster.bgColor , size.description as sizeDescription, size.code as sizeCode, size.colourCode, menu.kotID, menuMaster.showImageYN as showImageYN");
+        $CI->db->from("srp_erp_pos_warehousemenumaster menu");
+        $CI->db->join("srp_erp_pos_warehousemenucategory category", "menu.warehouseMenuCategoryID = category.autoID", "inner");
+        $CI->db->join("srp_erp_pos_menumaster menuMaster", "menuMaster.menuMasterID = menu.menuMasterID", "left");
+        $CI->db->join("srp_erp_pos_menucategory categoryMaster", "category.menuCategoryID = categoryMaster.menuCategoryID", "INNER");
+        $CI->db->join("srp_erp_pos_menusize size", "size.menuSizeID = menuMaster.menuSizeID", "LEFT");
+        $CI->db->where('menu.isActive', 1);
+        $CI->db->where('category.isActive', 1);
+        $CI->db->where('category.isDeleted', 0);
+        $CI->db->where('menu.isDeleted', 0);
+        $CI->db->where('menuMaster.isDeleted', 0);
+        $CI->db->where('menu.warehouseMenuID', $warehouseMenuID);
+        //$CI->db->where('menu.isShortcut', 1);
+        $CI->db->group_by('menuMaster.menuMasterID');
+        $CI->db->order_by('menuMaster.sortOrder', 'asc');
+        $CI->db->order_by('menuMaster.menuMasterDescription', 'asc');
+        $result = $CI->db->get()->row_array();
+        //echo $CI->db->last_query();exit;
+        return $result;
+    }
+}
+
 
 if (!function_exists('get_wareHouseMenuByCategory_All')) {
     function get_wareHouseMenuByCategory_All()

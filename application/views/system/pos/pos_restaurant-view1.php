@@ -26,6 +26,20 @@ $discountPolicy = show_item_level_discount();
     <link rel="stylesheet" href="<?php echo base_url('plugins/virtual-keyboard-mlkeyboard/jquery.ml-keyboard.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/buttons/button.css') ?>">
     <style>
+        @media only screen and (min-width: 768px) {
+            /* For desktop: */
+           .menuDivSize{
+               width: 50%;
+               padding-right: 0;
+           }
+        }
+
+        @media only screen and (min-width: 600px) {
+            .menuDivSize{
+
+            }
+        }
+
         .receiptPadding {
             width: <?php echo $discountPolicy ? '16.5%' : '24.5%';  ?>;
             float: left;
@@ -48,10 +62,10 @@ $discountPolicy = show_item_level_discount();
     <div id="posHeader_2" class="hide" style="display: none;"></div>
     <div id="form_div" style="padding: 1%; margin-top: 40px">
         <div class="row" style="margin-top: 0px;">
-            <div class="col-md-6">
+            <div class="col-md-6 menuDivSize">
                 <div class="panel panel-default" style="border: 1px solid #ddd;">
                     <div class="panel-body tabs" style="padding:3px;">
-                        <div style="padding: 0px 0px 0px 15px;">
+                        <div style="">
                             <button id="backToCategoryBtn" style="padding: 11px 11px 9px 7px;" data-toggle="tab"
                                     class="btn btn-lg btn-default btnCategoryTab"
                                     tabindex="-1"
@@ -100,7 +114,7 @@ $discountPolicy = show_item_level_discount();
                         <input type="hidden" id="categoryCurrentID" value="0">
 
                         <div style="margin: 0px 0px 0px 15px;">
-                            <div class="tab-content dynamicSizeCategory" style="overflow: scroll; height: 350px;"
+                            <div class="tab-content dynamicSizeCategory" style="overflow: scroll; height: 350px;width: 99%;"
                                  id="allProd">
                                 <div class="tab-pane fade in active" id="pilltabCategory">
                                     <?php
@@ -417,13 +431,16 @@ $discountPolicy = show_item_level_discount();
                 <?php current_pc() ?>
                 <div class="productCls">
                     <div class="row">
-                        <div class="col-md-3 col-sm-2">
+                        <div class="col-md-1 col-sm-2">
+
+                        </div>
+                        <div class="col-md-2 col-sm-2">
                             <!-- TABLE -->
                             <button class="btn btn-default btn-lg" type="button" id="table_order_btn"><i
                                         class="fa fa-life-ring"></i> <span id="current_table_description">Table</span>
                             </button>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-9" style="padding-left: 10%;">
                             <div class="receiptPaddingHead"><?php echo $this->lang->line('posr_qyt'); ?><!--Qty--></div>
                             <div class="receiptPaddingHead">@
                                 <?php echo $this->lang->line('posr_rate'); ?><!--rate--></div>
@@ -444,7 +461,6 @@ $discountPolicy = show_item_level_discount();
 
                     </div>
                 </div>
-
                 <div style="overflow: scroll; height: 240px; width: 100%;" class="dynamicSizeItemList">
                     <form id="posInvoiceForm" class="form_pos_receipt" method="post">
                         <div id="log">
@@ -802,6 +818,9 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
     <script type="text/javascript">
         var numberOfRequest = 0;
 
+        app = {};
+
+
         function initNumPad() {
             $('.numpad').unbind();
             $('.numpad').numpad();
@@ -1033,9 +1052,10 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
 
         function checkisKOT(id, isPack, kotID, description) {
             if (kotID > 0) {
-                open_kitchen_note(id, kotID);
+                // open_kitchen_note(id, kotID);
                 $("#kot_kotID").val(kotID);
                 $("#kitchenNoteDescription").html(description);
+                LoadToInvoice(id);
                 /*setTimeout(function () {
                  $("#kitchenNote").focus();
                  }, 500);*/
@@ -1049,8 +1069,10 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
             }
         }
 
-        function open_kitchen_note(id, kotID) {
+
+        function open_kitchen_note(id, kotID,menusales_id) {
             $("#tmpWarehouseMenuID").val(id);
+            app.current_menusales_id = menusales_id;
             if (kotID > 0) {
                 $("#pos_kitchen_note").modal('show');
             }
@@ -1104,6 +1126,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     startLoadPos();
                 },
                 success: function (data) {
+                    console.log(data);
                     numberOfRequest--;
                     if (numberOfRequest == 0) {
                         enable_POS_btnSet();
@@ -1114,10 +1137,14 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                     } else if (data['error'] == 0) {
                         var divTmp = '';
                         /*<img src="' + data['menuImage'] + '" style="max-height: 40px;" alt=""> */
+
                         divTmp = '<div onclick="selectMenuItem(this)" class="row itemList" id="item_row_' + data['code'] + '" style="margin: 0px; border-bottom: 1px solid #dddddd; padding-top: 5px; padding-bottom: 5px;">';
                         divTmp += '<div class="col-md-1 hidden-xs hidden-sm menuItem_pos_col_1 hide"></div>';
+                        if(parseInt(kotID)>0){
+                            divTmp += '<div class="col-md-1" style="padding-left: 0px;"><button type="button" value="KN" type="button" class="btn btn-primary" onclick="open_kitchen_note('+id+', '+kotID+','+data['code']+')"><i class="fa fa-file-text"></i></button></div>';
+                        }
                         divTmp += '<div class="col-md-3 menuItem_pos_col_5">' + data['menuMasterDescription'] + ' </div>';
-                        divTmp += '<div class="col-md-9">';
+                        divTmp += '<div class="col-md-8">';
                         divTmp += '<div class="receiptPadding">';
                         divTmp += '<input type="text" onkeyup="calculateFooter()" onchange="updateQty(' + data['code'] + ')" value="1" class="display_qty menuItem_input numberFloat" id="qty_' + data['code'] + '" name="qty[' + data['code'] + ']"  />';
                         divTmp += '</div>';

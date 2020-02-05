@@ -1142,6 +1142,8 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                         divTmp += '<div class="col-md-1 hidden-xs hidden-sm menuItem_pos_col_1 hide"></div>';
                         if(parseInt(kotID)>0){
                             divTmp += '<div class="col-md-1" style="padding-left: 0px;"><button type="button" value="KN" type="button" class="btn btn-primary" onclick="open_kitchen_note('+id+', '+kotID+','+data['code']+')"><i class="fa fa-file-text"></i></button></div>';
+                        }else {
+                            divTmp += '<div class="col-md-1" style="padding-left: 0px;"></div>';
                         }
                         divTmp += '<div class="col-md-3 menuItem_pos_col_5">' + data['menuMasterDescription'] + ' </div>';
                         divTmp += '<div class="col-md-8">';

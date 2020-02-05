@@ -1332,6 +1332,8 @@ class Pos_restaurant extends ERP_Controller
 
                 if((int)$warehouseMenuForKitchenNote['kotID']>0){
                     $output.='<div class="col-md-1" style="padding-left: 0px;"><button type="button" value="KN" type="button" class="btn btn-primary" onclick="open_kitchen_note('.$warehouseMenuForKitchenNote['warehouseMenuID'].','.$warehouseMenuForKitchenNote['kotID'].','.$data['menuSalesItemID'].')"><i class="fa fa-file-text"></i></button></div>';
+                }else {
+                    $output.= '<div class="col-md-1" style="padding-left: 0px;"></div>';
                 }
 
                 if ($template == 2) {

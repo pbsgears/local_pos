@@ -3094,6 +3094,7 @@ class Pos_restaurant_model extends ERP_Model
             $payableDeliveryAmount = $this->input->post('totalPayableAmountDelivery_id');
             $returnChange = $this->input->post('returned_change');
             $grossTotal = $this->input->post('total_payable_amt');
+            $promotional_discount = $this->input->post('promotional_discount');
 
             if (!empty($paymentTypes)) {
                 $i = 0;
@@ -3236,11 +3237,49 @@ class Pos_restaurant_model extends ERP_Model
                 }
             }
 
-
+            $this->insert_outlet_tax($outletID, $grossTotal, $promotional_discount, $invoiceID);
             return true;
         } else {
             return false;
         }
+    }
+
+    function insert_outlet_tax($outletID, $grossTotal, $promotional_discount, $invoiceID)
+    {
+        //insert outlet tax table
+        $outlet_tax_list = $this->outlet_tax_list($outletID);
+        $amount_with_discount = $grossTotal - $promotional_discount;
+        foreach ($outlet_tax_list as $outlet_tax) {
+            $taxPercentage = $outlet_tax->taxPercentage;
+            $tax_amount = ($amount_with_discount / 100) * $taxPercentage;
+            //print_r($amount_with_discount);
+            //print_r($outlet_tax);
+            //print_r($tax_amount);
+            $amount_with_tax = $amount_with_discount + $tax_amount;
+            $menusalesoutlettaxes = array(
+                "wareHouseAutoID" => $outletID,
+                "menuSalesID" => $invoiceID,
+                "outletTaxID" => $outlet_tax->outletTaxID,
+                "taxmasterID" => $outlet_tax->taxMasterID,
+                "GLCode" => $outlet_tax->supplierGLAutoID,
+                "taxPercentage" => $taxPercentage,
+                "taxAmount" => $tax_amount
+            );
+            $this->db->insert('srp_erp_pos_menusalesoutlettaxes', $menusalesoutlettaxes);
+        }
+    }
+
+    function outlet_tax_list($outletID)
+    {
+        $query = $this->db->query("SELECT 
+ srp_erp_pos_outlettaxmaster.taxPercentage,
+ srp_erp_pos_outlettaxmaster.outletTaxID,
+ srp_erp_pos_outlettaxmaster.taxMasterID,
+ srp_erp_taxmaster.supplierGLAutoID
+ FROM `srp_erp_pos_outlettaxmaster` 
+JOIN srp_erp_taxmaster ON srp_erp_taxmaster.taxMasterAutoID=srp_erp_pos_outlettaxmaster.taxMasterID
+where srp_erp_pos_outlettaxmaster.warehouseAutoID=$outletID AND srp_erp_pos_outlettaxmaster.isDeleted=0");
+        return $query->result();
     }
 
     function get_report_fullyDiscountBills_admin($date, $data2, $cashier = null, $outlets = null)

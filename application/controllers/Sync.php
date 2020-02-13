@@ -34,8 +34,8 @@ class Sync extends ERP_Controller
             "srp_erp_itemledger_sync" => array('itemLedgerAutoID'),
             "srp_erp_documentapproved_sync" => array('documentApprovedID'),
             "srp_erp_pos_wifipasswordsetup" => array('id'),
-            "srp_erp_pos_cardissue" => array('cardIssueID')
-
+            "srp_erp_pos_cardissue" => array('cardIssueID'),
+            "srp_erp_pos_menusalesoutlettaxes" => array('menuSalesOutletTaxID')
         );
 
 
@@ -203,6 +203,7 @@ class Sync extends ERP_Controller
         echo $server_output;
         exit;*/
         $result = json_decode($server_output, true);
+
 
         if (curl_error($ch)) {
             echo json_encode(array('error' => 1, 'message' => curl_error($ch)));

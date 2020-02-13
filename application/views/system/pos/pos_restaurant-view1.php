@@ -16,6 +16,10 @@ $templateInfo = get_pos_templateInfo();
 $templateID = get_pos_templateID();
 $discountPolicy = show_item_level_discount();
 
+$get_outletID = get_outletID();
+$current_companyID=current_companyID();
+$isOutletTaxEnabled=json_encode(isOutletTaxEnabled($get_outletID,$current_companyID));
+//var_dump($isOutletTaxEnabled);exit;
 ?>
 
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('plugins/pos/pos-min.css') ?>">
@@ -553,6 +557,19 @@ $discountPolicy = show_item_level_discount();
                                 <input type="hidden" id="total_discount_amount" name="total_discount_amount"/>
                             </div>
                         </div>
+
+                        <?php if($isOutletTaxEnabled=="true"){ ?>
+                            <div class="row itemListFoot">
+                                <div class="col-md-4">&nbsp;</div>
+
+                                <div class="col-md-5 ar">
+                                    Outlet Tax :
+                                </div>
+                                <div class="col-md-3 ar" style="padding-bottom: 5px;">
+                                    <div id="display_outlet_tax">0.00</div>
+                                </div>
+                            </div>
+                        <?php } ?>
 
                         <div class="row itemListFoot">
                             <div class="col-md-4 posFooterBorderBottom">&nbsp;</div>
@@ -1452,6 +1469,51 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
             $("#gross_total_amount_input").val(tmpGrossTotal);
             calculateFinalDiscount();
             calculateReturn();
+
+            //calculating outlet tax
+            var isOutletTaxEnabled=<?php echo $isOutletTaxEnabled; ?>;
+            console.log(isOutletTaxEnabled);
+            if(isOutletTaxEnabled){
+                var total_netAmount = parseFloat($("#total_netAmount").text());
+                var outlet_tax = apply_outlet_tax_to_net_value(total_netAmount);
+                console.log(outlet_tax);
+                var netValueWithOutletTax = outlet_tax.updated_net_value;
+                var outletTaxAmount = outlet_tax.calculated_tax_amount;
+                $("#total_netAmount").text(netValueWithOutletTax.toFixed(<?php echo $d ?>));
+                $("#final_payableNet_amt").html(netValueWithOutletTax.toFixed(<?php echo $d ?>));
+                $("#display_outlet_tax").text(outletTaxAmount.toFixed(<?php echo $d ?>));
+            }
+        }
+
+        function apply_outlet_tax_to_net_value(total_netAmount) {
+            var outlet_taxes = outlet_tax_list();
+            console.log(outlet_taxes);
+            var total_of_calculated_amounts=0;
+            outlet_taxes.forEach(function(item,index){
+                var calculated_amount = ((total_netAmount/100)*item.taxPercentage).toFixed(<?php echo $d ?>);
+                total_of_calculated_amounts += parseFloat(calculated_amount);
+            });
+            total_netAmount = total_netAmount+total_of_calculated_amounts;
+            return {updated_net_value:total_netAmount,calculated_tax_amount:total_of_calculated_amounts};
+        }
+
+        function outlet_tax_list() {
+            var taxes=null;
+            $.ajax({
+                async: false,
+                type: 'POST',
+                dataType: 'JSON',
+                url: "<?php echo site_url('Pos_config/outlet_tax_list'); ?>",
+                data: {},
+                cache: false,
+                success: function (data) {
+                    taxes=data.taxes;
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+            return taxes;
         }
 
         function get_gross_amount(priceWithoutTax, totalTax, serviceCharge) {

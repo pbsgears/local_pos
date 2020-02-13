@@ -30,6 +30,17 @@ class Pos_config extends ERP_Controller
 
     }
 
+    function outlet_tax_list()
+    {
+        $current_warehouseID = current_warehouseID();
+
+        $query = $this->db->query("SELECT * FROM `srp_erp_pos_outlettaxmaster` where warehouseAutoID=$current_warehouseID AND isDeleted=0");
+        $data['taxes'] = $query->result();
+
+        //var_dump($this->db->last_query());exit;
+        echo json_encode($data);
+    }
+
     function get_srp_erp_pos_segmentConfig()
     {
         $this->datatables->select('config.segmentConfigID as id, concat(segment.companyCode, " - " , segment.description) as segmentDes, wareHouse.wareHouseDescription as wareHouseDescription, industry.industryTypeDescription, posTemplate.posTemplateDescription,config.wareHouseAutoID as warehouseid , wareHouse.wareHouseLocation  as  wareHouseLocation,wareHouse.wareHouseCode  as  wareHouseCode, wareHouse.wareHouseCode  as  wareHouseCode ', false)

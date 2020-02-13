@@ -69,6 +69,10 @@ $primaryLanguage = getPrimaryLanguage();
 $this->lang->load('pos_restaurent', $primaryLanguage);
 $this->lang->load('common', $primaryLanguage);
 $this->lang->load('calendar', $primaryLanguage);
+
+$get_outletID = get_outletID();
+$current_companyID = current_companyID();
+$isOutletTaxEnabled = json_encode(isOutletTaxEnabled($get_outletID, $current_companyID));
 ?>
 
 <div aria-hidden="true" role="dialog" tabindex="-1" id="pos_submitted_payments_modal" class="modal" data-keyboard="true"
@@ -168,6 +172,19 @@ $this->lang->load('calendar', $primaryLanguage);
                                 </div>
                             </div>
 
+                            <?php if ($isOutletTaxEnabled == "true") { ?>
+                                <div class="row formRowPad" style="padding: 1px;">
+                                    <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 payment-textLg">
+                                        Outlet Tax
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6">
+                                        <div id="outlet_tax_in_invoiceUpdate" class="ar payment-textLg"
+                                             style="padding: 5px 0px;">
+                                            <?php echo $d == 3 ? '0.000' : '0.00'; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
 
                             <div class="row formRowPad" style="padding: 1px;" id="advancePaidDiv">
                                 <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 payment-textLg">
@@ -766,6 +783,19 @@ $this->lang->load('calendar', $primaryLanguage);
                                 </div>
                             </div>
 
+                            <?php if ($isOutletTaxEnabled == "true") { ?>
+                                <div class="row formRowPad" style="padding: 1px;">
+                                    <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 payment-textLg">
+                                        Outlet Tax
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6">
+                                        <div id="outlet_tax_in_invoice" class="ar payment-textLg"
+                                             style="padding: 5px 0px;">
+                                            <?php echo $d == 3 ? '0.000' : '0.00'; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
 
                             <div class="row formRowPad" style="padding: 1px;" id="advancePaidDiv">
                                 <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6 payment-textLg">
@@ -1881,6 +1911,7 @@ $this->lang->load('calendar', $primaryLanguage);
 
 
 <script>
+    var isOutletTaxEnabled = "<?php echo $isOutletTaxEnabled; ?>";
     function openPromotionModal() {
         $("#pos_payments_promotion_modal").modal('show');
     }
@@ -1969,9 +2000,24 @@ $this->lang->load('calendar', $primaryLanguage);
             netTotal = netTotal - advancePaymets;
             var returnChange = paidAmountTmp - netTotal;
             $("#final_payableNet_amtUpdate").html(netTotal.toFixed(<?php echo $d ?>));
+
+            var returnChange;
+            //update amount with taxes. 1
+            if (isOutletTaxEnabled == "true") {
+                var outlet_tax = apply_outlet_tax_to_net_value(parseFloat(netTotal.toFixed(<?php echo $d ?>)));
+                var netValueWithOutletTax = outlet_tax.updated_net_value;
+                var outletTaxAmount = outlet_tax.calculated_tax_amount;
+                $("#outlet_tax_in_invoiceUpdate").html(outletTaxAmount.toFixed(<?php echo $d ?>));
+                $("#final_payableNet_amtUpdate").html(netValueWithOutletTax.toFixed(<?php echo $d ?>));
+                returnChange = paidAmountTmp - netValueWithOutletTax;
+            } else {
+                returnChange = paidAmountTmp - netTotal;
+            }
+
             if (returnChange > 0 || true) {
                 $("#return_changeUpdate").html(returnChange.toFixed(<?php echo $d ?>))
             }
+
             /** Total card amount should not be more than the NET Total */
 
             if (typeof tmpThis !== "undefined") {
@@ -1980,7 +2026,16 @@ $this->lang->load('calendar', $primaryLanguage);
                     var valueThis = $.trim($(this).val());
                     cardTotal += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
                 });
-                netTotal = netTotal.toFixed(<?php echo $d ?>);
+                //netTotal = netTotal.toFixed(<?php echo $d ?>);
+                //update amount with taxes. 2
+                if (isOutletTaxEnabled == "true") {
+                    var outlet_tax = apply_outlet_tax_to_net_value(parseFloat(netTotal.toFixed(<?php echo $d ?>)));
+                    var netValueWithOutletTax = outlet_tax.updated_net_value;
+                    netTotal = netValueWithOutletTax;
+                } else {
+                    netTotal = netTotal.toFixed(<?php echo $d ?>);
+                }
+
                 if (cardTotal > netTotal) {
                     $(".paymentOtherUpdate ").val(0);
                     calculateReturnUpdate();
@@ -2012,7 +2067,16 @@ $this->lang->load('calendar', $primaryLanguage);
                 }
             });
 
-            netTotal = netTotal.toFixed(<?php echo $d ?>);
+            //netTotal = netTotal.toFixed(<?php echo $d ?>);
+            //update amount with taxes. 6
+            if (isOutletTaxEnabled == "true") {
+                var outlet_tax = apply_outlet_tax_to_net_value(parseFloat(netTotal.toFixed(<?php echo $d ?>)));
+                var netValueWithOutletTax = outlet_tax.updated_net_value;
+                netTotal = netValueWithOutletTax;
+            } else {
+                netTotal = netTotal.toFixed(<?php echo $d ?>);
+            }
+
             if (cardTotal > netTotal && isGiftCardModal) {
                 $(".paymentOtherUpdate ").val(0);
                 calculateReturnUpdate();
@@ -2077,13 +2141,28 @@ $this->lang->load('calendar', $primaryLanguage);
             var paidAmountTmp = parseFloat($("#paid").val());
 
             var advancePaymets = $("#delivery_advancePaymentAmount").val();
+
+            //update amount with taxes. 3
+            var returnChange;
+            if (isOutletTaxEnabled == "true") {
+                var outlet_tax = apply_outlet_tax_to_net_value(parseFloat(netTotal.toFixed(<?php echo $d ?>)));
+                var netValueWithOutletTax = outlet_tax.updated_net_value;
+                var outletTaxAmount = outlet_tax.calculated_tax_amount;
+                $("#outlet_tax_in_invoice").html(outletTaxAmount.toFixed(<?php echo $d ?>));
+                netTotal = netValueWithOutletTax;
+                $("#final_payableNet_amt").html(netValueWithOutletTax.toFixed(<?php echo $d ?>));
+                returnChange = paidAmountTmp - netValueWithOutletTax;
+            } else {
+                $("#final_payableNet_amt").html(netTotal.toFixed(<?php echo $d ?>));
+                netTotal = netTotal.toFixed(<?php echo $d ?>);
+                returnChange = paidAmountTmp - netTotal;
+            }
+
             netTotal = netTotal - advancePaymets;
-            var returnChange = paidAmountTmp - netTotal;
-            $("#final_payableNet_amt").html(netTotal.toFixed(<?php echo $d ?>));
+
             if (returnChange > 0 || true) {
                 $("#return_change").html(returnChange.toFixed(<?php echo $d ?>))
             }
-
 
             /** Total card amount should not be more than the NET Total */
             if (typeof tmpThis !== "undefined") {
@@ -2093,7 +2172,14 @@ $this->lang->load('calendar', $primaryLanguage);
                     cardTotal += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
                 });
 
-                netTotal = netTotal.toFixed(<?php echo $d ?>);
+                //netTotal = netTotal.toFixed(<?php echo $d ?>);
+                //update amount with taxes. 4
+                if (isOutletTaxEnabled == "true") {
+                    var outlet_tax = apply_outlet_tax_to_net_value(parseFloat(netTotal.toFixed(<?php echo $d ?>)));
+                    var netValueWithOutletTax = outlet_tax.updated_net_value;
+                    netTotal = netValueWithOutletTax;
+                }
+
                 if (cardTotal > netTotal) {
 
                     $(".paymentOther ").val(0);
@@ -2124,7 +2210,16 @@ $this->lang->load('calendar', $primaryLanguage);
                 cardTotal += ($.isNumeric(valueThis)) ? parseFloat(valueThis) : 0;
             });
 
-            netTotal = netTotal.toFixed(<?php echo $d ?>);
+            //netTotal = netTotal.toFixed(<?php echo $d ?>);
+            //update amount with taxes. 5
+            if (isOutletTaxEnabled == "true") {
+                var outlet_tax = apply_outlet_tax_to_net_value(parseFloat(netTotal.toFixed(<?php echo $d ?>)));
+                var netValueWithOutletTax = outlet_tax.updated_net_value;
+                netTotal = netValueWithOutletTax;
+            } else {
+                netTotal = netTotal.toFixed(<?php echo $d ?>);
+            }
+
             if (cardTotal > netTotal) {
                 $(".paymentOther ").val(0);
                 calculateReturn();

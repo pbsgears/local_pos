@@ -128,8 +128,8 @@ class Sync_server extends CI_Controller
                 $tables[] = 'srp_erp_pos_auth_processmaster';
                 $tables[] = 'srp_erp_pos_auth_usergroupdetail';
                 $tables[] = 'srp_erp_pos_auth_usergroupmaster';
-				
-				
+
+
 				//--------------------------------------------------
 				$tables[] = ‘srp_erp_companyfinanceyear’;
 				$tables[] = ‘srp_erp_companypolicy’;
@@ -218,6 +218,7 @@ class Sync_server extends CI_Controller
                 $tables[] = 'srp_erp_pos_warehousemenucategory';
                 $tables[] = 'srp_erp_pos_warehousemenumaster';
                 $tables[] = 'srp_erp_pos_warehousemenucategory';
+                $tables[] = 'srp_erp_pos_outlettaxmaster';
 
                 $i = 0;
 

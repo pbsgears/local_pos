@@ -32,6 +32,17 @@ if (!function_exists('actionCounter_fn')) {
     }
 }
 
+if (!function_exists('outlet_taxes_list')) {
+    function outlet_taxes_list($menuSalesID){
+        $CI =& get_instance();
+        $CI->db->select('srp_erp_pos_menusalesoutlettaxes.*,srp_erp_pos_outlettaxmaster.*');
+        $CI->db->from('srp_erp_pos_menusalesoutlettaxes');
+        $CI->db->join('srp_erp_pos_outlettaxmaster', 'srp_erp_pos_outlettaxmaster.outletTaxID=srp_erp_pos_menusalesoutlettaxes.outletTaxID');
+        $CI->db->where('srp_erp_pos_menusalesoutlettaxes.menuSalesID', $menuSalesID);
+        return $CI->db->get()->result_array();
+    }
+}
+
 if (!function_exists('wareHouseUser_actionFn')) {
     function wareHouseUser_actionFn($id, $userID, $empName, $wareHouseID, $wareLocation)
     {
@@ -606,6 +617,21 @@ if (!function_exists('get_warehouseMenuShortcuts')) {
         $result = $CI->db->get()->result_array();
         //echo $CI->db->last_query();
         return $result;
+    }
+}
+
+if (!function_exists('isOutletTaxEnabled')) {
+    function isOutletTaxEnabled($get_outletID,$current_companyID){
+        $CI =& get_instance();
+        $CI->db->select('*');
+        $CI->db->from('srp_erp_pos_policydetail');
+        $CI->db->where('posPolicyMasterID', 20);
+        $CI->db->where('outletID', $get_outletID);
+        $CI->db->where('companyID', $current_companyID);
+        $CI->db->limit(1);
+        $policyID = $CI->db->get()->row('posPolicyID');
+        $policyID = !empty($policyID) ? true : false;
+        return $policyID;
     }
 }
 

@@ -437,6 +437,21 @@
             }
             ?>
 
+            <!-- Outlet taxes print here if exist. -->
+            <?php
+            $outletTaxes = outlet_taxes_list($masters['menuSalesID']);
+
+            foreach ($outletTaxes as $taxItem){
+                echo '<tr>
+                <td colspan="2" style="text-align:left; font-weight:bold;">
+                   '.$taxItem['taxDescription'].'
+                </td>
+                <td colspan="2" style="text-align:right; font-weight:bold;">
+                   '.number_format($taxItem['taxAmount'], $d).'
+                </td>
+            </tr>';
+            }
+            ?>
 
             <!--Discount if Exist -->
             <?php
@@ -496,9 +511,13 @@
                 </td>
                 <td colspan="2" style="text-align:right; font-weight:bold;">
                     <?php
-                    //echo number_format($total - $totalDiscount, $d);
-                    echo number_format($total - $promoDiscountAmount, $d);
-                    $netTotal = $total - $promoDiscountAmount;
+                    $netTotal =  number_format($total - $promoDiscountAmount, $d);
+                    $taxTotal=0;
+                    foreach ($outletTaxes as $taxItem){
+                        $taxTotal = $taxTotal + $taxItem['taxAmount'];
+                    }
+                    $netTotal = $netTotal + $taxTotal;
+                    echo number_format($netTotal, $d);
                     ?>
                 </td>
             </tr>

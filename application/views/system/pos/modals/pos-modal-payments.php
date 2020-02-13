@@ -1436,7 +1436,7 @@ $isOutletTaxEnabled = json_encode(isOutletTaxEnabled($get_outletID, $current_com
     }
 
     function updateExactCashUpdate() {
-        $(".paymentInputUpdate").val('');
+        $(".paymentInputupdate").val('');
         var totalAmount = $("#final_payableNet_amtUpdate").text();
         $("#paidUpdate").val(parseFloat(totalAmount));
         $("#paymentType_Update1").val(parseFloat(totalAmount).toFixed(<?php echo $d?>));
@@ -1444,6 +1444,7 @@ $isOutletTaxEnabled = json_encode(isOutletTaxEnabled($get_outletID, $current_com
     }
 
     function updateExactCash() {
+        $(".paymentInput").val('');
         var totalAmount = $("#final_payableNet_amt").text();
         $("#paid").val(parseFloat(totalAmount));
         $("#paymentType_1").val(parseFloat(totalAmount).toFixed(<?php echo $d?>));

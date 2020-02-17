@@ -2016,7 +2016,8 @@ $isOutletTaxEnabled = json_encode(isOutletTaxEnabled($get_outletID, $current_com
             }
 
             if (returnChange > 0 || true) {
-                $("#return_changeUpdate").html(returnChange.toFixed(<?php echo $d ?>))
+                $("#returned_changeUpdate").html(returnChange.toFixed(<?php echo $d ?>));
+                $("#return_changeUpdate").html(returnChange.toFixed(<?php echo $d ?>));
             }
 
             /** Total card amount should not be more than the NET Total */
@@ -2162,7 +2163,8 @@ $isOutletTaxEnabled = json_encode(isOutletTaxEnabled($get_outletID, $current_com
             netTotal = netTotal - advancePaymets;
 
             if (returnChange > 0 || true) {
-                $("#return_change").html(returnChange.toFixed(<?php echo $d ?>))
+                $("#returned_change").html(returnChange.toFixed(<?php echo $d ?>));
+                $("#return_change").html(returnChange.toFixed(<?php echo $d ?>));
             }
 
             /** Total card amount should not be more than the NET Total */

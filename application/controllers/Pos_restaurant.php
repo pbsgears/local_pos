@@ -849,8 +849,25 @@ class Pos_restaurant extends ERP_Controller
 
                     /*Insert Menu */
                     $code = $this->Pos_restaurant_model->insert_srp_erp_pos_menusalesitems($data_item);
-
-                    $this->updateNetTotalForInvoice($invoiceID_tmp); // Sync DONE
+                    if($code==false){
+                        $menusalesitems_query_status['menusalesitems'] = false;
+                    }else{
+                        $menusalesitems_query_status['menusalesitems'] = true;
+                        $menusalesitems_query_status['updateNetTotalForInvoice']=$this->updateNetTotalForInvoice($invoiceID_tmp);
+                        if($menusalesitems_query_status['updateNetTotalForInvoice']==true && $menusalesitems_query_status['menusalesitems']==true){
+                            $menusalesitems_query_status_record = array(
+                                "isUpdated"=>1
+                            );
+                            $this->db->where('menuSalesItemID',$code);
+                            $this->db->update('srp_erp_pos_menusalesitems',$menusalesitems_query_status_record);
+                        }else{
+                            $menusalesitems_query_status_record = array(
+                                "isUpdated"=>0
+                            );
+                            $this->db->where('menuSalesItemID',$code);
+                            $this->db->update('srp_erp_pos_menusalesitems',$menusalesitems_query_status_record);
+                        }
+                    }
 
 
 
@@ -1066,7 +1083,25 @@ class Pos_restaurant extends ERP_Controller
 
                             /*Insert Menu */
                             $code = $this->Pos_restaurant_model->insert_srp_erp_pos_menusalesitems($data_item);
-                            $this->updateNetTotalForInvoice($invoiceID);
+                            if($code==false){
+                                $menusalesitems_query_status['menusalesitems'] = false;
+                            }else{
+                                $menusalesitems_query_status['menusalesitems'] = true;
+                                $menusalesitems_query_status['updateNetTotalForInvoice']=$this->updateNetTotalForInvoice($invoiceID);
+                                if($menusalesitems_query_status['updateNetTotalForInvoice']==true && $menusalesitems_query_status['menusalesitems']==true){
+                                    $menusalesitems_query_status_record = array(
+                                        "isUpdated"=>1
+                                    );
+                                    $this->db->where('menuSalesItemID',$code);
+                                    $this->db->update('srp_erp_pos_menusalesitems',$menusalesitems_query_status_record);
+                                }else{
+                                    $menusalesitems_query_status_record = array(
+                                        "isUpdated"=>0
+                                    );
+                                    $this->db->where('menuSalesItemID',$code);
+                                    $this->db->update('srp_erp_pos_menusalesitems',$menusalesitems_query_status_record);
+                                }
+                            }
 
                         } else {
                             echo json_encode(array('error' => 1, 'message' => 'An error has occurred please contact your support team'));
@@ -1842,23 +1877,40 @@ class Pos_restaurant extends ERP_Controller
             $isFinalPayment = $this->isFinalPayment();
             if ($isFinalPayment) {
                 /*UPDATE TAXES */
-                $this->Pos_restaurant_model->update_menuSalesTax($invoiceID); // Sync DONE
+                $update_status['menuSalesTax']=$this->Pos_restaurant_model->update_menuSalesTax($invoiceID); // Sync DONE
 
                 $is_dineIn_order = is_dineIn_order($invoiceID);
                 $get_pos_templateID = get_pos_templateID();
                 if ($get_pos_templateID == 2 || $get_pos_templateID == 4) {
                     if ($is_dineIn_order) {
                         /*UPDATE SERVICE CHARGES */
-                        $this->Pos_restaurant_model->update_menuSalesServiceCharge($invoiceID); // Sync DONE
+                        $update_status['menuSalesServiceCharge']=$this->Pos_restaurant_model->update_menuSalesServiceCharge($invoiceID); // Sync DONE
+                    }else{
+                        $update_status['menuSalesServiceCharge']=true;
                     }
                 } else {
                     /*UPDATE SERVICE CHARGES */
-                    $this->Pos_restaurant_model->update_menuSalesServiceCharge($invoiceID); // Sync DONE
+                    $update_status['menuSalesServiceCharge']=$this->Pos_restaurant_model->update_menuSalesServiceCharge($invoiceID); // Sync DONE
                 }
 
 
                 /*UPDATE DELIVERY COMMISSION AMOUNT - ONLY FOR DELIVERY ORDERS */
-                $this->Pos_restaurant_model->update_deliveryCommission($invoiceID); // Sync DONE
+                $update_status['deliveryCommission']=$this->Pos_restaurant_model->update_deliveryCommission($invoiceID); // Sync DONE
+
+                //update flag to confirm that update_menuSalesTax,update_menuSalesServiceCharge,update_deliveryCommission records are inserted successfully.
+                if($update_status['menuSalesTax']==true &&  $update_status['menuSalesServiceCharge']==true && $update_status['deliveryCommission']==true){
+                    $update_status_record = array(
+                        "isUpdated"=>1
+                    );
+                    $this->db->where('menuSalesID',$invoiceID);
+                    $this->db->update('srp_erp_pos_menusalesmaster',$update_status_record);
+                }else{
+                    $update_status_record = array(
+                        "isUpdated"=>0
+                    );
+                    $this->db->where('menuSalesID',$invoiceID);
+                    $this->db->update('srp_erp_pos_menusalesmaster',$update_status_record);
+                }
             }
 
             $this->Pos_restaurant_model->update_diningTableReset($invoice['tableID']); // DO NOT NEED SYNC - because table status are doesn't need to be updated in the server.

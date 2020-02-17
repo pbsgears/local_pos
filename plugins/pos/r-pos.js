@@ -446,7 +446,7 @@ function calculateReturnUpdate() {
     } else {
 
         $("#return_changeUpdate").text('0.00');
-        $("#return_changeUpdate").val('0.00');
+        $("#returned_changeUpdate").val('0.00');
     }
 
     //console.log(total + ' _ ' + (paidAmount - return_amount))

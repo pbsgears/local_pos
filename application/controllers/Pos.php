@@ -1105,6 +1105,8 @@ class Pos extends ERP_Controller
         /** 11. CREDIT CUSTOMER PAYMENTS - CREDIT SALES HANDLED SEPARATELY  */
         //$this->Pos_restaurant_accounts->update_creditSales_generalLedger($shiftID);
 
+        /** OUTLET TAX */
+        $this->Pos_restaurant_accounts->update_outlet_tax_generalLedger($shiftID);
 
         /** BANK LEDGER UPDATE  */
         $this->Pos_restaurant_accounts->update_bankLedger($shiftID); // outlet ID added - where done
@@ -1170,7 +1172,11 @@ class Pos extends ERP_Controller
 
 
         /** 4.  CREDIT SALES - TAX */
-        $this->Pos_restaurant_accounts->update_tax_generalLedger_credit_sales($shiftID);  // outlet ID added - where done
+        $this->Pos_restaurant_accounts->update_tax_generalLedger_credit_sales($shiftID);  //5 outlet ID added - where done
+
+        /** CREDIT SALES - OUTLET TAX */
+        $this->Pos_restaurant_accounts->update_outlet_tax_generalLedger_credit_sales($shiftID);
+
         /** 5.  CREDIT SALES - COMMISSION EXPENSE  */
         $this->Pos_restaurant_accounts->update_commissionExpense_generalLedger_credit_sales($shiftID);  // outlet ID added - where done
         /** 6.  CREDIT SALES - COMMISSION PAYABLE */

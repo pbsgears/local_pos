@@ -3384,6 +3384,170 @@ GROUP BY
         return $result;
     }
 
+    /** OUTLET TAX */
+    function update_outlet_tax_generalLedger($shiftID)
+    {
+        $q = "INSERT INTO srp_erp_generalledger (
+                wareHouseAutoID,
+                documentCode,
+                documentMasterAutoID,
+                documentSystemCode,
+                documentDate,
+                documentYear,
+                documentMonth,
+                documentNarration,
+                GLAutoID,
+                systemGLCode,
+                GLCode,
+                GLDescription,
+                GLType,
+                amount_type,
+                isFromItem,
+                transactionCurrencyID,
+                transactionCurrency,
+                transactionExchangeRate,
+                transactionAmount,
+                transactionCurrencyDecimalPlaces,
+                companyLocalCurrencyID,
+                companyLocalCurrency,
+                companyLocalExchangeRate,
+                companyLocalAmount,
+                companyLocalCurrencyDecimalPlaces,
+                companyReportingCurrencyID,
+                companyReportingCurrency,
+                companyReportingExchangeRate,
+                companyReportingAmount,
+                companyReportingCurrencyDecimalPlaces,
+                segmentID,
+                segmentCode,
+                companyID,
+                companyCode,
+                createdUserGroup,
+                createdPCID,
+                createdUserID,
+                createdDateTime,
+                createdUserName,
+                modifiedPCID,
+                modifiedUserID,
+                modifiedDateTime,
+                modifiedUserName,
+                `timestamp`,
+                taxMasterAutoID
+            )(
+                SELECT
+                    menusalesmaster.wareHouseAutoID as wareHouseAutoID,
+                    'POSR' AS documentCode,
+                    menusalesmaster.shiftID AS documentMasterAutoID,
+                    concat(
+                        'POSR/',
+                        warehousemaster.wareHouseCode,
+                        '/',
+                        menusalesmaster.shiftID
+                    ) AS documentSystemCode,
+                    DATE_FORMAT( shiftDetail.startTime, '%Y-%m-%d') AS documentdate,
+                    YEAR (curdate()) AS documentYear,
+                    MONTH (curdate()) AS documentMonth,
+                    'POS Sales - TAX' AS documentNarration,
+                    menusalesTax.GLCode AS GLAutoID,
+                    chartOfAccount.systemAccountCode AS systemGLCode,
+                    chartOfAccount.GLSecondaryCode AS GLCode,
+                    chartOfAccount.GLDescription AS GLDescription,
+                    chartOfAccount.subCategory AS GLType,
+                    'cr' AS amount_type,
+                    '0' AS isFromItem,
+                    menusalesmaster.transactionCurrencyID AS transactionCurrencyID,
+                    menusalesmaster.transactionCurrency AS transactionCurrency,
+                    '1' AS transactionExchangeRate,
+                    abs(
+                        sum(
+                            ifnull(menusalesTax.taxAmount, 0)
+                        )
+                    ) *- 1 AS transactionAmount,
+                    currencymaster.DecimalPlaces AS transactionCurrencyDecimalPlaces,
+                    company.company_default_currencyID AS companyLocalCurrencyID,
+                    company.company_default_currency AS companyLocalCurrency,
+                    getExchangeRate (
+                        menusalesmaster.transactionCurrencyID,
+                        company.company_default_currencyID,
+                        menusalesmaster.companyID
+                    ) AS companyLocalExchangeRate,
+                    (
+                        (
+                            abs(
+                                sum(
+                                    ifnull(menusalesTax.taxAmount, 0)
+                                )
+                            ) *- 1
+                        ) / (
+                            getExchangeRate (
+                                menusalesmaster.transactionCurrencyID,
+                                company.company_default_currencyID,
+                                menusalesmaster.companyID
+                            )
+                        )
+                    ) AS companyLocalAmount,
+                    getDecimalPlaces (
+                        company.company_default_currencyID
+                    ) AS companyLocalCurrencyDecimalPlaces,
+                    company.company_reporting_currencyID AS companyReportingCurrencyID,
+                    company.company_reporting_currency AS companyReportingCurrency,
+                    getExchangeRate (
+                        menusalesmaster.transactionCurrencyID,
+                        company.company_reporting_currencyID,
+                        menusalesmaster.companyID
+                    ) AS companyReportingExchangeRate,
+                    (
+                        (
+                            abs(
+                                sum(
+                                    ifnull(menusalesTax.taxAmount, 0)
+                                )
+                            ) *- 1
+                        ) / (
+                            getExchangeRate (
+                                menusalesmaster.transactionCurrencyID,
+                                company.company_reporting_currencyID,
+                                menusalesmaster.companyID
+                            )
+                        )
+                    ) AS companyReportingAmount,
+                    getDecimalPlaces (
+                        company.company_reporting_currencyID
+                    ) AS companyReportingCurrencyDecimalPlaces,
+                    menusalesmaster.segmentID AS segmentID,
+                    menusalesmaster.segmentCode AS segmentCode,
+                    menusalesmaster.companyID AS companyID,
+                    menusalesmaster.companyCode AS companyCode,
+                    menusalesmaster.createdUserGroup AS createdUserGroup,
+                    menusalesmaster.createdPCID AS createdPCID,
+                    menusalesmaster.createdUserID AS createdUserID,
+                    shiftDetail.startTime AS createdDateTime,
+                    menusalesmaster.createdUserName AS createdUserName,
+                    NULL AS modifiedPCID,
+                    NULL AS modifiedUserID,
+                    NULL AS modifiedDateTime,
+                    NULL AS modifiedUserName,
+                    CURRENT_TIMESTAMP () AS `timestamp`,
+                    menusalesTax.taxmasterID as taxmasterID
+                FROM
+                    srp_erp_pos_menusalesoutlettaxes menusalesTax
+                LEFT JOIN srp_erp_pos_menusalesmaster menusalesmaster ON menusalesmaster.menuSalesID = menusalesTax.menuSalesID
+                LEFT JOIN srp_erp_chartofaccounts chartOfAccount ON chartOfAccount.GLAutoID = menusalesTax.GLCode
+                LEFT JOIN srp_erp_warehousemaster warehousemaster ON warehousemaster.wareHouseAutoID = menusalesmaster.wareHouseAutoID
+                LEFT JOIN srp_erp_currencymaster currencymaster ON currencymaster.currencyID = menusalesmaster.transactionCurrencyID
+                LEFT JOIN srp_erp_company company ON company.company_id = menusalesmaster.companyID
+                LEFT JOIN srp_erp_pos_shiftdetails shiftDetail ON shiftDetail.shiftID = menusalesmaster.shiftID
+                WHERE
+                    menusalesmaster.shiftID = '" . $shiftID . "'
+                AND menusalesmaster.isHold = 0 AND menusalesmaster.isVoid = 0 AND menusalesmaster.isCreditSales = 0
+                GROUP BY
+                    chartOfAccount.GLAutoID
+            );";
+
+        $result = $this->db->query($q);
+        return $result;
+    }
+
     /** BANK LEDGER  */
     function update_bankLedger($shiftID)
     {
@@ -4174,7 +4338,9 @@ GROUP BY
         /** 3. CREDIT SALES  - INVENTORY */
         $this->update_inventory_generalLedger_credit_sales($shiftID);
         /** 4.  CREDIT SALES - TAX */
-        $this->update_tax_generalLedger_credit_sales($shiftID);
+        $this->update_tax_generalLedger_credit_sales($shiftID);//1
+        /** CREDIT SALES - OUTLET TAX */
+        $this->update_outlet_tax_generalLedger_credit_sales($shiftID);
         /** 5.  CREDIT SALES - COMMISSION EXPENSE  */
         $this->update_commissionExpense_generalLedger_credit_sales($shiftID);
         /** 6.  CREDIT SALES - COMMISSION PAYABLE */
@@ -5510,6 +5676,186 @@ GROUP BY
                     CURRENT_TIMESTAMP () AS `timestamp`
                 FROM
                     srp_erp_pos_menusalestaxes menusalesTax
+                LEFT JOIN srp_erp_pos_menusalesmaster menusalesmaster ON menusalesmaster.menuSalesID = menusalesTax.menuSalesID
+                LEFT JOIN srp_erp_chartofaccounts chartOfAccount ON chartOfAccount.GLAutoID = menusalesTax.GLCode
+                LEFT JOIN srp_erp_warehousemaster warehousemaster ON warehousemaster.wareHouseAutoID = menusalesmaster.wareHouseAutoID
+                LEFT JOIN srp_erp_currencymaster currencymaster ON currencymaster.currencyID = menusalesmaster.transactionCurrencyID
+                LEFT JOIN srp_erp_company company ON company.company_id = menusalesmaster.companyID
+                LEFT JOIN srp_erp_pos_shiftdetails shiftDetail ON shiftDetail.shiftID = menusalesmaster.shiftID
+                LEFT JOIN srp_erp_customermaster customermaster ON customermaster.customerAutoID = getMenuSalesCustomerAutoID(menusalesmaster.menuSalesID)
+                WHERE
+                    menusalesmaster.shiftID = '" . $shiftID . "' AND menusalesmaster.wareHouseAutoID = '" . $this->outletID . "'
+                AND menusalesmaster.isHold = 0 AND menusalesmaster.isVoid = 0 AND menusalesmaster.isCreditSales = 1
+                GROUP BY
+                    chartOfAccount.GLAutoID, menusalesmaster.menuSalesID
+            );";
+
+        $result = $this->db->query($q);
+        return $result;
+    }
+
+    /** CREDIT SALES - OUTLET TAX */
+    function update_outlet_tax_generalLedger_credit_sales($shiftID)
+    {
+        $q = "INSERT INTO srp_erp_generalledger_sync (
+                wareHouseAutoID,
+                documentCode,
+                documentMasterAutoID,
+                documentSystemCode,
+                documentDate,
+                documentYear,
+                documentMonth,
+                documentNarration,
+                GLAutoID,
+                systemGLCode,
+                GLCode,
+                GLDescription,
+                GLType,
+                amount_type,
+                isFromItem,
+                transactionCurrencyID,
+                transactionCurrency,
+                transactionExchangeRate,
+                transactionAmount,
+                transactionCurrencyDecimalPlaces,
+                companyLocalCurrencyID,
+                companyLocalCurrency,
+                companyLocalExchangeRate,
+                companyLocalAmount,
+                companyLocalCurrencyDecimalPlaces,
+                companyReportingCurrencyID,
+                companyReportingCurrency,
+                companyReportingExchangeRate,
+                companyReportingAmount,
+                companyReportingCurrencyDecimalPlaces,
+                partyType,
+                partyAutoID,
+                partySystemCode,
+                partyName,
+                partyCurrencyID,
+                partyCurrency,
+                partyExchangeRate,
+                partyCurrencyAmount,
+                partyCurrencyDecimalPlaces,
+                segmentID,
+                segmentCode,
+                companyID,
+                companyCode,
+                createdUserGroup,
+                createdPCID,
+                createdUserID,
+                createdDateTime,
+                createdUserName,
+                modifiedPCID,
+                modifiedUserID,
+                modifiedDateTime,
+                modifiedUserName,
+                `timestamp`
+            )(
+                SELECT
+                    menusalesmaster.wareHouseAutoID as wareHouseAutoID,
+                    'CINV' AS documentCode,
+                    menusalesmaster.documentMasterAutoID AS documentMasterAutoID,
+                    menusalesmaster.documentSystemCode AS documentSystemCode,
+                    DATE_FORMAT( shiftDetail.startTime, '%Y-%m-%d') AS documentdate,
+                    YEAR (curdate()) AS documentYear,
+                    MONTH (curdate()) AS documentMonth,
+                    concat('POS Credit Sales - TAX', ' - ',menusalesmaster.invoiceCode) AS documentNarration,
+                    menusalesTax.GLCode AS GLAutoID,
+                    chartOfAccount.systemAccountCode AS systemGLCode,
+                    chartOfAccount.GLSecondaryCode AS GLCode,
+                    chartOfAccount.GLDescription AS GLDescription,
+                    chartOfAccount.subCategory AS GLType,
+                    'cr' AS amount_type,
+                    '0' AS isFromItem,
+                    menusalesmaster.transactionCurrencyID AS transactionCurrencyID,
+                    menusalesmaster.transactionCurrency AS transactionCurrency,
+                    '1' AS transactionExchangeRate,
+                    abs(
+                        sum(
+                            ifnull(menusalesTax.taxAmount, 0)
+                        )
+                    ) *- 1 AS transactionAmount,
+                    currencymaster.DecimalPlaces AS transactionCurrencyDecimalPlaces,
+                    company.company_default_currencyID AS companyLocalCurrencyID,
+                    company.company_default_currency AS companyLocalCurrency,
+                    getExchangeRate (
+                        menusalesmaster.transactionCurrencyID,
+                        company.company_default_currencyID,
+                        menusalesmaster.companyID
+                    ) AS companyLocalExchangeRate,
+                    (
+                        (
+                            abs(
+                                sum(
+                                    ifnull(menusalesTax.taxAmount, 0)
+                                )
+                            ) *- 1
+                        ) / (
+                            getExchangeRate (
+                                menusalesmaster.transactionCurrencyID,
+                                company.company_default_currencyID,
+                                menusalesmaster.companyID
+                            )
+                        )
+                    ) AS companyLocalAmount,
+                    getDecimalPlaces (
+                        company.company_default_currencyID
+                    ) AS companyLocalCurrencyDecimalPlaces,
+                    company.company_reporting_currencyID AS companyReportingCurrencyID,
+                    company.company_reporting_currency AS companyReportingCurrency,
+                    getExchangeRate (
+                        menusalesmaster.transactionCurrencyID,
+                        company.company_reporting_currencyID,
+                        menusalesmaster.companyID
+                    ) AS companyReportingExchangeRate,
+                    (
+                        (
+                            abs(
+                                sum(
+                                    ifnull(menusalesTax.taxAmount, 0)
+                                )
+                            ) *- 1
+                        ) / (
+                            getExchangeRate (
+                                menusalesmaster.transactionCurrencyID,
+                                company.company_reporting_currencyID,
+                                menusalesmaster.companyID
+                            )
+                        )
+                    ) AS companyReportingAmount,
+                    getDecimalPlaces (
+                        company.company_reporting_currencyID
+                    ) AS companyReportingCurrencyDecimalPlaces,
+                    'CUS' AS partyType,
+                    customermaster.customerAutoID AS partyAutoID,
+                    customermaster.customerSystemCode AS partySystemCode,
+                    customermaster.customerName AS partyName,
+                    customermaster.customerCurrencyID AS partyCurrencyID,
+                    customermaster.customerCurrency AS partyCurrency,
+                    getExchangeRate ( customermaster.customerCurrencyID, company.company_default_currencyID, menusalesmaster.companyID ) AS partyExchangeRate,
+                    abs(
+                        sum(
+                            ifnull(menusalesTax.taxAmount, 0)
+                        )
+                    ) *- 1 / ( getExchangeRate ( customermaster.customerCurrencyID, company.company_reporting_currencyID, menusalesmaster.companyID ) ) AS partyCurrencyAmount,
+                    customermaster.customerCurrencyDecimalPlaces AS partyCurrencyDecimalPlaces,
+                    menusalesmaster.segmentID AS segmentID,
+                    menusalesmaster.segmentCode AS segmentCode,
+                    menusalesmaster.companyID AS companyID,
+                    menusalesmaster.companyCode AS companyCode,
+                    menusalesmaster.createdUserGroup AS createdUserGroup,
+                    menusalesmaster.createdPCID AS createdPCID,
+                    menusalesmaster.createdUserID AS createdUserID,
+                    shiftDetail.startTime AS createdDateTime,
+                    menusalesmaster.createdUserName AS createdUserName,
+                    NULL AS modifiedPCID,
+                    NULL AS modifiedUserID,
+                    NULL AS modifiedDateTime,
+                    NULL AS modifiedUserName,
+                    CURRENT_TIMESTAMP () AS `timestamp`
+                FROM
+                    srp_erp_pos_menusalesoutlettaxes menusalesTax
                 LEFT JOIN srp_erp_pos_menusalesmaster menusalesmaster ON menusalesmaster.menuSalesID = menusalesTax.menuSalesID
                 LEFT JOIN srp_erp_chartofaccounts chartOfAccount ON chartOfAccount.GLAutoID = menusalesTax.GLCode
                 LEFT JOIN srp_erp_warehousemaster warehousemaster ON warehousemaster.wareHouseAutoID = menusalesmaster.wareHouseAutoID
@@ -7092,7 +7438,9 @@ GROUP BY
             /** 3. CREDIT SALES  - INVENTORY */
             $this->update_inventory_generalLedger_credit_sales($shiftID);
             /** 4.  CREDIT SALES - TAX */
-            $this->update_tax_generalLedger_credit_sales($shiftID);
+            $this->update_tax_generalLedger_credit_sales($shiftID);//2
+            /** CREDIT SALES - OUTLET TAX */
+            $this->update_outlet_tax_generalLedger_credit_sales($shiftID);
             /** 5.  CREDIT SALES - COMMISSION EXPENSE  */
             $this->update_commissionExpense_generalLedger_credit_sales($shiftID);
             /** 6.  CREDIT SALES - COMMISSION PAYABLE */

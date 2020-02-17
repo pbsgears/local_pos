@@ -3237,7 +3237,14 @@ class Pos_restaurant_model extends ERP_Model
                 }
             }
 
-            $this->insert_outlet_tax($outletID, $grossTotal, $promotional_discount, $invoiceID);
+            $get_outletID = get_outletID();
+            $current_companyID = current_companyID();
+            $isOutletTaxEnabled =isOutletTaxEnabled($get_outletID, $current_companyID);
+
+            if($isOutletTaxEnabled==true){
+                $this->insert_outlet_tax($outletID, $grossTotal, $promotional_discount, $invoiceID);
+            }
+
             return true;
         } else {
             return false;
@@ -3367,12 +3374,16 @@ where srp_erp_pos_outlettaxmaster.warehouseAutoID=$outletID AND srp_erp_pos_outl
         $r = $this->db->query($q);
 
         /** update total Tax */
-        $q2 = "UPDATE srp_erp_pos_menusalesmaster SET totalTaxAmount = ( SELECT sum(taxAmount) FROM srp_erp_pos_menusalestaxes WHERE menuSalesID = '" . $menuSalesID . "' ) WHERE menuSalesID = '" . $menuSalesID . "'";
-        $this->db->query($q2);
+        if($r==true){
+            $q2 = "UPDATE srp_erp_pos_menusalesmaster SET totalTaxAmount = ( SELECT sum(taxAmount) FROM srp_erp_pos_menusalestaxes WHERE menuSalesID = '" . $menuSalesID . "' ) WHERE menuSalesID = '" . $menuSalesID . "'";
+            $r2 = $this->db->query($q2);
 
-        if ($r) {
-            return true;
-        } else {
+            if ($r2) {
+                return true;
+            } else {
+                return false;
+            }
+        }else{
             return false;
         }
     }
@@ -3421,14 +3432,15 @@ where srp_erp_pos_outlettaxmaster.warehouseAutoID=$outletID AND srp_erp_pos_outl
                 msm.menuSalesID = '" . $menuSalesID . "')";
 
         $r = $this->db->query($q);
-
-        /**update total Service charge */
-        $this->db->query("UPDATE srp_erp_pos_menusalesmaster SET serviceCharge = ( SELECT sum(serviceChargeAmount) FROM srp_erp_pos_menusalesservicecharge WHERE menuSalesID = '" . $menuSalesID . "' )  , is_sync = 0 WHERE menuSalesID = '" . $menuSalesID . "'");
-
-
-        if ($r) {
-            return true;
-        } else {
+        if($r==true){
+            /**update total Service charge */
+            $r2=$this->db->query("UPDATE srp_erp_pos_menusalesmaster SET serviceCharge = ( SELECT sum(serviceChargeAmount) FROM srp_erp_pos_menusalesservicecharge WHERE menuSalesID = '" . $menuSalesID . "' )  , is_sync = 0 WHERE menuSalesID = '" . $menuSalesID . "'");
+            if ($r2) {
+                return true;
+            } else {
+                return false;
+            }
+        }else{
             return false;
         }
     }
@@ -3442,9 +3454,15 @@ where srp_erp_pos_outlettaxmaster.warehouseAutoID=$outletID AND srp_erp_pos_outl
             $calculatedCommission = $result['totalTmp'] * ($result['deliveryCommission'] / 100);
             $q2 = "UPDATE srp_erp_pos_menusalesmaster SET deliveryCommissionAmount =  '" . $calculatedCommission . "' , is_sync = 0   WHERE menuSalesID = '" . $menuSalesID . "'  ";
             $this->db->query($q2);
+            $r2=$this->db->query($q2);
+            if($r2==true){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return true;
         }
-        //echo $this->db->last_query();
-        return true;
     }
 
 

@@ -2083,8 +2083,8 @@ class Pos_restaurant extends ERP_Controller
         $data['masters'] = $masters;
         $data['sampleBill'] = true;
         $data['auth'] = false;
-        //$this->load->view('system/pos/printTemplate/restaurant-pos-dotmatric-printer-reprint', $data);
-        //$this->load->view('system/pos/printTemplate/restaurant-pos-dotmatric-printer', $data);
+        $data['isSample']=true;
+        $data['outletTaxMaster']=$this->Pos_restaurant_model->outlet_tax_list($outletID);
         $template = get_print_template();
         $data['template'] = $template;
         $this->load->view($template, $data);

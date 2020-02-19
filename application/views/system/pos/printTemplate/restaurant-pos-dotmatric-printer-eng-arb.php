@@ -344,6 +344,41 @@
             }
             ?>
 
+            <!-- Outlet taxes print here if exist. -->
+            <?php
+            if (isset($isSample) && $isSample == true) {
+                $promoDiscountAmount = 0;
+                $discount = $total * ($masters['promotionDiscount'] / 100);
+                $promoDiscountAmount = $discount;
+                $totalDiscount += $discount;
+                $netTotal = $total - $promoDiscountAmount;
+                $outletTaxes = array();
+                foreach ($outletTaxMaster as $item) {
+                    $taxAmount = (number_format($netTotal, $d) / 100) * number_format($item->taxPercentage, $d);
+                    echo '<tr>
+                <td colspan="2" style="text-align:left; font-weight:bold;">
+                  ' . $item->taxDescription . '
+                </td>
+                <td colspan="2" style="text-align:right; font-weight:bold;">
+                  ' . number_format($taxAmount, $d) . '
+                </td>
+            </tr>';
+                    $outletTaxes[] = array('taxAmount' => $taxAmount);
+                }
+            } else {
+                $outletTaxes = outlet_taxes_list($masters['menuSalesID']);
+                foreach ($outletTaxes as $taxItem) {
+                    echo '<tr>
+                <td colspan="2" style="text-align:left; font-weight:bold;">
+                   ' . $taxItem['taxDescription'] . '
+                </td>
+                <td colspan="2" style="text-align:right; font-weight:bold;">
+                   ' . number_format($taxItem['taxAmount'], $d) . '
+                </td>
+            </tr>';
+                }
+            }
+            ?>
 
             <!--Discount if Exist -->
             <?php

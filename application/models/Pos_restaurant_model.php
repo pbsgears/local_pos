@@ -3282,6 +3282,7 @@ class Pos_restaurant_model extends ERP_Model
  srp_erp_pos_outlettaxmaster.taxPercentage,
  srp_erp_pos_outlettaxmaster.outletTaxID,
  srp_erp_pos_outlettaxmaster.taxMasterID,
+  srp_erp_pos_outlettaxmaster.taxDescription,
  srp_erp_taxmaster.supplierGLAutoID
  FROM `srp_erp_pos_outlettaxmaster` 
 JOIN srp_erp_taxmaster ON srp_erp_taxmaster.taxMasterAutoID=srp_erp_pos_outlettaxmaster.taxMasterID

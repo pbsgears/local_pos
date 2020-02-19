@@ -438,9 +438,14 @@
                 </td>
                 <td colspan="2" style="text-align:right; font-weight:bold;">
                     <?php
-                    //echo number_format($total - $totalDiscount, $d);
-                    echo number_format($total - $promoDiscountAmount, $d);
                     $netTotal = $total - $promoDiscountAmount;
+                    $taxTotal = 0;
+
+                    foreach ($outletTaxes as $taxItem) {
+                        $taxTotal = $taxTotal + $taxItem['taxAmount'];
+                    }
+                    $netTotal = $netTotal + $taxTotal;
+                    echo number_format($netTotal, $d);
                     ?>
                 </td>
             </tr>

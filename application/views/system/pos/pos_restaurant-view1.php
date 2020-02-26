@@ -1360,7 +1360,7 @@ $this->load->view('system/pos/js/pos-restaurant-common-js', $data);
                         $(this).find(".menu_discount_amount").val(0);
                         var discountedAmount = $(this).find(".menu_discount_amount").val();
                     } else {
-                        $(this).find(".menu_discount_percentage").val(percentage.toFixed(1));
+                        $(this).find(".menu_discount_percentage").val(percentage.toFixed(2));
 
                         /** Tax Handling */
                         var taxAmount = $(this).find(".totalMenuTaxAmount").val();

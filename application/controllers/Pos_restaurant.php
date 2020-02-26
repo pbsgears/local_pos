@@ -1606,7 +1606,7 @@ class Pos_restaurant extends ERP_Controller
                     $isTaxEnabled = $isTaxesEnabled[$key];
 
                     $net_item_wise_discount = ($pricewithoutTaxDiscount_post[$key] + $taxAmountDiscount_post[$key] + $serviceChargeDiscount_post[$key]) * $itemQty;
-                    $data[$i]['discountAmount'] = $net_item_wise_discount; // total discount only - item wise
+                    $data[$i]['discountAmount'] = $discountAmount;//$net_item_wise_discount; // total discount only - item wise
 
                     $tmp_net_sales = (($priceWithoutTax_post[$key] + $taxAmount_post[$key] + $serviceCharge_post[$key]) * $itemQty) - $net_item_wise_discount;
 

@@ -184,9 +184,14 @@
                 $i = 1;
                 foreach ($invoiceList as $item) {
                     //print_r($item);
-                    $totalTax += ($item['totalTaxAmount'] * $item['qty']);
-                    $totalServiceCharge += ($item['totalServiceCharge'] * $item['qty']);
+                    $totalTax += ($item['totalTaxAmount'] * $item['qty']) - (($item['totalTaxAmount'] * $item['qty']) * $item['discountPer'] / 100);
+                    $totalServiceCharge += ($item['totalServiceCharge'] * $item['qty']) - (($item['totalServiceCharge'] * $item['qty']) * $item['discountPer'] / 100);
+                    //$item['pricewithoutTax'] = $item['pricewithoutTax'] - round(($item['pricewithoutTax'] * $item['discountPer'] / 100),2);
+                    $item['pricewithoutTax'] = $item['pricewithoutTax'] - ($item['discountAmount']/$item['qty']);
+                    $item['totalTaxAmount'] = $item['totalTaxAmount'] - ($item['totalTaxAmount'] * $item['discountPer'] / 100);
+                    $item['totalServiceCharge'] = $item['totalServiceCharge'] - ($item['totalServiceCharge'] * $item['discountPer'] / 100);
                     $sellingPrice = getSellingPricePolicy($templateID, $item['pricewithoutTax'], $item['totalTaxAmount'], $item['totalServiceCharge'], $item['qty']);
+                    $comboSub=get_pos_combos($item['menuSalesID'],$item['menuSalesItemID'],$item['warehouseMenuID']);
                     ?>
                     <tr>
                         <!--<td width="5%">
@@ -195,6 +200,7 @@
                         </td>-->
                         <td width="20%" align="left">
                             <?php echo $item['menuMasterDescription'] ?>
+                            <?php echo isset($item['discountPer']) && $item['discountPer'] > 0 ? '(' . $item['discountPer'] . '% Dis.)' : ''; ?>
                         </td>
                         <td width="5%">
                             <?php
@@ -205,12 +211,26 @@
                         <td width="15%"
                             align="right">
                             <?php
+                            //$total = $total + ($item['sellingPrice'] * $item['qty']);
+                            //echo number_format(($item['sellingPrice'] * $item['qty']), $d)
                             $total = $total + $sellingPrice;
                             echo number_format($sellingPrice, $d)
                             ?>
                         </td>
-
                     </tr>
+                    <?php
+                    if(!empty($comboSub)){
+                        foreach($comboSub as $cmbo){
+                            ?>
+                            <tr>
+                                <td width="20%" align="left" style="padding-left: 10px !important;">* <?php echo $cmbo['menuMasterDescription'] ?></td>
+                                <td width="5%"> <?php echo $cmbo['qty'] ?></td>
+                                <td width="15%" align="right">&nbsp;</td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    ?>
                     <?php
                 }
             }

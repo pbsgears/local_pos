@@ -1999,8 +1999,9 @@ $isOutletTaxEnabled = json_encode(isOutletTaxEnabled($get_outletID, $current_com
             var paidAmountTmp = parseFloat($("#paidUpdate").val());
             var advancePaymets = $("#delivery_advancePaymentAmountUpdate").val();
             netTotal = netTotal - advancePaymets;
-            var returnChange = paidAmountTmp - netTotal;
-            $("#final_payableNet_amtUpdate").html(netTotal.toFixed(<?php echo $d ?>));
+
+            //var returnChange = paidAmountTmp - netTotal;
+            //$("#final_payableNet_amtUpdate").html(netTotal.toFixed(<?php //echo $d ?>//));
 
             var returnChange;
             //update amount with taxes. 1
@@ -2009,9 +2010,13 @@ $isOutletTaxEnabled = json_encode(isOutletTaxEnabled($get_outletID, $current_com
                 var netValueWithOutletTax = outlet_tax.updated_net_value;
                 var outletTaxAmount = outlet_tax.calculated_tax_amount;
                 $("#outlet_tax_in_invoiceUpdate").html(outletTaxAmount.toFixed(<?php echo $d ?>));
-                $("#final_payableNet_amtUpdate").html(netValueWithOutletTax.toFixed(<?php echo $d ?>));
-                returnChange = paidAmountTmp - netValueWithOutletTax;
+                netTotal = netValueWithOutletTax-advancePaymets;
+                $("#final_payableNet_amtUpdate").html(netTotal.toFixed(<?php echo $d ?>));
+                returnChange = paidAmountTmp - netTotal;
             } else {
+                netTotal = netTotal - advancePaymets;
+                $("#final_payableNet_amtUpdate").html(netTotal.toFixed(<?php echo $d ?>));
+                netTotal = netTotal.toFixed(<?php echo $d ?>);
                 returnChange = paidAmountTmp - netTotal;
             }
 
@@ -2151,10 +2156,11 @@ $isOutletTaxEnabled = json_encode(isOutletTaxEnabled($get_outletID, $current_com
                 var netValueWithOutletTax = outlet_tax.updated_net_value;
                 var outletTaxAmount = outlet_tax.calculated_tax_amount;
                 $("#outlet_tax_in_invoice").html(outletTaxAmount.toFixed(<?php echo $d ?>));
-                netTotal = netValueWithOutletTax;
-                $("#final_payableNet_amt").html(netValueWithOutletTax.toFixed(<?php echo $d ?>));
-                returnChange = paidAmountTmp - netValueWithOutletTax;
+                netTotal = netValueWithOutletTax-advancePaymets;
+                $("#final_payableNet_amt").html(netTotal.toFixed(<?php echo $d ?>));
+                returnChange = paidAmountTmp - netTotal;
             } else {
+                netTotal = netTotal - advancePaymets;
                 $("#final_payableNet_amt").html(netTotal.toFixed(<?php echo $d ?>));
                 netTotal = netTotal.toFixed(<?php echo $d ?>);
                 returnChange = paidAmountTmp - netTotal;

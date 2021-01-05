@@ -3536,6 +3536,59 @@ CREATE TABLE `srp_erp_pos_menusalesitems` (
 -- Records of srp_erp_pos_menusalesitems
 -- ----------------------------
 
+DROP TABLE IF EXISTS `srp_erp_pos_menusalesoutlettaxes`;
+CREATE TABLE `srp_erp_pos_menusalesoutlettaxes` (
+  `menuSalesOutletTaxID` int(11) NOT NULL AUTO_INCREMENT,
+  `wareHouseAutoID` int(11) NOT NULL DEFAULT '0',
+  `menuSalesID` int(11) DEFAULT NULL,
+  `outletTaxID` int(11) DEFAULT NULL,
+  `taxmasterID` int(11) DEFAULT NULL,
+  `GLCode` int(11) DEFAULT NULL,
+  `taxPercentage` double DEFAULT NULL,
+  `taxAmount` double DEFAULT NULL,
+  `companyID` int(11) DEFAULT NULL,
+  `companyCode` varchar(45) DEFAULT NULL,
+  `createdUserGroup` int(11) DEFAULT NULL,
+  `createdPCID` varchar(45) DEFAULT NULL,
+  `createdUserID` varchar(45) DEFAULT NULL,
+  `createdDateTime` datetime DEFAULT NULL,
+  `createdUserName` varchar(200) DEFAULT NULL,
+  `modifiedPCID` varchar(45) DEFAULT NULL,
+  `modifiedUserID` varchar(45) DEFAULT NULL,
+  `modifiedDateTime` datetime DEFAULT NULL,
+  `modifiedUserName` varchar(200) DEFAULT NULL,
+  `timestamp` timestamp NULL DEFAULT NULL,
+  `is_sync` int(1) DEFAULT '0',
+  `id_store` int(255) DEFAULT '0',
+  PRIMARY KEY (`menuSalesOutletTaxID`,`wareHouseAutoID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='transaction level tabled ';
+
+
+
+
+DROP TABLE IF EXISTS `srp_erp_pos_outlettaxmaster`;
+CREATE TABLE `srp_erp_pos_outlettaxmaster` (
+  `outletTaxID` int(11) NOT NULL AUTO_INCREMENT,
+  `taxMasterID` int(11) DEFAULT NULL,
+  `warehouseAutoID` int(11) DEFAULT NULL,
+  `taxDescription` varchar(400) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `taxPercentage` double DEFAULT NULL,
+  `isDeleted` int(11) DEFAULT '0' COMMENT '0- No 1- Yes',
+  `isActive` int(1) DEFAULT '1' COMMENT '0- No 1- Yes',
+  `companyID` int(11) DEFAULT NULL,
+  `createdUserGroup` int(11) DEFAULT NULL,
+  `createdPCID` varchar(45) DEFAULT NULL,
+  `createdUserID` varchar(45) DEFAULT NULL,
+  `createdDateTime` datetime DEFAULT NULL,
+  `createdUserName` varchar(200) DEFAULT NULL,
+  `modifiedPCID` varchar(45) DEFAULT NULL,
+  `modifiedUserID` varchar(45) DEFAULT NULL,
+  `modifiedDateTime` datetime DEFAULT NULL,
+  `modifiedUserName` varchar(200) DEFAULT NULL,
+  `timestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`outletTaxID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- ----------------------------
 -- Table structure for srp_erp_pos_menusalesmaster
 -- ----------------------------

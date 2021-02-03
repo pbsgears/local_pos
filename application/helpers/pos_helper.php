@@ -4047,3 +4047,14 @@ if (!function_exists('get_pos_combos')) {
         return $data;
     }
 }
+
+if (!function_exists('get_s3_url')) {
+    function get_s3_url($path)
+    {
+
+        $ci =& get_instance();
+        $ci->load->library('s3');
+        return $ci->s3->getMyAuthenticatedURL($path, 3600);
+    }
+}
+

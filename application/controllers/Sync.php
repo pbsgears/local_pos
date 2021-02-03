@@ -275,6 +275,29 @@ class Sync extends ERP_Controller
         curl_close($ch);
     }
 
+    function sync_warehouse_logos()
+    {
+        $query = $this->db->query("select * from srp_erp_warehousemaster");
+        foreach ($query->result() as $row) {
+            $wareHouseAutoID = $row->wareHouseAutoID;
+            $warehouseImageLink = $row->warehouseImage;
+            if ($warehouseImageLink != "") {
+                $imageFileName = str_replace("/", "", $warehouseImageLink);
+                $local_path = 'uploads/warehouses/' . $imageFileName;
+                $isFileExist = file_exists($local_path);
+                if ($isFileExist != 1) {
+                    $warehouseImageUrl = get_s3_url($warehouseImageLink);
+                    $downloadedFile = @file_get_contents($warehouseImageUrl);
+                    if (gettype($downloadedFile) == 'string') {
+                        file_put_contents($local_path, $downloadedFile);
+                    }
+                }
+            }
+        }
+        $data['status']='updated';
+        echo json_encode($data);
+    }
+
     function pull_data_giftCard()
     {
         $companyID = current_companyID();

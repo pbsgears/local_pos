@@ -121,14 +121,14 @@
                         <div style="text-align: center;">
                             <?php
                             if (!empty($outletInfo['warehouseImage']) && false) {
-                                $LogImage = 'uploads/warehouses/' . $outletInfo['warehouseImage'];
+                                $LogImage = 'uploads/warehouses/' . str_replace("/", "", $outletInfo['warehouseImage']);
                                 ?>
                                 <img
                                     src="<?php echo base_url($LogImage) ?>"
                                     alt="Restaurant Logo" style="max-height: 80px;">
                                 <?php
                             }else{
-                                $LogImage = 'uploads/warehouses/' . $outletInfo['warehouseImage'];
+                                $LogImage = 'uploads/warehouses/' . str_replace("/", "", $outletInfo['warehouseImage']);
                                 ?>
                                 <img
                                     src="<?php echo base_url($LogImage) ?>"

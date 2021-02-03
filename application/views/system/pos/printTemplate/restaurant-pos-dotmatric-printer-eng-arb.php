@@ -93,7 +93,7 @@
                 <td width="100%" class="ac">
                     <?php
                     if (!empty($outletInfo['warehouseImage'])) {
-                        $LogImage = 'uploads/warehouses/' . $outletInfo['warehouseImage'];
+                        $LogImage = 'uploads/warehouses/' . str_replace("/", "", $outletInfo['warehouseImage']);
                         ?>
                         <div>
                             <img

@@ -101,7 +101,7 @@
             </tr>
             <?php
             if (!empty($outletInfo['warehouseImage'])) {
-                $LogImage = 'uploads/warehouses/' . $outletInfo['warehouseImage'];
+                $LogImage = 'uploads/warehouses/' . str_replace("/", "", $outletInfo['warehouseImage']);
                 ?>
                 <tr>
                     <td>

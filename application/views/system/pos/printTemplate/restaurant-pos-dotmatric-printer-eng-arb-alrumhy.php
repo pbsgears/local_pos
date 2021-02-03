@@ -119,7 +119,7 @@
                     <?php
                     if (!isset($from_up_coming)) {
                         if (!empty($outletInfo['warehouseImage'])) {
-                            $LogImage = 'uploads/warehouses/' . $outletInfo['warehouseImage'];
+                            $LogImage = 'uploads/warehouses/' . str_replace("/", "", $outletInfo['warehouseImage']);
                             ?>
                             <div>
                                 <img

@@ -2351,6 +2351,7 @@ if ($sync) {
                     } else if (obj.status == 0) {
                         console.log('update completed');
                         $(".show_syncing_progress").hide();
+                        syncWarehouseLogos();
                         //xhr.abort();
                     } else if (obj.status == 3) {
                         console.log('no internet');
@@ -2365,6 +2366,21 @@ if ($sync) {
             });
         }
 
+        function syncWarehouseLogos(){
+            $.ajax({
+                async:false,
+                type: "get",
+                url: "<?php echo site_url('sync/sync_warehouse_logos'); ?>",
+                data: null,
+                async: true,
+                beforeSend: function () {
+                    $(".show_syncing_progress").show();
+                },
+                success: function (msg) {
+                    $(".show_syncing_progress").hide();
+                }
+            });
+        }
 
     </script>
 
